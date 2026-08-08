@@ -4,8 +4,7 @@ import { FiSearch, FiX, FiBookOpen, FiUser } from "react-icons/fi";
 import { searchInternships, searchUsers } from "../../../services/api/search.service";
 import "./SearchBar.css";
 
-const COURSES_EMPTY_MSG =
-    "We couldn't find any courses or internships matching your search keywords on Tech Monster. Please try searching with a different keyword.";
+const COURSES_EMPTY_MSG = "We couldn't find any courses or internships matching your search keywords on Tech Monster. Please try searching with a different keyword.";
 const USERS_EMPTY_MSG = "User not found.";
 
 function SearchBar() {

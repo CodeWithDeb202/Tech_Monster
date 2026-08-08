@@ -1,10 +1,11 @@
 import './Sidebar.css';
 
 import useAuth from '../../../../hooks/useAuth';
-import { useState, useEffect } from "react";
+import {  useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from 'react-toastify';
+import SearchBar from "../../../Common/SearchBar";
 
 import {
     FiHome,
@@ -29,15 +30,18 @@ function Sidebar({
     role = "student",
     isCourseCompleted = false,
     collapsed = false,
-    onToggleCollapse
+    onToggleCollapse,
+    mobileSidebarOpen = false,
+    onCloseMobileSidebar
 }) {
     const navigate = useNavigate();
     const location = useLocation();
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setIsMobileMenuOpen(false);
+        if (mobileSidebarOpen) {
+            onCloseMobileSidebar?.();
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 
     const studentLinks = [
@@ -81,71 +85,196 @@ function Sidebar({
 
     return (
         <>
+            {/* ================= MOBILE OVERLAY ================= */}
             <AnimatePresence>
-                {isMobileMenuOpen && (
+                {mobileSidebarOpen && (
                     <motion.div
-                        className="sidebar-overlay"
+                        className="mobile-sidebar-overlay"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        onClick={onCloseMobileSidebar}
                     />
                 )}
             </AnimatePresence>
 
+
+            {/* ================= SIDEBAR ================= */}
             <motion.aside
-                className={`dashboard-sidebar ${collapsed ? "collapsed" : ""} ${isMobileMenuOpen ? "mobile-open" : ""}`}
-                initial={{ x: -260 }}
-                animate={{ x: 0 }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className={`dashboard-sidebar ${collapsed ? "collapsed" : ""
+                    } ${mobileSidebarOpen ? "mobile-open" : ""
+                    }`}
+                initial={false}
+                animate={{
+                    x: 0
+                }}
+                transition={{
+                    duration: 0.3,
+                    ease: "easeInOut"
+                }}
             >
-                {/* Collapse toggle */}
+
+                {/* ================= MOBILE HEADER ================= */}
+                <div className="sidebar-header-mobile">
+
+                    <h3>
+                        Tech <span>Monster</span>
+                    </h3>
+
+                    <button
+                        className="close-menu-btn"
+                        onClick={onCloseMobileSidebar}
+                        aria-label="Close menu"
+                    >
+                        <FiX />
+                    </button>
+
+                </div>
+
+
+                {/* ================= MOBILE SEARCH ================= */}
+                <div className="mobile-sidebar-search">
+                    <SearchBar />
+                </div>
+
+
+                {/* ================= DESKTOP COLLAPSE ================= */}
                 <button
                     id="sidebar-collapse-btn"
-                    onClick={() => onToggleCollapse && onToggleCollapse()}
-                    title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+                    onClick={() =>
+                        onToggleCollapse && onToggleCollapse()
+                    }
+                    title={
+                        collapsed
+                            ? "Expand sidebar"
+                            : "Collapse sidebar"
+                    }
                 >
                     {collapsed ? <FiMenu /> : <FiChevronLeft />}
                 </button>
 
-                <div className="sidebar-header-mobile">
-                    <h3>Tech <span>Monster</span></h3>
-                    <button className="close-menu-btn" onClick={() => setIsMobileMenuOpen(false)}>
-                        <FiX />
-                    </button>
-                </div>
 
+                {/* ================= MENU ================= */}
                 <ul className="sidebar-menu">
+
                     {navLinks.map((link, index) => {
-                        const isActive = location.pathname === link.path;
+
+                        const isActive =
+                            location.pathname === link.path;
+
                         return (
-                            <li key={index} className={`${isActive ? "active" : ""} ${link.locked ? "locked-link" : ""}`}>
-                                <Link to={link.locked ? "#" : link.path} onClick={(e) => handleLinkClick(e, link)}>
-                                    <span className="sidebar-link-icon">{link.linkIcon || link.icon}</span>
-                                    {!collapsed && <span className="sidebar-link-label">{link.name}</span>}
-                                    {link.locked && !collapsed && <FiLock className="lock-icon-right" />}
-                                    {collapsed && (
-                                        <span className="sidebar-tooltip">{link.name}</span>
+                            <li
+                                key={index}
+                                className={`
+                                ${isActive ? "active" : ""}
+                                ${link.locked ? "locked-link" : ""}
+                            `}
+                            >
+
+                                <Link
+                                    to={link.locked ? "#" : link.path}
+                                    onClick={(e) => {
+
+                                        handleLinkClick(e, link);
+
+                                        // Mobile re link click kale close
+                                        if (!link.locked) {
+                                            onCloseMobileSidebar?.();
+                                        }
+
+                                    }}
+                                >
+
+                                    <span className="sidebar-link-icon">
+                                        {link.linkIcon || link.icon}
+                                    </span>
+
+                                    {!collapsed && (
+                                        <span className="sidebar-link-label">
+                                            {link.name}
+                                        </span>
                                     )}
+
+                                    {link.locked && !collapsed && (
+                                        <FiLock className="lock-icon-right" />
+                                    )}
+
+                                    {collapsed && (
+                                        <span className="sidebar-tooltip">
+                                            {link.name}
+                                        </span>
+                                    )}
+
                                 </Link>
+
                             </li>
                         );
                     })}
+
                 </ul>
 
+
+                {/* ================= FOOTER ================= */}
                 <div className="sidebar-footer">
-                    <Link to={`/${role}/settings`} className={location.pathname.includes("settings") ? "active" : ""}
-                        title={collapsed ? "Setting" : undefined}>
-                        <span className="sidebar-link-icon"><FiSettings /></span>
-                        {!collapsed && <span className="sidebar-link-label">Setting</span>}
-                        {collapsed && <span className="sidebar-tooltip">Setting</span>}
+
+                    <Link
+                        to={`/${role}/settings`}
+                        className={
+                            location.pathname.includes("settings")
+                                ? "active"
+                                : ""
+                        }
+                        title={collapsed ? "Setting" : undefined}
+                        onClick={onCloseMobileSidebar}
+                    >
+
+                        <span className="sidebar-link-icon">
+                            <FiSettings />
+                        </span>
+
+                        {!collapsed && (
+                            <span className="sidebar-link-label">
+                                Setting
+                            </span>
+                        )}
+
+                        {collapsed && (
+                            <span className="sidebar-tooltip">
+                                Setting
+                            </span>
+                        )}
+
                     </Link>
-                    <button onClick={handleLogout} className="logout-btn">
-                        <span className="sidebar-link-icon"><FiLogOut /></span>
-                        {!collapsed && <span className="sidebar-link-label">Logout</span>}
-                        {collapsed && <span className="sidebar-tooltip">Logout</span>}
+
+
+                    <button
+                        onClick={async () => {
+                            await handleLogout();
+                            onCloseMobileSidebar?.();
+                        }}
+                        className="logout-btn"
+                    >
+
+                        <span className="sidebar-link-icon">
+                            <FiLogOut />
+                        </span>
+
+                        {!collapsed && (
+                            <span className="sidebar-link-label">
+                                Logout
+                            </span>
+                        )}
+
+                        {collapsed && (
+                            <span className="sidebar-tooltip">
+                                Logout
+                            </span>
+                        )}
+
                     </button>
+
                 </div>
+
             </motion.aside>
         </>
     );

@@ -1,20 +1,32 @@
 /* SIDEBAR STYLING */
 .dashboard-sidebar {
     width: 260px;
-    background-color: transparent;
-    backdrop-filter: blur(5px);
+    background-color: rgba(7, 11, 25, 0.96);
+    backdrop-filter: blur(12px);
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
     border-right: 1px solid rgba(255, 255, 255, 0.05);
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem;
+
     box-shadow: 0 0 10px var(--glow);
+
     padding: 1.25rem 0;
+
     height: calc(100vh - 8rem);
+
     margin: 0.5rem 0.5rem 0.5rem 0;
+
     flex-shrink: 0;
-    z-index: 1;
+
+    z-index: 1200;
+
+    position: relative;
+
+    transition: width 0.35s ease;
 }
 
 .sidebar-header-mobile {
@@ -54,7 +66,9 @@
     border-radius: 8px;
 }
 
-.sidebar-menu li a, .sidebar-footer a, .logout-btn {
+.sidebar-menu li a,
+.sidebar-footer a,
+.logout-btn {
     display: flex;
     align-items: center;
     gap: 15px;
@@ -70,7 +84,10 @@
     transition: 0.3s;
 }
 
-.sidebar-menu li.active, .sidebar-menu li:hover, .sidebar-footer a:hover, .logout-btn:hover {
+.sidebar-menu li.active,
+.sidebar-menu li:hover,
+.sidebar-footer a:hover,
+.logout-btn:hover {
     color: var(--neon);
     background-color: #0f172a;
 }
@@ -82,14 +99,14 @@
 
 
 .locked-link {
-  opacity: 0.7;
-  cursor: pointer;
+    opacity: 0.7;
+    cursor: pointer;
 }
 
 .lock-icon-right {
-  margin-left: auto;
-  font-size: 14px;
-  color: #ff3366;
+    margin-left: auto;
+    font-size: 14px;
+    color: #ff3366;
 }
 
 .logout-btn {
@@ -204,4 +221,278 @@
 .dashboard-sidebar.collapsed .logout-btn:hover .sidebar-tooltip {
     opacity: 1;
     visibility: visible;
+}
+
+
+/* =====================================================
+   MOBILE SIDEBAR
+===================================================== */
+
+.mobile-sidebar-overlay {
+    display: none;
+}
+
+
+/* Search inside mobile sidebar */
+.mobile-sidebar-search {
+    display: none;
+}
+
+
+/* Mobile header */
+.sidebar-header-mobile {
+    display: none;
+}
+
+
+/* =====================================================
+   MAX WIDTH 756px
+===================================================== */
+
+@media (max-width: 756px) {
+
+    /* ---------------------------------------------
+       DESKTOP SIDEBAR HIDE
+    --------------------------------------------- */
+
+    .dashboard-sidebar {
+        display: none;
+    }
+
+
+    /* ---------------------------------------------
+       MOBILE SIDEBAR OPEN
+    --------------------------------------------- */
+
+    .dashboard-sidebar.mobile-open {
+        display: flex;
+
+        position: fixed;
+
+        top: 0;
+        left: 0;
+
+        width: 85%;
+        max-width: 340px;
+
+        height: 100vh;
+
+        margin: 0;
+
+        border-radius: 0;
+
+        background: rgba(7, 11, 25, 0.98);
+
+        backdrop-filter: blur(18px);
+
+        box-shadow:
+            10px 0 40px rgba(0, 0, 0, 0.6),
+            0 0 20px var(--glow);
+
+        z-index: 3000;
+
+        padding: 0;
+
+        overflow-y: auto;
+    }
+
+
+    /* ---------------------------------------------
+       MOBILE HEADER
+    --------------------------------------------- */
+
+    .dashboard-sidebar.mobile-open .sidebar-header-mobile {
+        display: flex;
+
+        min-height: 60px;
+
+        padding: 0 18px;
+
+        align-items: center;
+        justify-content: space-between;
+
+        border-bottom:
+            1px solid rgba(255, 255, 255, 0.08);
+    }
+
+
+    .dashboard-sidebar.mobile-open .sidebar-header-mobile h3 {
+
+        margin: 0;
+
+        font-size: 1.2rem;
+
+        color: #fff;
+    }
+
+
+    .dashboard-sidebar.mobile-open .sidebar-header-mobile h3 span {
+
+        color: var(--neon);
+    }
+
+
+    .close-menu-btn {
+        width: 38px;
+        height: 38px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: transparent;
+
+        border: 1px solid rgba(255, 255, 255, 0.1);
+
+        border-radius: 8px;
+
+        color: #fff;
+
+        font-size: 1.2rem;
+
+        cursor: pointer;
+    }
+
+
+    .close-menu-btn:hover {
+        color: var(--neon);
+
+        border-color: var(--neon);
+
+        background: rgba(0, 240, 255, 0.08);
+    }
+
+
+    /* ---------------------------------------------
+       SEARCH BAR INSIDE MOBILE SIDEBAR
+    --------------------------------------------- */
+
+    .mobile-sidebar-search {
+        display: block;
+
+        width: 100%;
+
+        padding: 15px 15px 10px;
+    }
+
+
+    .mobile-sidebar-search .search-bar-container {
+
+        display: flex;
+
+        width: 100%;
+    }
+
+
+    .mobile-sidebar-search .search-results-dropdown {
+
+        position: fixed;
+
+        top: 70px;
+
+        left: 15px;
+
+        width: calc(85% - 30px);
+
+        max-width: 310px;
+
+        z-index: 4000;
+    }
+
+
+    /* ---------------------------------------------
+       HIDE DESKTOP COLLAPSE BUTTON ON MOBILE
+    --------------------------------------------- */
+
+    .dashboard-sidebar.mobile-open #sidebar-collapse-btn {
+
+        display: none;
+    }
+
+
+    /* ---------------------------------------------
+       MOBILE MENU
+    --------------------------------------------- */
+
+    .dashboard-sidebar.mobile-open .sidebar-menu {
+
+        display: block;
+
+        width: 100%;
+
+        padding: 10px 12px;
+
+        margin: 0;
+
+        overflow-y: auto;
+
+        flex: 1;
+    }
+
+
+    .dashboard-sidebar.mobile-open .sidebar-menu li {
+
+        margin-bottom: 6px;
+    }
+
+
+    .dashboard-sidebar.mobile-open .sidebar-menu li a {
+
+        min-height: 48px;
+
+        padding: 12px 15px;
+
+        gap: 15px;
+
+        font-size: 0.95rem;
+    }
+
+
+    .dashboard-sidebar.mobile-open .sidebar-link-label {
+
+        display: inline;
+    }
+
+
+    /* ---------------------------------------------
+       MOBILE FOOTER
+    --------------------------------------------- */
+
+    .dashboard-sidebar.mobile-open .sidebar-footer {
+
+        padding: 10px 12px 15px;
+
+        flex-shrink: 0;
+    }
+
+
+    .dashboard-sidebar.mobile-open .sidebar-footer a,
+    .dashboard-sidebar.mobile-open .sidebar-footer .logout-btn {
+
+        min-height: 48px;
+
+        padding: 12px 15px;
+    }
+
+
+    /* ---------------------------------------------
+       OVERLAY
+    --------------------------------------------- */
+
+    .mobile-sidebar-overlay {
+
+        display: block;
+
+        position: fixed;
+
+        inset: 0;
+
+        background: rgba(0, 0, 0, 0.65);
+
+        backdrop-filter: blur(3px);
+
+        z-index: 2500;
+    }
+
 }

@@ -28,3 +28,11 @@
     align-items: stretch;       
     overflow: hidden;
 }
+
+@media (max-width: 756px) {
+
+    #sideMain {
+        width: 100%;
+    }
+
+}

@@ -17,10 +17,9 @@ import logo from "../../../../assets/logo/logo.png";
 import SystemBar from '../../../Common/Navbar/SystemBar';
 import SearchBar from '../../../Common/SearchBar';
 
-function Navbar({ role = "student", }) {
+function Navbar({ role = "student", onMobileMenuClick }) {
 
     const { logout, user } = useAuth();
-    console.log("Navbar:-user",user);
 
     const userName = user?.username || '';
     const capitalName = userName.toUpperCase() || userName;
@@ -28,14 +27,13 @@ function Navbar({ role = "student", }) {
     // Resolve the profile image URL: support `profilePic` or `avatar` fields.
     // If neither is a valid image URL, fall back to the FiUser placeholder.
     const profileImg = user?.avatar &&
-            user.avatar !== "/profile/default-profile.svg"
-            ? user.avatar
-            : defaultProfileImg;
+        user.avatar !== "/profile/default-profile.svg"
+        ? user.avatar
+        : defaultProfileImg;
 
 
     const navigate = useNavigate();
 
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [showProfilePopup, setShowProfilePopup] = useState(false);
 
     // Notification Dropdown State & Mock Unread Notifications List
@@ -67,7 +65,11 @@ function Navbar({ role = "student", }) {
 
                 <header id="dashboard-navbar">
                     <div id="nav-left-section">
-                        <button id="menu-toggle-btn" onClick={() => setIsMobileMenuOpen(true)}>
+                        <button
+                            id="menu-toggle-btn"
+                            onClick={onMobileMenuClick}
+                            aria-label="Open menu"
+                        >
                             <FiMenu />
                         </button>
 
@@ -78,8 +80,9 @@ function Navbar({ role = "student", }) {
                         </div>
                     </div>
 
-                    {/* Middle Search Bar */}
-                    <SearchBar />
+                    <div id="navbar-search">
+                        <SearchBar />
+                    </div>
 
                     {/* Right Icons & User Profile */}
                     <div id="navbar-right">
@@ -189,19 +192,6 @@ function Navbar({ role = "student", }) {
                         </div>
                     </div>
                 </header>
-
-                {/* MOBILE OVERLAY */}
-                <AnimatePresence>
-                    {isMobileMenuOpen && (
-                        <motion.div
-                            className="sidebar-overlay"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        />
-                    )}
-                </AnimatePresence>
             </nav>
         </>
     )
