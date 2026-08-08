@@ -27,7 +27,7 @@ export const getDashboardStats = asyncHandler(async (req, res) => {
     const totalInternships = await Internship.countDocuments();
 
     const activeInternships = await Internship.countDocuments({
-        status: "Active"
+        isPublished: true
     });
 
     return res.status(200).json({

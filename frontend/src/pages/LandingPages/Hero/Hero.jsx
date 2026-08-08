@@ -1,6 +1,11 @@
 import './Hero.css';
 
-import {Link} from 'react-router-dom';
+import { useEffect, useState } from "react";
+
+import api from "../../../services/api/axios";
+import { API } from "../../../services/api/endpoints";
+
+import { Link } from 'react-router-dom';
 
 import { motion } from 'framer-motion';
 import { FaArrowRight, FaPlayCircle, FaShieldAlt } from 'react-icons/fa';
@@ -28,6 +33,52 @@ const fadeUp = {
 };
 
 function Hero() {
+    const [heroStats, setHeroStats] = useState({
+        students: 0,
+        internships: 0,
+        admins: 0
+    });
+
+    const [statsLoading, setStatsLoading] = useState(true);
+
+    useEffect(() => {
+
+        const fetchHeroStats = async () => {
+
+            try {
+
+                const response = await api.get(
+                    API.PUBLIC.HERO_STATS
+                );
+
+                if (response.data.success) {
+
+                    setHeroStats(
+                        response.data.stats
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to fetch hero stats:",
+                    error
+                );
+
+            } finally {
+
+                setStatsLoading(false);
+
+            }
+
+        };
+
+        fetchHeroStats();
+
+    }, []);
+
+
     return (
         <>
             <section className='hero' id='home'>
@@ -54,12 +105,32 @@ function Hero() {
                         </motion.div>
 
                         <motion.div className='hero-stats' variants={fadeUp} initial='hidden' animate='show' custom={0.8}>
-                            {heroContent.stats.map((stat) => (
-                                <Card className='stat-card' key={stat.id}>
-                                    <h2>{stat.value}</h2>
-                                    <p>{stat.label}</p>
-                                </Card>
-                            ))}
+                            <Card className="stat-card">
+                                <h2>
+                                    {statsLoading
+                                        ? "..."
+                                        : `${heroStats.students}+`}
+                                </h2>
+                                <p>Students</p>
+                            </Card>
+
+                            <Card className="stat-card">
+                                <h2>
+                                    {statsLoading
+                                        ? "..."
+                                        : `${heroStats.internships}+`}
+                                </h2>
+                                <p>Internships</p>
+                            </Card>
+
+                            <Card className="stat-card">
+                                <h2>
+                                    {statsLoading
+                                        ? "..."
+                                        : `${heroStats.admins}+`}
+                                </h2>
+                                <p>Mentors</p>
+                            </Card>
                         </motion.div>
                     </div>
 

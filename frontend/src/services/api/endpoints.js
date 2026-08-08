@@ -1,5 +1,10 @@
 export const API = {
+  
+  PUBLIC: {
+    HERO_STATS: "/public/hero-stats"
+  },
 
+  
   AUTH: {
 
     LOGIN: "/auth/login",
@@ -22,6 +27,7 @@ export const API = {
 
   },
 
+
   STUDENT: {
 
     PROFILE: "/student/profile",
@@ -32,7 +38,7 @@ export const API = {
 
   },
 
-ADMIN: {
+  ADMIN: {
 
     USERS: "/admin/users",
 
@@ -84,7 +90,7 @@ ADMIN: {
 
   },
 
-INTERNSHIPS: {
+  INTERNSHIPS: {
     BASE: "/internships",
     BY_ID: (id) => `/internships/${id}`,
     JOIN: (id) => `/internships/${id}/join`,
@@ -105,7 +111,7 @@ INTERNSHIPS: {
     BASE: "/messages",
 
     USERS: "/messages/users",
-    
+
     SEARCH: "/messages/search"
 
   },
