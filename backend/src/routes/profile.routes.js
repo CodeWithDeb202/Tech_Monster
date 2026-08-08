@@ -4,7 +4,7 @@ import { uploadProfileImage, updateProfile, getProfile } from "../controllers/pr
 
 import { protect } from "../middleware/auth.middleware.js";
 
-import upload from "../middleware/upload.middleware.js";
+import upload  from "../middleware/upload.middleware.js";
 
 
 const router = express.Router();
@@ -14,7 +14,7 @@ const router = express.Router();
 router.put(
     "/profile-image",
     protect,
-    upload.single("image"),
+    upload.single("avatar"),
     uploadProfileImage
 );
 

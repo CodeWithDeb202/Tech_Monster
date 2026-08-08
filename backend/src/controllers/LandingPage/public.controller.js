@@ -1,6 +1,6 @@
-import User from "../models/User.js";
-import Internship from "../models/Internship.js";
-import asyncHandler from "../utils/asyncHandler.js";
+import User from "../../models/User.js";
+import Internship from "../../models/Internship.js";
+import asyncHandler from "../../utils/asyncHandler.js";
 
 export const getHeroStats = asyncHandler(async (req, res) => {
 

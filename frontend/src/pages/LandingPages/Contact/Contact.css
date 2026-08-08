@@ -6,7 +6,7 @@
    CONTAINER
 ========================================== */
 
-#contactPage{
+#contactPage {
   padding: 2rem;
   background: transparent;
   backdrop-filter: blur(5px);
@@ -23,6 +23,51 @@
   grid-template-columns: 1fr 1.2fr;
   gap: 3rem;
   align-items: start;
+}
+
+/* =========================================
+   BACK TO LANDING PAGE
+========================================= */
+
+#contact-back-wrapper {
+  width: 100%;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+#contact-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 16px;
+  border: 1px solid rgba(0, 217, 255, 0.25);
+  border-radius: 10px;
+  background: rgba(0, 217, 255, 0.05);
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+#contact-back-arrow {
+  color: #00d9ff;
+  font-size: 19px;
+  line-height: 1;
+}
+
+#contact-back-link:hover {
+  color: #ffffff;
+  background: rgba(0, 217, 255, 0.10);
+  border-color: rgba(0, 217, 255, 0.55);
+  transform: translateX(4px);
+  box-shadow:
+    0 0 20px rgba(0, 217, 255, 0.12);
+}
+
+#contact-back-link:hover .contact-back-arrow {
+  color: #ffffff;
 }
 
 /* ==========================================
@@ -70,7 +115,7 @@
   transition: all 0.3s ease;
 }
 
-#info-card:hover #info-icon{
+#info-card:hover #info-icon {
   filter: drop-shadow(0 0 20px var(--success));
 }
 
@@ -100,7 +145,7 @@
   transition: all 0.3s ease;
 }
 
-#contact-form:hover{
+#contact-form:hover {
   box-shadow: 0 0 10px var(--glow);
 }
 
@@ -113,29 +158,30 @@
 
 /* RESPONSIVE */
 @media(max-width: 439px) {
-  #contactPage{
-    padding: 1rem ;
+  #contactPage {
+    padding: 1rem;
   }
 
-  #contact-container{
+  #contact-container {
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
     gap: 1.2rem;
   }
 
-  #contact-info{
+  #contact-info {
     gap: 1rem;
   }
-  #info-card h3{
+
+  #info-card h3 {
     font-size: 1.2rem;
   }
 
-  #info-card{
+  #info-card {
     padding: 1rem;
   }
 
-  #contact-form{
+  #contact-form {
     padding: 1rem 0.7rem;
   }
 
@@ -143,25 +189,26 @@
 
 /* Mobile (Portrait + Small Phones) */
 @media(min-width: 440px) and (max-width: 767px) {
-  #contactPage{
-    padding: 1.1rem ;
+  #contactPage {
+    padding: 1.1rem;
   }
 
-  #contact-container{
+  #contact-container {
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
     gap: 1.3rem;
   }
 
-  #contact-info{
+  #contact-info {
     gap: 1rem;
   }
-  #info-card{
+
+  #info-card {
     padding: 1.2rem;
   }
 
-  #contact-form{
+  #contact-form {
     padding: 1rem 0.8rem;
   }
 }
@@ -169,26 +216,27 @@
 
 /* Tablet */
 @media (min-width: 768px) and (max-width: 991px) {
-  #contactPage{
-    padding: 1.2rem ;
+  #contactPage {
+    padding: 1.2rem;
   }
 
-  #contact-container{
+  #contact-container {
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
     gap: 1.5rem;
   }
 
-  
-  
+
+
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
-  #contactPage{
+  #contactPage {
     padding: 1.5rem;
   }
-  #contact-container{
+
+  #contact-container {
     gap: 1rem;
   }
 

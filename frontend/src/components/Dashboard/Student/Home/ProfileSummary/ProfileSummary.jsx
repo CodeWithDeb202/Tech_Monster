@@ -7,9 +7,12 @@ import {
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 
+import defaultProfileImage from '../../../../../assets/profile/default-profile.svg';
+
 import useAuth from "../../../../../hooks/useAuth";
 
 const ProfileSummary = ({ username }) => {
+  console.log("Username Profile summary",username)
   const navigate = useNavigate();
   const {user} = useAuth();
 
@@ -43,7 +46,7 @@ const ProfileSummary = ({ username }) => {
         >
           <img
             src={
-              username?.profilePhoto || "/images/default-avatar.png"
+              username?.avatar || defaultProfileImage
             }
             alt={username?.fullName}
           />

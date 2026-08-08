@@ -14,6 +14,9 @@ import Offline from "../pages/StatusPages/Offline";
 
 import Landing from "../pages/LandingPages/Landing";
 
+import Contact from "../pages/LandingPages/Contact";
+
+import TermsAndConditions from "../components/Common/TermsAndConditions";
 
 import Login from '../pages/Auth/Login';
 import Signup from '../pages/Auth/Signup';
@@ -68,6 +71,8 @@ function AppRoutes() {
 
                 {/* Public Routes */}
                 <Route path='/' element={<Landing />} />
+                <Route path='/contact' element={<Contact />} />
+
                 <Route path='/login' element={<Login />} />
                 <Route path='/admin_login' element={<AdminLogin />} />
                 <Route path='/signup' element={<Signup />} />
@@ -75,6 +80,7 @@ function AppRoutes() {
                 <Route path="/verify-signup-otp" element={<VerifySignupOTP />} />
                 <Route path='/reset-password' element={<ResetPassword />} />
                 <Route path="/verify-reset-otp" element={<VerifyResetOTP />} />
+                <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 
 
                 {/* Status Pages */}

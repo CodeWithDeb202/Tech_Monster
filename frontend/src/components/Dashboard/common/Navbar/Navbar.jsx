@@ -1,6 +1,7 @@
 import './Navbar.css';
 
 import useAuth from '../../../../hooks/useAuth';
+import defaultProfileImg from '../../../../assets/profile/default-profile.svg';
 
 import { useState } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
@@ -16,16 +17,20 @@ import logo from "../../../../assets/logo/logo.png";
 import SystemBar from '../../../Common/Navbar/SystemBar';
 import SearchBar from '../../../Common/SearchBar';
 
-function Navbar({ role = "student"}) {
+function Navbar({ role = "student", }) {
 
     const { logout, user } = useAuth();
+    console.log("Navbar:-user",user);
 
     const userName = user?.username || '';
     const capitalName = userName.toUpperCase() || userName;
 
     // Resolve the profile image URL: support `profilePic` or `avatar` fields.
     // If neither is a valid image URL, fall back to the FiUser placeholder.
-    const profileImg = user?.profilePic || user?.avatar || "";
+    const profileImg = user?.avatar &&
+            user.avatar !== "/profile/default-profile.svg"
+            ? user.avatar
+            : defaultProfileImg;
 
 
     const navigate = useNavigate();
@@ -148,7 +153,7 @@ function Navbar({ role = "student"}) {
                             onMouseEnter={() => setShowProfilePopup(true)}
                             onMouseLeave={() => setShowProfilePopup(false)}
                         >
-<div id="user-profile">
+                            <div id="user-profile">
                                 <div id="avatar-circle">
                                     {profileImg ? (
                                         <img
@@ -157,7 +162,7 @@ function Navbar({ role = "student"}) {
                                             className="user-profile-img"
                                         />
                                     ) : (
-                                        <FiUser />
+                                        <img src={defaultProfileImg} alt="defaultProfile" />
                                     )}
                                 </div>
                                 <span id="username">{userName || 'username'}</span>

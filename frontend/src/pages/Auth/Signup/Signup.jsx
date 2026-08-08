@@ -165,12 +165,12 @@ function Signup() {
           {error && <p className="signup-error">{error}</p>}
 
           <label id="terms">
-
             <input
               type="checkbox"
               {...register("terms")}
             />
             I accept Terms & Conditions
+            <Link to="/terms-and-conditions"> Terms & Conditions</Link>
           </label>
           <p id="terms-error">{errors.terms?.message}</p>
 

@@ -8,6 +8,8 @@ function Input({
     placeholder,
     onChange,
     error,
+    required,
+    maxLength,
     ...props
 }) {
     
@@ -18,7 +20,7 @@ function Input({
             {label && (
                 <label className="input-label" htmlFor={name}>
                     {label}
-                    <span className={value?.trim() ? 'labelSpanGreen' : 'labelSpanRed'}>*</span>
+                    <span className={value?.trim() ? 'labelSpanGreen' : 'labelSpanRed'}>{required && "*"}</span>
                 </label>
             )}
 
@@ -32,6 +34,7 @@ function Input({
                     placeholder={placeholder}
                     onChange={onChange}
                     className={error ? "inputError" : ""}
+                    maxLength={maxLength}
                     {...props}
                 />
             </div>

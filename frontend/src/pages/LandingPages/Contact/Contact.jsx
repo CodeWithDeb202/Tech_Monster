@@ -1,4 +1,5 @@
 import "./Contact.css";
+import { Link } from 'react-router-dom';
 import { contactInfo } from "./ContactData";
 import { motion } from "framer-motion";
 
@@ -13,6 +14,7 @@ import Textarea from '../../../components/Common/Form/TextArea';
 
 
 function Contact() {
+
   const [errors, setErrors] = useState({});
 
   const [form, setForm] = useState({
@@ -25,34 +27,34 @@ function Contact() {
   const validateField = (name, value) => {
     let error = '';
 
-    if(name === "name") {
-      if(!value.trim()){
+    if (name === "name") {
+      if (!value.trim()) {
         error = 'Full name is Required';
-      } else if(value.trim().length < 3) {
+      } else if (value.trim().length < 3) {
         error = 'Name must be at least 3 character'
       }
     }
 
-    if(name === 'email'){
-      if(!value.trim()){
+    if (name === 'email') {
+      if (!value.trim()) {
         error = 'Email is required';
-      } else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)){
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
         error = 'Enter a vaild email address';
       }
     }
 
-    if(name === 'subject'){
-      if(!value.trim()){
+    if (name === 'subject') {
+      if (!value.trim()) {
         error = 'Subject field is required';
-      } else if(value.trim().length < 5){
+      } else if (value.trim().length < 5) {
         error = 'Subject have must be 5 characters';
       }
     }
 
-    if(name === 'message'){
-      if(!value.trim()){
+    if (name === 'message') {
+      if (!value.trim()) {
         error = 'Message is required';
-      } else if(value.trim().length < 10){
+      } else if (value.trim().length < 10) {
         error = 'Message must be 10 characters';
       }
     }
@@ -61,12 +63,12 @@ function Contact() {
   }
 
   const handleInputChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setForm(prev => ({
-    ...prev,
-    [name]: value
-}));
+      ...prev,
+      [name]: value
+    }));
 
     setErrors({
       ...errors,
@@ -114,17 +116,24 @@ function Contact() {
         message: "",
       })
     })
-    .catch((err) => {
-      console.log(`Error: ${err}`)
-      console.log(`Error: ${err.text}`)
-      toast.error(err.text || "Failed to send message");
-    })
+      .catch((err) => {
+        console.log(`Error: ${err}`)
+        console.log(`Error: ${err.text}`)
+        toast.error(err.text || "Failed to send message");
+      })
   }
 
   return (
 
     <section className="section" id="contact">
       <div id="contactPage">
+
+        <div id="contact-back-wrapper">
+          <Link to="/" className="contact-back-link">
+            <span id="contact-back-arrow">←</span>
+            Back to Landing Page
+          </Link>
+        </div>
 
         <SectionHeader
           badge="CONTACT US"
@@ -150,7 +159,7 @@ function Contact() {
                 <div
                   key={item.id}
                   id="info-card"
-                  onClick={() => window.open( item.action, "_blank", "noopener,noreferrer")}
+                  onClick={() => window.open(item.action, "_blank", "noopener,noreferrer")}
                 >
 
                   <Icon id="info-icon" />
@@ -187,6 +196,7 @@ function Contact() {
               value={form.name}
               onChange={handleInputChange}
               error={errors.name}
+              required
             />
 
             <Input
@@ -197,6 +207,7 @@ function Contact() {
               value={form.email}
               onChange={handleInputChange}
               error={errors.email}
+              required
             />
 
             <Input
@@ -207,6 +218,7 @@ function Contact() {
               value={form.subject}
               onChange={handleInputChange}
               error={errors.subject}
+              required
             />
 
             <Textarea

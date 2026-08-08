@@ -28,9 +28,9 @@ export default function Account() {
     try {
 
       const res = await getProfile();
-
+      console.log("Account:Data=", res.data);
+      
       setUserData(res.data.user);
-
       setIsSubmitted(res.data.user.profileCompleted);
 
     } catch (err) {

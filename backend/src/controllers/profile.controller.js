@@ -5,51 +5,52 @@ import asyncHandler from "../utils/asyncHandler.js";
 import AppError from "../utils/AppError.js";
 
 
-export const uploadProfileImage = asyncHandler( async (req, res) => {
+export const uploadProfileImage = asyncHandler(async (req, res) => {
+    console.log("req.file", req.file);
 
 
-        if (!req.file) {
+    if (!req.file) {
 
-            throw new AppError(
-                "Please upload an image",
-                400
-            )
+        throw new AppError(
+            "Please upload an image",
+            400
+        )
 
+    }
+
+
+    const imageUrl = await uploadToCloudinary(
+        req.file,
+        "tech-monster/profile"
+    );
+
+
+
+    const user = await User.findByIdAndUpdate(
+
+        req.user.id,
+
+        {
+            avatar: imageUrl
+        },
+
+        {
+            new: true
         }
 
-
-        const imageUrl = await uploadToCloudinary(
-            req.file,
-            "tech-monster/profile"
-        );
+    );
 
 
 
-        const user = await User.findByIdAndUpdate(
+    res.status(200).json({
 
-            req.user.id,
+        success: true,
 
-            {
-                avatar: imageUrl
-            },
+        message: "Profile image uploaded successfully",
 
-            {
-                new: true
-            }
+        user
 
-        );
-
-
-
-        res.status(200).json({
-
-            success: true,
-
-            message: "Profile image uploaded successfully",
-
-            user
-
-        });
+    });
 
 });
 
@@ -59,10 +60,48 @@ export const updateProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (!user) {
-        throw new AppError("User not found",404);
+        throw new AppError("User not found", 404);
     }
 
-    Object.assign(user, req.body);
+    const allowedFields = [
+
+        "firstName",
+        "middleName",
+        "lastName",
+
+        "phone",
+        "bio",
+        "gender",
+        "dateOfBirth",
+
+        "education",
+        "college",
+        "branch",
+        "year",
+        "semester",
+
+        "github",
+        "linkedin",
+        "skills",
+
+        "currentAddress",
+        "localAddress",
+        "district",
+        "state",
+        "pincode"
+
+    ];
+
+
+    allowedFields.forEach((field) => {
+
+        if (req.body[field] !== undefined) {
+
+            user[field] = req.body[field];
+
+        }
+
+    });
 
     user.profileCompleted = true;
 
@@ -70,9 +109,9 @@ export const updateProfile = asyncHandler(async (req, res) => {
 
     res.status(200).json({
 
-        success:true,
+        success: true,
 
-        message:"Profile updated",
+        message: "Profile updated",
 
         user
 
@@ -81,14 +120,14 @@ export const updateProfile = asyncHandler(async (req, res) => {
 });
 
 
-export const getProfile = asyncHandler(async(req,res)=>{
+export const getProfile = asyncHandler(async (req, res) => {
 
     const user = await User.findById(req.user._id)
-    .select("-password");
+        .select("-password");
 
     res.json({
 
-        success:true,
+        success: true,
 
         user
 

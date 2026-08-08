@@ -1,8 +1,6 @@
 import express from "express";
 
-import {
-    getHeroStats
-} from "../../controllers/LandingPage/public.controller";
+import {getHeroStats} from "../../controllers/LandingPage/public.controller.js";
 
 const router = express.Router();
 

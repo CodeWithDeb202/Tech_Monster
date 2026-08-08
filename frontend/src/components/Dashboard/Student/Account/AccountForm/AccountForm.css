@@ -1,45 +1,42 @@
-.account-form-container {
+#account-form-container {
   background: rgba(13, 27, 42, 0.6);
   border: 1px solid rgba(0, 240, 255, 0.2);
   backdrop-filter: blur(12px);
-  padding: 30px;
-  border-radius: 16px;
+  padding: 1.6rem;
+  border-radius: 1rem;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  color: #ffffff;
-  margin-top: 20px;
+  color: var(--text);
+  margin-top: 0.8rem;
 }
 
-.form-section-title {
-  color: #00f0ff;
-  font-size: 18px;
-  margin-bottom: 16px;
+#form-section-title {
+  color: var(--neon);
+  font-size: 1rem;
+  margin-bottom: 1rem;
   border-bottom: 1px solid rgba(0, 240, 255, 0.2);
-  padding-bottom: 8px;
+  padding-bottom: 0.5rem;
 }
 
-.form-grid {
+#form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.form-group {
+#form-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0.4rem;
 }
 
-.form-group.full-width {
-  grid-column: span 2;
+#form-group label {
+  font-size: 1rem;
+  color: var(--text);
 }
 
-.form-group label {
-  font-size: 13px;
-  color: #8a9bb8;
-}
-
-.form-group input, .form-group select {
+#form-group input,
+#form-group select {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 12px;
@@ -50,18 +47,34 @@
   transition: all 0.3s ease;
 }
 
-.form-group input:focus, .form-group select:focus {
+#form-group select option {
+  background-color: #0d1b2a;
+  color: var(--text);
+}
+
+#form-group select option:hover{
+  background-color: var(--neon) !important;
+  color: var(--dark) !important;
+}
+
+#form-group select option:checked {
+  background-color: var(--neon);
+  color: var(--dark);
+}
+
+#form-group input:focus,
+#form-group select:focus {
   border-color: #00f0ff;
   box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
 }
 
-.whatsapp-row {
+#whatsapp-row {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.whatsapp-link {
+#whatsapp-link {
   font-size: 12px;
   color: #00ff66;
   text-decoration: none;
@@ -72,12 +85,12 @@
   white-space: nowrap;
 }
 
-.skills-input-container {
+#skills-input-container {
   display: flex;
   gap: 10px;
 }
 
-.add-skill-btn {
+#add-skill-btn {
   background: #00f0ff;
   color: #000;
   border: none;
@@ -87,14 +100,14 @@
   cursor: pointer;
 }
 
-.skills-tags {
+#skills-tags {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 8px;
 }
 
-.skill-tag {
+#skill-tag {
   background: rgba(0, 240, 255, 0.1);
   border: 1px solid #00f0ff;
   padding: 4px 10px;
@@ -105,25 +118,41 @@
   gap: 6px;
 }
 
-.skill-tag span {
+#skill-tag span {
   cursor: pointer;
   color: #ff3366;
 }
 
-.submit-btn {
-  width: 100%;
-  background: linear-gradient(135deg, #00f0ff 0%, #0077ff 100%);
-  color: #000;
+
+#form-group textarea{
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem;
+  border-radius: 8px;
+  color: var(--text);
+  margin: 0;
+
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+  resize: none;
+}
+
+#submit-btn {
+  background: linear-gradient(135deg, var(--neon) 0%, var(--glow) 100%);
+  color: var(--dark);
   border: none;
-  padding: 14px;
+  padding: 0.8rem 2rem;
+  margin: 2rem auto 0 auto;
+  display: block;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.submit-btn:hover {
+#submit-btn:hover {
   transform: translateY(-2px);
 }
