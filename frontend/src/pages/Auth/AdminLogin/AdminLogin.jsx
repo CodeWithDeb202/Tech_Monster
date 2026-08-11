@@ -11,7 +11,7 @@ import AuthLayout from "../../../layouts/AuthLayout";
 
 import Input from "../../../components/Common/Form/Input";
 import PasswordInput from "../../../components/Common/Form/PasswordInput";
-import Button from "../../../components/common/Form/Button";
+import Button from "../../../components/Common/Form/Button";
 
 import { adminLogin } from "../../../services/api/authService";
 

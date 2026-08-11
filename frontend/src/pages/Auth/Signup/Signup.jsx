@@ -14,8 +14,8 @@ import AuthLayout from "../../../layouts/AuthLayout";
 
 import Input from "../../../components/Common/Form/Input";
 import PasswordInput from "../../../components/Common/Form/PasswordInput";
-import Button from "../../../components/common/Form/Button";
-import PasswordStrength from "../../../components/common/Form/PasswordStrength";
+import Button from "../../../components/Common/Form/Button";
+import PasswordStrength from "../../../components/Common/Form/PasswordStrength";
 
 import { signup as signupService } from "../../../services/api/authService";
 

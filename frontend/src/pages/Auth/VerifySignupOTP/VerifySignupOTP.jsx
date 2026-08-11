@@ -7,8 +7,8 @@ import useAuth from "../../../hooks/useAuth";
 
 import AuthLayout from "../../../layouts/AuthLayout";
 
-import OTPInput from "../../../components/common/Form/OTPInput";
-import Button from "../../../components/common/Form/Button";
+import OTPInput from "../../../components/Common/Form/OTPInput";
+import Button from "../../../components/Common/Form/Button";
 
 import {
     verifyOtp,

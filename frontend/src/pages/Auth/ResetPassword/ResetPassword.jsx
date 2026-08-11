@@ -9,9 +9,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import AuthLayout from "../../../layouts/AuthLayout";
 
-import PasswordInput from "../../../components/common/Form/PasswordInput";
-import Button from "../../../components/common/Form/Button";
-import PasswordStrength from "../../../components/common/Form/PasswordStrength";
+import PasswordInput from "../../../components/Common/Form/PasswordInput";
+import Button from "../../../components/Common/Form/Button";
+import PasswordStrength from "../../../components/Common/Form/PasswordStrength";
 
 import { resetPasswordSchema } from "../../../validations/auth/resetPasswordSchema";
 import { resetPassword } from "../../../services/api/authService";
