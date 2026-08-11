@@ -51,6 +51,7 @@ const allowedOrigins = [
   "http://localhost:5199",
   "http://localhost:5173",
   "http://localhost:3000",
+  "https://tech-monster.vercel.app",
   "https://tech-monster-5zqd74uad-deb24.vercel.app"
 ];
 
