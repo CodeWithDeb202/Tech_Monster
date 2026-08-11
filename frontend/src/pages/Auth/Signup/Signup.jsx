@@ -80,10 +80,20 @@ function Signup() {
       }, 1200);
 
     } catch (err) {
-      console.log("Signup error",err);
-      toast.error(err.response?.data?.message || "Something went wrong");
+      console.log("FULL SIGNUP ERROR:", err);
+      console.log("ERROR MESSAGE:", err.message);
+      console.log("ERROR RESPONSE:", err.response);
+      console.log("ERROR RESPONSE DATA:", err.response?.data);
+
+      toast.error(
+        err.response?.data?.message ||
+        err.message ||
+        "Something went wrong"
+      );
+
       setError(
         err.response?.data?.message ||
+        err.message ||
         "Sign up failed"
       );
     } finally {
