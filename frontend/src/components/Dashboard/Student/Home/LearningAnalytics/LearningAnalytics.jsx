@@ -14,175 +14,96 @@ const LearningAnalytics = ({ analytics }) => {
   const weeklyData = analytics?.weeklyData || [45, 80, 55, 95, 70, 88, 100];
 
   return (
-
     <motion.section
-
-      className="analytics-card"
-
-      initial={{ opacity:0,y:80 }}
-
-      whileInView={{ opacity:1,y:0 }}
-
-      viewport={{ once:true }}
-
-      transition={{ duration:.8 }}
-
+      id="analytics-card"
+      initial={{ opacity: 0, y: 80 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: .8 }}
     >
-
-      <div className="analytics-header">
-
+      <div id="analytics-header">
         <div>
-
           <h2>
-
             <HiChartBar />
-
             Learning Analytics
-
           </h2>
-
           <p>
-
             Weekly learning performance overview
-
           </p>
-
         </div>
-
       </div>
 
-      <div className="analytics-body">
-
+      <div id="analytics-body">
         {/* LEFT */}
 
-        <div className="chart-wrapper">
-
-          <div className="chart-bars">
-
+        <div id="chart-wrapper">
+          <div id="chart-bars">
             {
-
-              weeklyData.map((height,index)=>(
-
+              weeklyData.map((height, index) => (
                 <motion.div
-
                   key={index}
-
-                  className="bar"
-
+                  id="bar"
                   initial={{
-
-                    height:0
-
+                    height: 0
                   }}
-
                   whileInView={{
-
-                    height:`${height}%`
-
+                    height: `${height}%`
                   }}
-
                   transition={{
-
-                    delay:index*.12,
-
-                    duration:.7
-
+                    delay: index * .12,
+                    duration: .7
                   }}
-
                 >
-
                   <span>
-
-                    {["M","T","W","T","F","S","S"][index]}
-
+                    {["M", "T", "W", "T", "F", "S", "S"][index]}
                   </span>
-
                 </motion.div>
-
               ))
-
             }
-
           </div>
-
         </div>
 
         {/* RIGHT */}
 
-        <div className="analytics-info">
-
-          <div className="analytics-item">
-
-            <HiAcademicCap/>
-
+        <div id="analytics-info">
+          <div id="analytics-item">
+            <HiAcademicCap />
             <div>
-
               <h3>
-
                 {analytics?.completedCourses || 0}
-
               </h3>
-
               <p>
-
                 Completed internships
-
               </p>
-
             </div>
-
           </div>
 
-          <div className="analytics-item">
-
-            <HiClock/>
-
+          <div id="analytics-item">
+            <HiClock />
             <div>
-
               <h3>
-
                 {analytics?.hours || 0}h
-
               </h3>
-
               <p>
-
                 Learning Hours
-
               </p>
-
             </div>
-
           </div>
 
-          <div className="analytics-item">
-
-            <HiArrowTrendingUp/>
-
+          <div id="analytics-item">
+            <HiArrowTrendingUp />
             <div>
-
               <h3>
-
                 {analytics?.growth || 0}%
-
               </h3>
-
               <p>
-
                 Weekly Growth
-
               </p>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </motion.section>
-
   );
 
 };

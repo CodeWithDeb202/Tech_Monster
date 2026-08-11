@@ -168,6 +168,50 @@
     box-shadow: 0 0 25px rgba(255, 123, 0, .35);
 }
 
-/*==============================
-        Responsive
-==============================*/
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 576px) {
+    #learning-streak{
+        padding: 1rem;
+    }
+    #fire-icon{
+        height: 40px;
+        width: 40px;
+        font-size: 1.2rem;
+    }
+    #streak-left h2{
+        font-size: 1.2rem;
+    }
+    #streak-left p{
+        font-size: 0.8rem;
+    }
+    #streak-progress{
+        height: 8px;
+    }
+    #streak-footer strong{
+        font-size: 1rem;
+    }
+
+    #continue-streak-btn{
+        height: 40px;
+    }
+}
+
+
+@media (max-width: 1140px) {
+    #learning-streak{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    #streak-left{
+        width: 100%;
+        justify-content: space-around;
+    }
+    #streak-right{
+        width: 100%;
+    }
+}

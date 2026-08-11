@@ -1,6 +1,6 @@
 import "./InternshipRecommendation.css";
 
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { motion } from "framer-motion";
 
@@ -17,7 +17,7 @@ const InternshipRecommendation = ({ internships = [] }) => {
   return (
 
     <motion.section
-      className="course-section"
+      id="internship-recommendation-section"
       initial={{ opacity: 0, y: 80 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -26,7 +26,7 @@ const InternshipRecommendation = ({ internships = [] }) => {
 
       {/* Header */}
 
-      <div className="course-header">
+      <div id="internship-recommendation-header">
         <div>
           <h2>
             <HiBookOpen />
@@ -38,13 +38,11 @@ const InternshipRecommendation = ({ internships = [] }) => {
           </p>
         </div>
 
-
-
         <motion.button
           whileHover={{
             scale: 1.05
           }}
-          className="view-btn"
+          id="view-btn"
           onClick={() => navigate('/student/dashboard')}
         >
           View All
@@ -54,127 +52,83 @@ const InternshipRecommendation = ({ internships = [] }) => {
 
       {/* Cards */}
 
-      <div className="course-slider">
+      <div id="internship-recommendation-slider">
 
         {
-
-          internships.map((internship,index)=>(
-
+          internships.map((internship, index) => (
             <motion.div
-
               key={internship._id || index}
-
-              id="course-card"
-
+              id="internship-recommendation-card"
               initial={{
-                opacity:0,
-                y:50
+                opacity: 0,
+                y: 50
               }}
-
               whileInView={{
-                opacity:1,
-                y:0
+                opacity: 1,
+                y: 0
               }}
-
               transition={{
-                delay:index*.15
+                delay: index * .15
               }}
-
               whileHover={{
-                y:-12,
-                rotateX:5,
-                rotateY:-5
+                y: -12,
+                rotateX: 5,
+                rotateY: -5
               }}
-
             >
 
               {/* Image */}
 
-              <div className="course-image">
-
+              <div id="internship-recommendation-card-image">
                 <img
-
                   src={internship.thumbnail}
-
                   alt={internship.title}
-
                 />
-
               </div>
 
               {/* Content */}
 
-              <div className="course-content">
-
-                <span className="course-category">
-
+              <div id="internship-recommendation-card-content">
+                <span id="internship-recommendation-card-category">
                   {internship.category}
-
                 </span>
-                <span className="course-category">
-
+                <span id="internship-recommendation-card-category">
                   {internship.level}
-
                 </span>
-
                 <h3>
-
                   {internship.title}
-
                 </h3>
 
-                <div className="course-meta">
-
+                <div id="internship-recommendation-card-meta">
                   <span>
-
                     <HiStar />
-
                     {internship.rating || 0}
-
                   </span>
-
                   <span>
-
                     {internship.totalNotes} lessons
-
                   </span>
-
                 </div>
 
-<motion.button
-
+                <motion.button
                   whileHover={{
-                    x:6
+                    x: 6
                   }}
-
-                  className="continue-btn"
-
+                  id="internship-recommendation-continue-btn"
                   onClick={() =>
                     navigate(
                       `/student/lessions/${internship.slug || internship._id || "frontend-dev"}`
                     )
                   }
-
                 >
-
                   <HiPlayCircle />
-
                   Continue
-
                 </motion.button>
-
               </div>
-
             </motion.div>
-
           ))
-
         }
-
       </div>
-
     </motion.section>
-
   );
 
 };

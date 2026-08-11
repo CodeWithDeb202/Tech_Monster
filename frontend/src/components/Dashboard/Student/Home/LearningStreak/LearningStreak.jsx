@@ -19,7 +19,6 @@ const LearningStreak = ({ streak }) => {
       viewport={{ once:true }}
       transition={{ duration:.8 }}
     >
-
       <div id="streak-glow"></div>
 
       <div id="streak-left">

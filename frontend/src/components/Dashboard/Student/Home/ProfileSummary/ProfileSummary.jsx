@@ -12,7 +12,6 @@ import defaultProfileImage from '../../../../../assets/profile/default-profile.s
 import useAuth from "../../../../../hooks/useAuth";
 
 const ProfileSummary = ({ username }) => {
-  console.log("Username Profile summary",username)
   const navigate = useNavigate();
   const {user} = useAuth();
 
@@ -22,7 +21,7 @@ const ProfileSummary = ({ username }) => {
 
   return (
     <motion.section
-      className="profile-summary"
+      id="profile-summary"
       initial={{ opacity: 0, y: 80 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{once: true, amount: 0.3}}
@@ -35,14 +34,14 @@ const ProfileSummary = ({ username }) => {
 
       {/* LEFT */}
 
-      <div className="profile-left">
+      <div id="profile-left">
 
         <motion.div
           whileHover={{
             rotate: 3,
             scale: 1.05,
           }}
-          className="profile-image"
+          id="profile-image"
         >
           <img
             src={
@@ -52,7 +51,7 @@ const ProfileSummary = ({ username }) => {
           />
         </motion.div>
 
-        <div className="profile-info">
+        <div id="profile-info">
 
           <h2>{
               username?.fullName?.trim() ? username?.fullName : user?.username?.charAt(0).toUpperCase() + user?.username?.slice(1)
@@ -67,12 +66,12 @@ const ProfileSummary = ({ username }) => {
 
           </p>
 
-          <div className="skills-wrapper">
+          <div id="skills-wrapper">
 
             {skills.map((skill, index) => (
               <motion.span
                 key={index}
-                className="skill-chip"
+                id="skill-chip"
                 initial={{
                   opacity: 0,
                   scale: .8,
@@ -98,7 +97,7 @@ const ProfileSummary = ({ username }) => {
       {/* Divider */}
 
       <motion.div
-        className="profile-divider"
+        id="profile-divider"
         initial={{ scaleY: 0 }}
         whileInView={{ scaleY: 1 }}
         transition={{ duration: .7 }}
@@ -106,9 +105,9 @@ const ProfileSummary = ({ username }) => {
 
       {/* Right */}
 
-      <div className="profile-right">
+      <div id="profile-right">
 
-        <div className="progress-title">
+        <div id="progress-title">
 
           <HiCheckBadge />
 
@@ -116,10 +115,10 @@ const ProfileSummary = ({ username }) => {
 
         </div>
 
-        <div className="progress-bar">
+        <div id="progress-bar">
 
           <motion.div
-            className="progress-fill"
+            id="progress-fill"
             initial={{
               width: 0,
             }}
@@ -149,7 +148,7 @@ const ProfileSummary = ({ username }) => {
           whileTap={{
             scale: .95,
           }}
-          className="complete-btn"
+          id="complete-btn"
           onClick={() => navigate("/student/account")}
         >
           <HiUserCircle />
