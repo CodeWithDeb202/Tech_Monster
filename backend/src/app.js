@@ -43,16 +43,33 @@ const app = express();
 // ==========================================
 
 
+const allowedOrigins = [
+  "http://localhost:5199",
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://tech-monster-5zqd74uad-deb24.vercel.app"
+];
+
 app.use(
-
   cors({
+    origin: function (origin, callback) {
+      // Allow requests without an Origin header
+      // e.g. Postman/server-to-server
+      if (!origin) {
+        return callback(null, true);
+      }
 
-    origin: process.env.CLIENT_URL || "http://localhost:5199",
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      console.log("❌ CORS blocked:", origin);
+
+      return callback(new Error(`CORS blocked: ${origin}`));
+    },
 
     credentials: true
-
   })
-
 );
 
 
