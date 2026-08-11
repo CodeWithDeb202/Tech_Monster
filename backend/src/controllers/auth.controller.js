@@ -15,82 +15,110 @@ import AppError from "../utils/AppError.js";
 
 
 export const signup = asyncHandler(async (req, res) => {
-
-    
-
-
     const { username, email, password } = req.body;
 
+    // ==========================================
     // Validation
+    // ==========================================
+
     if (!username || !email || !password) {
         return res.status(400).json({
             success: false,
-            message: "All fields are required"
+            message: "All fields are required",
         });
     }
 
-    // Existing user check
+    // ==========================================
+    // Existing User Check
+    // ==========================================
+
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
         throw new AppError(
-
             "Email already exists",
-
             409
-
         );
     }
 
-    // ✅ User create
+    // ==========================================
+    // Create User
+    // ==========================================
+
     const user = await User.create({
         username,
         email,
         password,
     });
 
-
-    await logActivity(
-
-        req,
-
-        user._id,
-
-        "SIGNUP",
-
-        "Auth",
-
-        "User account created"
-
-    );
-
-    // ==============================
-    // OTP Generate
-    // ==============================
+    // ==========================================
+    // Generate OTP
+    // ==========================================
 
     const otp = generateOTP();
 
-    // old OTP delete
-    await OTP.deleteMany({ email });
+    await OTP.deleteMany({
+        email,
+    });
 
-    // new OTP save
     await OTP.create({
         email,
         otp,
-        expiresAt: new Date(Date.now() + 10 * 60 * 1000)
+        expiresAt: new Date(
+            Date.now() + 10 * 60 * 1000
+        ),
     });
 
-    // Email send
-    await sendOTPEmail(email, otp);
+    // ==========================================
+    // Send OTP Email
+    // ==========================================
 
-    // ==============================
+    try {
+        await sendOTPEmail(
+            email,
+            otp
+        );
+    } catch (error) {
+        console.error(
+            "❌ Signup OTP sending failed:",
+            error.message
+        );
+
+        // Cleanup user if email failed
+        await OTP.deleteMany({
+            email,
+        });
+
+        await User.deleteOne({
+            _id: user._id,
+        });
+
+        throw new AppError(
+            "Unable to send OTP email. Please try again.",
+            500
+        );
+    }
+
+    // ==========================================
+    // Activity Log
+    // ==========================================
+
+    await logActivity(
+        req,
+        user._id,
+        "SIGNUP",
+        "Auth",
+        "User account created"
+    );
+
+    // ==========================================
+    // Success Response
+    // ==========================================
 
     return res.status(201).json({
         success: true,
-        message: "Account created. OTP sent to your email."
+        message: "Account created. OTP sent to your email.",
     });
-
-
 });
 
 
@@ -1051,7 +1079,7 @@ export const adminLogin = asyncHandler(async (req, res) => {
     if (!admin.isVerified) {
         throw new AppError("Admin account is not verified", 403);
     }
-    
+
     if (!admin) {
 
         throw new AppError(
