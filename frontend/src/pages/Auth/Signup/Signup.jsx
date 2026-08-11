@@ -81,6 +81,8 @@ function Signup() {
 
     } catch (err) {
 
+      toast.error(err.response?.data?.message);
+
       setError(
         err.response?.data?.message ||
         "Sign up failed"
