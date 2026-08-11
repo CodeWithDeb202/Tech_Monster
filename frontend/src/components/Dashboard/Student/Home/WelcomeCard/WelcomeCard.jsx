@@ -21,7 +21,7 @@ const WelcomeCard = ({ username, stats, streak }) => {
   return (
 
     <motion.section
-      className="welcomeCardMainCont"
+      id="welcomeCardMainCont"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: .8 }}
@@ -29,40 +29,44 @@ const WelcomeCard = ({ username, stats, streak }) => {
 
       <div id="welcome-left">
 
-        <span id="welcome-badge">
-          <div id="welcomeBadgeIcon">
-            <HiSun />
-          </div>
-          {greeting}
-        </span>
+        <div id="welocomeContent">
 
-        <h1>
-          Welcome Back,
-          <span>
-            {
-              username?.fullName?.trim() ? username?.fullName : user?.username?.charAt(0).toUpperCase() + user?.username?.slice(1)
-            }
+
+          <span id="welcome-badge">
+            <div id="welcomeBadgeIcon">
+              <HiSun />
+            </div>
+            {greeting}
           </span>
-        </h1>
 
-        <p>Continue your learning journey and complete today's goals.</p>
+          <h1>
+            Welcome Back,
+            <span>
+              {
+                username?.fullName?.trim() ? username?.fullName : user?.username?.charAt(0).toUpperCase() + user?.username?.slice(1)
+              }
+            </span>
+          </h1>
+
+          <p>Continue your learning journey and complete today's goals.</p>
+        </div>
 
         <motion.button
-          whileHover={{scale: 1.05, x: 5}}
-          className="hero-btn"
-          onClick={()=> navigate('/student/dashboard')}
+          whileHover={{ scale: 1.05, x: 5 }}
+          id="welcome-btn"
+          onClick={() => navigate('/student/dashboard')}
         >
           Continue Learning
           <HiArrowRight />
         </motion.button>
       </div>
 
-      <div className="hero-right">
+      <div id="welcome-right">
 
         {/* How many days you active on our site */}
         <motion.div
           whileHover={{ y: -8 }}
-          className="mini-card"
+          id="mini-card"
         >
           <HiFire />
           <div>
@@ -75,7 +79,7 @@ const WelcomeCard = ({ username, stats, streak }) => {
         {/* How many courses you enroll show here */}
         <motion.div
           whileHover={{ y: -8 }}
-          className="mini-card"
+          id="mini-card"
         >
           <HiAcademicCap />
           <div>
@@ -87,7 +91,7 @@ const WelcomeCard = ({ username, stats, streak }) => {
         {/* All badges count show here */}
         <motion.div
           whileHover={{ y: -8 }}
-          className="mini-card"
+          id="mini-card"
         >
           <HiTrophy />
           <div>

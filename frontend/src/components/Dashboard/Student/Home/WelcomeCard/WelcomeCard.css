@@ -1,4 +1,4 @@
-.welcomeCardMainCont {
+#welcomeCardMainCont {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,7 +14,7 @@
     overflow: hidden;
 }
 
-.welcomeCardMainCont::before {
+#welcomeCardMainCont::before {
     content: "";
     position: absolute;
     width: 350px;
@@ -50,35 +50,33 @@
     transition: 0.3s ease;
 }
 
-.welcomeCardMainCont:hover #welcomeBadgeIcon{
+#welcomeCardMainCont:hover #welcomeBadgeIcon{
     filter: drop-shadow(0 0 10px var(--golden))
 }
 
-.welcomeCardMainCont h1 {
+#welocomeContent h1 {
     font-size: 48px;
-    color: #fff;
+    color: var(--text);
     line-height: 1.2;
-    margin-bottom: 18px;
+    margin-bottom: 1rem;
 }
 
-.welcomeCardMainCont h1 span {
+#welocomeContent h1 span {
     display: block;
-    margin-top: 8px;
-    background: linear-gradient(90deg, #00D4FF, #3B82F6);
+    margin-top: 0.5rem;
+    background: linear-gradient(90deg, var(--neon), var(--glow));
     text-shadow: 0 0 10px var(--neon);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.welcomeCardMainCont p {
-    font-size: 17px;
-    color: #B8C2CF;
-    max-width: 600px;
-    line-height: 30px;
-    margin-bottom: 30px;
+#welocomeContent p {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
 }
 
-.hero-btn {
+#welcome-btn {
     height: 55px;
     padding: 0 28px;
     display: flex;
@@ -96,20 +94,20 @@
     transition: .35s;
 }
 
-.hero-btn:hover {
+#welcome-btn:hover {
     box-shadow: 0 0 25px rgba(0, 229, 255, .35);
 }
 
-.hero-right {
+#welcome-right {
     display: flex;
-    gap: 22px;
+    gap: 1.5rem;
     z-index: 2;
 }
 
-.mini-card {
+#mini-card {
     width: 180px;
-    padding: 24px;
-    border-radius: 20px;
+    padding: 1.2rem;
+    border-radius: 1.5rem;
     background: var(--surface);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, .08);
@@ -117,23 +115,114 @@
     cursor: pointer;
 }
 
-.mini-card:hover {
+#mini-card:hover {
     border-color: var(--neon);
     box-shadow: 0 0 20px var(--neon);
 }
 
-.mini-card svg {
-    font-size: 34px;
+#mini-card svg {
+    font-size: 2rem;
     color: var(--neon);
-    margin-bottom: 18px;
+    margin-bottom: 1rem;
 }
 
-.mini-card h2 {
-    color: #fff;
-    font-size: 30px;
-    margin-bottom: 6px;
+#mini-card h2 {
+    color: var(--text);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
 }
 
-.mini-card span {
+#mini-card span {
     color: var(--muted);
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 439px){
+    #welcomeCardMainCont{
+        padding: 0.5rem;
+        gap: 1rem;
+    }
+
+    #welcome-left{
+        flex-direction: column;
+        gap: 1rem;
+    }
+    #welcome-badge{
+        margin-bottom: 0.5rem;
+    }
+
+    #welocomeContent h1{
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    #welocomeContent h1 span{
+        margin-top: 0;
+    }
+    #welocomeContent p{
+        font-size: 0.8rem;
+    }
+
+    #welcome-btn{
+        height: 35px;
+        color: var(--dark);
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    #welcome-right{
+        flex-direction: column;
+        gap: 1rem !important;
+    }
+
+}
+
+@media (max-width: 756px) {
+    #welcomeCardMainCont{
+        padding: 1rem;
+    }
+    #welocomeContent h1{
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 933px) {
+    #welocomeContent h1{
+        font-size: 2.3rem;
+    }
+}
+
+
+@media (max-width: 1260px){
+    #welcomeCardMainCont{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #welcome-left{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #welcome-right{
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        gap: 2rem;
+    }
+
+    #mini-card{
+        width: 100%;
+        text-align: center;
+    }
+
+    #welocomeContent p{
+        margin-bottom: 0;
+    }
 }

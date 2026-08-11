@@ -40,10 +40,6 @@ const Home = () => {
 
   }, []);
 
-  // if (!dashboard) {
-  //   return <div>Loading...</div>;
-  // }
-
 
   const analytics = dashboard?.analytics || {
 

@@ -37,3 +37,10 @@
     padding: 0.5rem;
     overflow-y: auto;
 }
+
+
+@media (max-width: 439px){
+    .dashboard-main{
+        padding: 0.5rem;
+    }
+}
