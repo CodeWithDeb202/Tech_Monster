@@ -51,7 +51,11 @@ const allowedOrigins = [
   "http://localhost:5199",
   "http://localhost:5173",
   "http://localhost:3000",
+
+  // Production
   "https://tech-monster.vercel.app",
+
+  // Old Vercel deployment/preview
   "https://tech-monster-5zqd74uad-deb24.vercel.app"
 ];
 
@@ -70,6 +74,7 @@ app.use(
 
       return callback(new Error(`CORS blocked: ${origin}`));
     },
+
     credentials: true
   })
 );
