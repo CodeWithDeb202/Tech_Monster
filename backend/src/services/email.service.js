@@ -10,24 +10,36 @@ if (!EMAIL_USER || !EMAIL_PASS) {
   console.error("❌ EMAIL_USER or EMAIL_PASS is missing");
 }
 
-export const transporter = nodemailer.createTransport({
-  service: "gmail",
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+
   auth: {
-    user: EMAIL_USER,
-    pass: EMAIL_PASS,
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
+
+  connectionTimeout: 15000,
+  greetingTimeout: 15000,
+  socketTimeout: 15000,
 });
 
-transporter.verify((error) => {
-  if (error) {
-    console.error("❌ SMTP VERIFY ERROR:", error.message);
-  } else {
-    console.log("✅ SMTP Server Ready");
-  }
-});
+transporter.verify()
+  .then(() => {
+    console.log("✅ Gmail SMTP connection successful");
+  })
+  .catch((error) => {
+    console.error("❌ Gmail SMTP connection failed:");
+    console.error(error);
+  });
 
 export const sendOTPEmail = async (email, otp) => {
   try {
+
+    console.log("📧 Sending OTP...");
+    console.log("EMAIL_USER exists:", !!process.env.EMAIL_USER);
+    console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
     await transporter.sendMail({
       from: `"Tech Monster" <${EMAIL_USER}>`,
       to: email,
