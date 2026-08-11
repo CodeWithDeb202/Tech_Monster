@@ -4,7 +4,7 @@ import "./DashboardHeader.css";
 const DashboardHeader = () => {
   return (
     <motion.div
-      className="dashboard-header"
+      id="dashboard-header"
       initial={{ opacity: 0, y: -40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}

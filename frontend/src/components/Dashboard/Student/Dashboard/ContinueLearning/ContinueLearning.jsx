@@ -6,22 +6,20 @@ const ContinueLearning = ({ internships = [] }) => {
   const joinedCount = Array.isArray(internships) ? internships.length : 0;
 
   return (
-    <section className="continue-learning">
+    <section id="continue-learning">
 
       <motion.div
-        className="section-title"
+        id="section-title"
         initial={{ opacity: 0, x: -40 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
       >
         <h2>Continue Learning ({joinedCount})</h2>
-
         <p>Your joined internships</p>
-
       </motion.div>
 
       {internships.length === 0 ? (
-        <div className="empty-internship">
+        <div id="empty-internship">
           <h3>No Internship Joined Yet</h3>
           <p>
             You haven't joined any internship yet. Explore available
@@ -29,7 +27,7 @@ const ContinueLearning = ({ internships = [] }) => {
           </p>
         </div>
       ) : (
-        <div className="continue-grid">
+        <div id="continuelearning-grid">
           {internships.map((internship, index) => (
             <motion.div
               key={internship._id}

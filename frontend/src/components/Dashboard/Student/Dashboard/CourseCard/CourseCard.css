@@ -15,16 +15,17 @@
     width: 100%;
     height: 140px;
     padding: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     overflow: hidden;
-
 }
 
 #allIntenrship-student-side-card-banner img{
-    background-size: cover;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
+    background-size: cover;
     transition: all 0.3s ease-in;
 }
 
@@ -33,6 +34,7 @@
 }
 
 #allIntenrship-student-side-card-banner-text {
+    width: 90%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -103,7 +105,82 @@
     transition: .3s;
 }
 
-#internships-info button:hover {
+#allIntenrship-student-side-card button:hover {
     box-shadow: 0 0 10px var(--neon);
     transform: translate(5px, -5px) !important;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 439px){
+    #welcomeCardMainCont{
+        padding: 0.5rem;
+        gap: 1rem;
+    }
+
+    #welcome-left{
+        flex-direction: column;
+        gap: 1rem;
+    }
+    #welcome-badge{
+        margin-bottom: 0.5rem;
+    }
+
+    #welocomeContent h1{
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    #welocomeContent h1 span{
+        margin-top: 0;
+    }
+    #welocomeContent p{
+        font-size: 0.8rem;
+    }
+
+    #welcome-btn{
+        height: 35px;
+        color: var(--dark);
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    #welcome-right{
+        flex-direction: column;
+        gap: 1rem !important;
+    }
+
+}
+
+@media (max-width: 756px) {
+    #welcomeCardMainCont{
+        padding: 1rem;
+    }
+    #welocomeContent h1{
+        font-size: 2rem;
+    }
+}
+
+
+
+@media (max-width: 1200px){
+    #internships-info h3{
+        font-size: 1.3rem;
+    }
+
+    #internships-info p{
+        font-size: 0.9rem;
+    }
+
+    #internships-meta{
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    #internships-meta p {
+        margin: 0;
+    }
 }

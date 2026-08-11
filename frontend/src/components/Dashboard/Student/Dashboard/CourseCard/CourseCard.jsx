@@ -79,6 +79,7 @@ const CourseCard = ({ internship, refreshDashboard, index }) => {
           <ArrowRight size={18} />
         </motion.button>
       </div>
+
     </motion.div>
   );
 };

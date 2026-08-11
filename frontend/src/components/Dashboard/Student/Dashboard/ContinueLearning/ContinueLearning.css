@@ -1,22 +1,15 @@
-.continue-learning {
-
+#continue-learning {
     margin-top: 25px;
-
 }
 
-.section-title {
-
+#section-title {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     margin-bottom: 22px;
-
 }
 
-.section-title h2 {
+#section-title h2 {
     font-size: 28px;
     color: var(--neon);
     font-weight: 700;
@@ -24,12 +17,12 @@
 
 }
 
-.section-title p {
+#section-title p {
     color: var(--muted);
     font-size: 14px;
 }
 
-.empty-internship {
+#empty-internship {
     min-height: 250px;
     display: flex;
     flex-direction: column;
@@ -42,20 +35,46 @@
     padding: 30px;
 }
 
-.empty-internship h3 {
+#empty-internship h3 {
     font-size: 24px;
     margin-bottom: 12px;
     color: #fff;
 }
 
-.empty-internship p {
+#empty-internship p {
     max-width: 500px;
     color: #bdbdbd;
     line-height: 1.7;
 }
 
-.continue-grid {
+#continuelearning-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
+}
+
+
+@media (max-width: 439px){
+    #section-title h2{
+        font-size: 1rem;
+        margin-left: 0;
+    }
+    #section-title p{
+        font-size: 0.8rem;
+    }
+
+    #continuelearning-grid{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+}
+
+
+@media (max-width: 996px) {
+    #continuelearning-grid{
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
 }

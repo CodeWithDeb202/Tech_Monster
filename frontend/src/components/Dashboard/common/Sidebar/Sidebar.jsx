@@ -72,7 +72,7 @@ function Sidebar({
             toast.warning("Complete all internship tasks to unlock your certificate!");
         }
     };
-
+    
     const { logout } = useAuth();
 
     const handleLogout = async () => {

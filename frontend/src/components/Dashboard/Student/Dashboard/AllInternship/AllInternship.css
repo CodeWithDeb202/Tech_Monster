@@ -26,3 +26,33 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 439px){
+    #course-heading h2{
+        font-size: 1rem;
+        margin-left: 0;
+    }
+    #course-heading p{
+        font-size: 0.8rem;
+    }
+
+    #course-grid{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+}
+
+
+@media (max-width: 996px) {
+    #course-grid{
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
+}
