@@ -24,7 +24,9 @@ function SingleInternshipCard({
         if (image.startsWith("http") || image.startsWith("data:") || image.startsWith("blob:")) {
             return image;
         }
-        return `http://localhost:5000/${image}`;
+        const apiUrl = import.meta.env.VITE_API_URL;
+
+        return `${apiUrl}/${image.replace(/^\/+/, "")}`;
     };
 
     const imageSrc = getImageUrl(item.img || item.thumbnail);
