@@ -81,14 +81,11 @@ function Signup() {
 
     } catch (err) {
       console.log("Signup error",err);
-
       toast.error(err.response?.data?.message || "Something went wrong");
-
       setError(
         err.response?.data?.message ||
         "Sign up failed"
       );
-
     } finally {
 
       setLoading(false);
