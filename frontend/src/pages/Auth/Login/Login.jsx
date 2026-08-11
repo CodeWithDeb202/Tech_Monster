@@ -7,9 +7,9 @@ import { toast } from "react-toastify";
 
 import AuthLayout from "../../../layouts/AuthLayout/AuthLayout";
 
-import Input from "../../../components/common/Form/Input";
-import PasswordInput from "../../../components/common/Form/PasswordInput";
-import Button from "../../../components/common/Form/Button";
+import Input from "../../../components/Common/Form/Input";
+import PasswordInput from "../../../components/Common/Form/PasswordInput";
+import Button from "../../../components/Common/Form/Button";
 
 import { FaEnvelope } from "react-icons/fa";
 
