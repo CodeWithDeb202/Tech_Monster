@@ -43,6 +43,10 @@ const app = express();
 // ==========================================
 
 
+// ==========================================
+// CORS
+// ==========================================
+
 const allowedOrigins = [
   "http://localhost:5199",
   "http://localhost:5173",
@@ -53,8 +57,6 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests without an Origin header
-      // e.g. Postman/server-to-server
       if (!origin) {
         return callback(null, true);
       }
@@ -67,7 +69,6 @@ app.use(
 
       return callback(new Error(`CORS blocked: ${origin}`));
     },
-
     credentials: true
   })
 );
