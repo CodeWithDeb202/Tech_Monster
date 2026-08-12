@@ -6,16 +6,17 @@ import nodemailer from "nodemailer";
 // Render deployment pain explicit host au port 465 standard fix
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // Port 465 pain true
+  port: 587,
+  secure: false, // Port 587 pain false
+  requireTLS: true,
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS // Gmail 16-digit App Password (Without spaces)
+    pass: process.env.EMAIL_PASS // Gmail ra 16-digit App Password
   },
   tls: {
-    rejectUnauthorized: false // Cloud server network blocks runu rakshya kariba pain
+    rejectUnauthorized: false
   },
-  connectionTimeout: 10000 // 10 seconds timeout limit
+  connectionTimeout: 15000 // 15 seconds
 });
 
 // Verify SMTP Connection on Startup
