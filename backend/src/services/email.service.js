@@ -3,16 +3,19 @@ dotenv.config();
 
 import nodemailer from "nodemailer";
 
-// Gmail configuration optimized for Render / Cloud hosting
+// Render deployment pain explicit host au port 465 standard fix
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // Port 465 pain true
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS, // MUST be a 16-character Gmail App Password
+    pass: process.env.EMAIL_PASS // Gmail 16-digit App Password (Without spaces)
   },
-  pool: true,
-  maxConnections: 5,
-  maxMessages: 100,
+  tls: {
+    rejectUnauthorized: false // Cloud server network blocks runu rakshya kariba pain
+  },
+  connectionTimeout: 10000 // 10 seconds timeout limit
 });
 
 // Verify SMTP Connection on Startup

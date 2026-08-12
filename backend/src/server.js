@@ -5,6 +5,8 @@ dotenv.config({ quiet: true });
 
 
 import app from "./app.js";
+
+app.set("trust proxy", 1); // trust first proxy
 import connectDB from "./config/db.js";
 
 
