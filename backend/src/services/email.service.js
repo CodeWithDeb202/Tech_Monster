@@ -3,240 +3,143 @@ dotenv.config();
 
 import nodemailer from "nodemailer";
 
-const EMAIL_USER = process.env.EMAIL_USER;
-const EMAIL_PASS = process.env.EMAIL_PASS;
-
-if (!EMAIL_USER || !EMAIL_PASS) {
-  console.error("❌ EMAIL_USER or EMAIL_PASS is missing");
-}
-
+// Gmail configuration optimized for Render / Cloud hosting
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-
+  service: "gmail",
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    pass: process.env.EMAIL_PASS, // MUST be a 16-character Gmail App Password
   },
-
-  connectionTimeout: 15000,
-  greetingTimeout: 15000,
-  socketTimeout: 15000,
+  pool: true,
+  maxConnections: 5,
+  maxMessages: 100,
 });
 
-transporter.verify()
-  .then(() => {
-    console.log("✅ Gmail SMTP connection successful");
-  })
-  .catch((error) => {
-    console.error("❌ Gmail SMTP connection failed:");
-    console.error(error);
-  });
+// Verify SMTP Connection on Startup
+transporter.verify((error) => {
+  if (error) {
+    console.error("❌ Gmail SMTP Connection Failed:", error.message);
+    console.error(
+      "👉 Ensure EMAIL_USER and EMAIL_PASS (App Password) are set correctly in your Render dashboard."
+    );
+  } else {
+    console.log("✅ Gmail SMTP Server is ready to send emails");
+  }
+});
+
+// Helper function to format 'From' header dynamically
+const getFromAddress = () => `"Tech Monster" <${process.env.EMAIL_USER}>`;
 
 export const sendOTPEmail = async (email, otp) => {
   try {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      throw new Error("EMAIL_USER or EMAIL_PASS environment variable is missing.");
+    }
 
-    console.log("📧 Sending OTP...");
-    console.log("EMAIL_USER exists:", !!process.env.EMAIL_USER);
-    console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
+    console.log(`📧 Sending OTP email to ${email}...`);
+
     await transporter.sendMail({
-      from: `"Tech Monster" <${EMAIL_USER}>`,
+      from: getFromAddress(),
       to: email,
       subject: "Verify Your Email - Tech Monster",
       html: `
-                <div style="font-family: Arial, sans-serif; padding: 20px">
-                    <h2>Email Verification</h2>
-
-                    <p>Your verification code is:</p>
-
-                    <h1 style="color:#2563eb">${otp}</h1>
-
-                    <p>
-                        This OTP will expire in
-                        <b>10 minutes</b>.
-                    </p>
-
-                    <p>
-                        If you didn't request this, ignore this email.
-                    </p>
-                </div>
-            `,
+        <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px;">
+          <h2 style="color: #1a1a1a;">Email Verification</h2>
+          <p style="color: #555555;">Your verification code is:</p>
+          <h1 style="color: #2563eb; letter-spacing: 4px; background: #f0f4ff; padding: 10px; display: inline-block; border-radius: 4px;">${otp}</h1>
+          <p style="color: #555555;">This OTP will expire in <b>10 minutes</b>.</p>
+          <p style="color: #888888; font-size: 12px;">If you didn't request this, ignore this email.</p>
+        </div>
+      `,
     });
 
     console.log(`✅ OTP email sent successfully to ${email}`);
-
   } catch (error) {
-    console.error("❌ OTP EMAIL ERROR:", error);
+    console.error("❌ OTP EMAIL ERROR:", error.message);
     throw error;
   }
 };
 
 export const sendResetPasswordOTP = async (email, otp) => {
-
   try {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      throw new Error("EMAIL_USER or EMAIL_PASS environment variable is missing.");
+    }
 
     await transporter.sendMail({
-
-      from: `"Tech Monster" <${process.env.EMAIL_USER}>`,
-
+      from: getFromAddress(),
       to: email,
-
       subject: "Reset Your Password - Tech Monster",
-
       html: `
-
-                <div style="font-family:Arial,sans-serif;padding:20px">
-
-                    <h2>Password Reset Request</h2>
-
-                    <p>Your password reset OTP is:</p>
-
-                    <h1 style="color:#2563eb;letter-spacing:5px">
-
-                        ${otp}
-
-                    </h1>
-
-                    <p>This OTP will expire in <strong>10 minutes</strong>.</p>
-
-                    <p>If you did not request a password reset, please ignore this email.</p>
-
-                    <br>
-
-                    <p><strong>Tech Monster Pvt. Ltd.</strong></p>
-
-                </div>
-
-            `
-
+        <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px;">
+          <h2 style="color: #1a1a1a;">Password Reset Request</h2>
+          <p style="color: #555555;">Your password reset OTP is:</p>
+          <h1 style="color: #2563eb; letter-spacing: 4px; background: #f0f4ff; padding: 10px; display: inline-block; border-radius: 4px;">${otp}</h1>
+          <p style="color: #555555;">This OTP will expire in <b>10 minutes</b>.</p>
+          <p style="color: #888888; font-size: 12px;">If you did not request a password reset, please ignore this email.</p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+          <p style="color: #333333; font-weight: bold;">Tech Monster Pvt. Ltd.</p>
+        </div>
+      `,
     });
 
+    console.log(`✅ Reset Password email sent to ${email}`);
   } catch (error) {
-
-    console.log("❌ Reset Password Email Error:", error.message);
-
+    console.error("❌ Reset Password Email Error:", error.message);
     throw error;
-
   }
-
 };
-
 
 export const sendApplicationStatusEmail = async (email, status) => {
-
   try {
-
     await transporter.sendMail({
-
-      from: `"Tech Monster" <${process.env.EMAIL_USER}>`,
-
+      from: getFromAddress(),
       to: email,
-
-      subject: "Application Status Updated",
-
+      subject: "Application Status Updated - Tech Monster",
       html: `
-                <h2>Application Status</h2>
-
-                <p>Your application status has been updated.</p>
-
-                <h3>Status: ${status}</h3>
-
-                <p>Thank you for using Tech Monster.</p>
-            `
-
+        <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px;">
+          <h2 style="color: #1a1a1a;">Application Status</h2>
+          <p style="color: #555555;">Your application status has been updated.</p>
+          <h3 style="color: #2563eb;">Status: ${status}</h3>
+          <p style="color: #555555;">Thank you for using Tech Monster.</p>
+        </div>
+      `,
     });
 
+    console.log(`✅ Application status email sent to ${email}`);
   } catch (error) {
-
-    console.log(error);
-
-  }
-
-};
-
-
-export const sendCertificateEmail = async (
-
-  email,
-
-  pdfPath
-
-) => {
-
-  try {
-
-    await transporter.sendMail({
-
-      from: `"Tech Monster" <${process.env.EMAIL_USER}>`,
-
-      to: email,
-
-      subject: "🎉 Internship Completion Certificate",
-
-      html: `
-
-                <div style="font-family:Arial,sans-serif">
-
-                    <h2>Congratulations 🎉</h2>
-
-                    <p>
-
-                        Your internship has been successfully completed.
-
-                    </p>
-
-                    <p>
-
-                        Your Internship Completion Certificate is attached with this email.
-
-                    </p>
-
-                    <br>
-
-                    <p>
-
-                        Best Wishes,
-
-                    </p>
-
-                    <strong>
-
-                        Tech Monster Pvt. Ltd.
-
-                    </strong>
-
-                </div>
-
-            `,
-
-      attachments: [
-
-        {
-
-          filename: "Internship-Certificate.pdf",
-
-          path: pdfPath
-
-        }
-
-      ]
-
-    });
-
-  } catch (error) {
-
-    console.log(
-
-      "❌ Certificate Email Error:",
-
-      error.message
-
-    );
-
+    console.error("❌ Application Status Email Error:", error.message);
     throw error;
-
   }
-
 };
 
+export const sendCertificateEmail = async (email, pdfPath) => {
+  try {
+    await transporter.sendMail({
+      from: getFromAddress(),
+      to: email,
+      subject: "🎉 Internship Completion Certificate - Tech Monster",
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px;">
+          <h2 style="color: #1a1a1a;">Congratulations 🎉</h2>
+          <p style="color: #555555;">Your internship has been successfully completed.</p>
+          <p style="color: #555555;">Your Internship Completion Certificate is attached with this email.</p>
+          <br>
+          <p style="color: #555555;">Best Wishes,</p>
+          <p style="color: #333333; font-weight: bold;">Tech Monster Pvt. Ltd.</p>
+        </div>
+      `,
+      attachments: [
+        {
+          filename: "Internship-Certificate.pdf",
+          path: pdfPath,
+        },
+      ],
+    });
+
+    console.log(`✅ Certificate email sent to ${email}`);
+  } catch (error) {
+    console.error("❌ Certificate Email Error:", error.message);
+    throw error;
+  }
+};
