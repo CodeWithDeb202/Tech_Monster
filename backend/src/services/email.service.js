@@ -1,50 +1,26 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
-// Render deployment pain explicit host au port 465 standard fix
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // Port 587 pain false
-  requireTLS: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS // Gmail ra 16-digit App Password
-  },
-  tls: {
-    rejectUnauthorized: false
-  },
-  connectionTimeout: 15000 // 15 seconds
-});
+// Resend HTTP API Initializer (Render HTTPS Port 443 - Never Blocked)
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Verify SMTP Connection on Startup
-transporter.verify((error) => {
-  if (error) {
-    console.error("❌ Gmail SMTP Connection Failed:", error.message);
-    console.error(
-      "👉 Ensure EMAIL_USER and EMAIL_PASS (App Password) are set correctly in your Render dashboard."
-    );
-  } else {
-    console.log("✅ Gmail SMTP Server is ready to send emails");
-  }
-});
+// Sender Email Address
+const FROM_EMAIL = process.env.EMAIL_FROM || "Tech Monster <onboarding@resend.dev>";
 
-// Helper function to format 'From' header dynamically
-const getFromAddress = () => `"Tech Monster" <${process.env.EMAIL_USER}>`;
-
+// 1. VERIFY OTP EMAIL
 export const sendOTPEmail = async (email, otp) => {
   try {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      throw new Error("EMAIL_USER or EMAIL_PASS environment variable is missing.");
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY environment variable is missing.");
     }
 
     console.log(`📧 Sending OTP email to ${email}...`);
 
-    await transporter.sendMail({
-      from: getFromAddress(),
-      to: email,
+    const data = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: [email],
       subject: "Verify Your Email - Tech Monster",
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px;">
@@ -58,21 +34,23 @@ export const sendOTPEmail = async (email, otp) => {
     });
 
     console.log(`✅ OTP email sent successfully to ${email}`);
+    return data;
   } catch (error) {
     console.error("❌ OTP EMAIL ERROR:", error.message);
     throw error;
   }
 };
 
+// 2. RESET PASSWORD OTP EMAIL
 export const sendResetPasswordOTP = async (email, otp) => {
   try {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      throw new Error("EMAIL_USER or EMAIL_PASS environment variable is missing.");
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY environment variable is missing.");
     }
 
-    await transporter.sendMail({
-      from: getFromAddress(),
-      to: email,
+    const data = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: [email],
       subject: "Reset Your Password - Tech Monster",
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px;">
@@ -88,17 +66,23 @@ export const sendResetPasswordOTP = async (email, otp) => {
     });
 
     console.log(`✅ Reset Password email sent to ${email}`);
+    return data;
   } catch (error) {
     console.error("❌ Reset Password Email Error:", error.message);
     throw error;
   }
 };
 
+// 3. APPLICATION STATUS EMAIL
 export const sendApplicationStatusEmail = async (email, status) => {
   try {
-    await transporter.sendMail({
-      from: getFromAddress(),
-      to: email,
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY environment variable is missing.");
+    }
+
+    const data = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: [email],
       subject: "Application Status Updated - Tech Monster",
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px;">
@@ -111,17 +95,23 @@ export const sendApplicationStatusEmail = async (email, status) => {
     });
 
     console.log(`✅ Application status email sent to ${email}`);
+    return data;
   } catch (error) {
     console.error("❌ Application Status Email Error:", error.message);
     throw error;
   }
 };
 
+// 4. CERTIFICATE EMAIL WITH ATTACHMENT
 export const sendCertificateEmail = async (email, pdfPath) => {
   try {
-    await transporter.sendMail({
-      from: getFromAddress(),
-      to: email,
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY environment variable is missing.");
+    }
+
+    const data = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: [email],
       subject: "🎉 Internship Completion Certificate - Tech Monster",
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px;">
@@ -142,6 +132,7 @@ export const sendCertificateEmail = async (email, pdfPath) => {
     });
 
     console.log(`✅ Certificate email sent to ${email}`);
+    return data;
   } catch (error) {
     console.error("❌ Certificate Email Error:", error.message);
     throw error;
