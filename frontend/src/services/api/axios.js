@@ -1,53 +1,33 @@
 import axios from "axios";
 
 const api = axios.create({
-
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
-
+    baseURL: import.meta.env.VITE_API_URL || "https://tech-monster.onrender.com/api",
     withCredentials: true,
-
-    timeout: 30000,
-
+    timeout: 60000, // Increased timeout to 60s for slow email sending / cold starts
     headers: {
-
         "Content-Type": "application/json"
-
     }
-
 });
 
 // ==============================================
 // Request Interceptor
 // ==============================================
-
 api.interceptors.request.use(
-
     (config) => {
-
         const token = localStorage.getItem("accessToken") || localStorage.getItem("adminAccessToken");
-
         if (token) {
-
             config.headers.Authorization = `Bearer ${token}`;
-
         }
-
         return config;
-
     },
-
     (error) => {
-
         return Promise.reject(error);
-
     }
-
 );
 
 // ==============================================
 // Response Interceptor
 // ==============================================
-
 api.interceptors.response.use(
     (response) => response,
 
@@ -55,6 +35,7 @@ api.interceptors.response.use(
         const status = error.response?.status;
         const url = error.config?.url || "";
 
+        // Auth endpoint request check
         const isAuthRequest =
             url.includes("/auth/signup") ||
             url.includes("/auth/login") ||
@@ -63,6 +44,7 @@ api.interceptors.response.use(
             url.includes("/auth/forgot-password") ||
             url.includes("/auth/reset-password");
 
+        // Bypass full-page redirects for Auth requests so UI can show proper error messages
         if (isAuthRequest) {
             return Promise.reject(error);
         }
@@ -74,38 +56,21 @@ api.interceptors.response.use(
                 localStorage.removeItem("user");
                 localStorage.removeItem("admin");
 
-                if (
-                    window.location.pathname !==
-                    "/session-expired"
-                ) {
-                    window.location.href =
-                        "/session-expired";
+                if (window.location.pathname !== "/session-expired") {
+                    window.location.href = "/session-expired";
                 }
                 break;
 
             case 403:
-                if (
-                    error.response?.data?.message ===
-                    "Your account has been blocked."
-                ) {
-                    window.location.href =
-                        "/account-blocked";
+                if (error.response?.data?.message === "Your account has been blocked.") {
+                    window.location.href = "/account-blocked";
                 } else {
-                    window.location.href =
-                        "/unauthorized";
+                    window.location.href = "/unauthorized";
                 }
-                break;
-
-            case 404:
-                window.location.href = "/404";
                 break;
 
             case 429:
                 window.location.href = "/429";
-                break;
-
-            case 500:
-                window.location.href = "/500";
                 break;
 
             case 503:
