@@ -40,7 +40,17 @@ const Home = () => {
 
     }
   };
-
+  
+  if (loading) {
+    return (
+      <LoaderPage
+        message="Loading your dashboard..."
+        size={60}
+      />
+    );
+  }
+  
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     loadDashboard();
@@ -60,14 +70,6 @@ const Home = () => {
 
   };
 
-  if (loading) {
-    return (
-        <LoaderPage
-            message="Loading your dashboard..."
-            size={60}
-        />
-    );
-}
 
 
   return (
