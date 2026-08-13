@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export default function usePincode(setFormData) {
 
     const handlePincode = async (value) => {
@@ -46,6 +48,7 @@ export default function usePincode(setFormData) {
             }
 
         } catch (error) {
+            toast.error("Failed to fetch pincode details", error);
             console.error("Pincode API Error:", error);
 
             setFormData((prev) => ({
