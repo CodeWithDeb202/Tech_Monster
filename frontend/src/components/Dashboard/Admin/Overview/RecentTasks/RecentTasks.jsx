@@ -13,25 +13,25 @@ export default function RecentTasks({
             case "Submitted":
                 return {
                     text: "Pending Review",
-                    className: "today"
+                    id: "today"
                 };
 
             case "Approved":
                 return {
                     text: "Approved",
-                    className: "upcoming"
+                    id: "upcoming"
                 };
 
             case "Incorrect":
                 return {
                     text: "Rejected",
-                    className: "late"
+                    id: "late"
                 };
 
             default:
                 return {
                     text: status,
-                    className: "today"
+                    id: "today"
                 };
 
         }
@@ -40,93 +40,58 @@ export default function RecentTasks({
 
     return (
 
-        <div className="recentTasks">
-
+        <div id="overViewRecentTasks">
             <h2>
-
                 Recent Tasks
-
             </h2>
-
             {
-
                 tasks.map(task => {
-
                     const badge = getBadge(task.status);
 
                     return (
 
                         <div
-
                             key={task._id}
-
-                            className="taskCard"
-
+                            id="overViewRecentTasksCard"
                         >
-
                             <img
                                 src={task.avatar || "/default-avatar.png"}
                                 alt={task.student}
                             />
 
-                            <div className="taskInfo">
-
+                            <div id="overViewRecentTasksInfo">
                                 <h3>
-
                                     {task.title}
-
                                 </h3>
 
                                 <p>
-
                                     {task.student}
-
                                 </p>
 
-                                <small className={badge.className}>
-
+                                <small id={badge.className}>
                                     {badge.text}
-
                                 </small>
 
                                 <small>
-
                                     {new Date(task.submittedAt).toLocaleDateString()}
-
                                 </small>
-
                             </div>
 
-                            <div className="taskRight">
-
+                            <div id="overViewRecentTasksRight">
                                 <span>
-
                                     {task.status}
-
                                 </span>
 
                                 <small
-
-                                    className={badge.className}
-
+                                    id={badge.className}
                                 >
-
                                     {badge.text}
-
                                 </small>
-
                             </div>
-
                         </div>
-
                     );
-
                 })
-
             }
-
         </div>
-
     );
-
 }

@@ -16,10 +16,8 @@ export default function LineChart({ chartData = [] }) {
 
         <div id="adminChart">
 
-            <div className="chartHeader">
-
+            <div id="adminChartHeader">
                 <h2>Weekly Attendance</h2>
-
             </div>
 
             <ResponsiveContainer
@@ -30,9 +28,7 @@ export default function LineChart({ chartData = [] }) {
                 <AreaChart
                     data={chartData}
                 >
-
                     <defs>
-
                         <linearGradient
                             id="attendance"
                             x1="0"
@@ -40,7 +36,6 @@ export default function LineChart({ chartData = [] }) {
                             x2="0"
                             y2="1"
                         >
-
                             <stop
                                 offset="5%"
                                 stopColor="#00ffff"
@@ -52,7 +47,6 @@ export default function LineChart({ chartData = [] }) {
                                 stopColor="#00ffff"
                                 stopOpacity={0}
                             />
-
                         </linearGradient>
 
                     </defs>
@@ -73,21 +67,13 @@ export default function LineChart({ chartData = [] }) {
                     <Tooltip />
 
                     <Area
-
                         type="monotone"
-
                         dataKey="attendance"
-
                         stroke="#00ffff"
-
                         strokeWidth={3}
-
                         fill="url(#attendance)"
-
                     />
-
                 </AreaChart>
-
             </ResponsiveContainer>
 
         </div>

@@ -1,33 +1,39 @@
 #adminChart {
-
-    margin-top: 30px;
-
     background: #1b1b28;
-
     padding: 25px;
-
     border-radius: 18px;
-
     border: 1px solid rgba(255, 255, 255, .08);
-
     transition: .35s;
-
 }
 
 #adminChart:hover {
-
     box-shadow: 0 0 30px rgba(0, 255, 255, .15);
-
 }
 
-.chartHeader {
-
+#adminChartHeader {
     margin-bottom: 20px;
-
 }
 
-.chartHeader h2 {
+#adminChartHeader h2 {
+    color: var(--text);
+}
 
-    color: white;
 
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 1200px) {
+    #adminChart{
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 439px) {
+    #adminChartHeader h2{
+        font-size: 1.2rem;
+    }
+    #adminChart{
+        padding: 0.5rem;
+    }
 }

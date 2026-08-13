@@ -1,96 +1,32 @@
-/* #adminStatsCrads {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin: 1rem 0;
+#adminStatsCards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.3rem;
+    margin: 1.5rem 0;
 }
 
 #adminStatsCard {
-    background: var(--surface);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    border-radius: 1rem;
-    transition: .35s;
-    cursor: pointer;
-}
-
-#adminStatsCard:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 0 30px rgba(0, 255, 255, .2);
-    border: 1px solid cyan;
-}
-
-#adminStatsCard svg {
-    font-size: 2rem;
-    color: var(--neon);
-}
-
-#adminStatsCard h3 {
-    font-size: 1.5rem;
-}
-
-#adminStatsCard p {
-    color: var(--muted);
-} */
-
-
-#adminStatsCards {
-
-    display: grid;
-
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-
-    gap: 20px;
-
-    margin: 25px 0;
-
-}
-
-.adminStatsCard {
-
     background: rgba(20, 20, 30, .9);
-
     border: 1px solid rgba(0, 255, 255, .15);
-
     border-radius: 18px;
-
     padding: 22px;
-
     display: flex;
-
     align-items: center;
-
     gap: 18px;
-
     transition: .35s;
-
     cursor: pointer;
-
     backdrop-filter: blur(12px);
-
     overflow: hidden;
-
     position: relative;
-
 }
 
-.adminStatsCard::before {
-
+#adminStatsCard::before {
     content: "";
-
     position: absolute;
-
     left: 0;
-
     top: 0;
-
     width: 100%;
-
     height: 3px;
-
     background: linear-gradient(90deg,
 
             cyan,
@@ -98,79 +34,77 @@
             #00ff95,
 
             cyan);
-
     transform: scaleX(0);
-
     transition: .4s;
-
 }
 
-.adminStatsCard:hover {
-
+#adminStatsCard:hover {
     transform: translateY(-8px);
-
     box-shadow:
 
         0 0 30px rgba(0, 255, 255, .18);
-
     border-color: cyan;
-
 }
 
-.adminStatsCard:hover::before {
-
+#adminStatsCard:hover::before {
     transform: scaleX(1);
-
 }
 
-.cardIcon {
-
+#adminStasCardIcon {
     width: 70px;
-
     height: 70px;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     border-radius: 50%;
-
     background: rgba(0, 255, 255, .12);
-
     font-size: 34px;
-
     color: cyan;
-
 }
 
-.cardInfo {
-
+#adminStasCardInfo {
     display: flex;
-
     flex-direction: column;
-
 }
 
-.cardInfo h4 {
-
+#adminStasCardInfo h4 {
     color: #bfbfbf;
-
     font-size: .95rem;
-
     font-weight: 500;
-
     margin-bottom: 8px;
-
 }
 
-.cardInfo h2 {
-
+#adminStasCardInfo h2 {
     color: white;
-
     font-size: 2rem;
-
     font-weight: 700;
+}
 
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 1200px) {
+    #adminStatsCards{
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.2rem;
+        margin: 1rem 0;
+    }
+}
+
+@media (max-width: 991px) {
+    #adminStatsCards{
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+}
+
+@media (max-width: 439px) {
+    #adminStatsCards{
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
 }

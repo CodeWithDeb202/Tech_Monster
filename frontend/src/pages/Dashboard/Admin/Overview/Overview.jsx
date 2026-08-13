@@ -26,7 +26,7 @@ export default function Overview() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-
+        // eslint-disable-next-line react-hooks/immutability
         fetchDashboard();
 
     }, []);
@@ -65,134 +65,78 @@ export default function Overview() {
 
         <>
 
-            <div className="overviewContainer">
-
-                <div className="overviewTop">
-
+            <div id="overviewContainer">
+                <div id="overviewTop">
                     <FadeInSection>
-
                         <WelcomeCard
-
                             stats={dashboard.stats}
-
                         />
-
                     </FadeInSection>
-
                     <FadeInSection>
-
                         <ServerStatus />
-
                     </FadeInSection>
-
                 </div>
 
                 <FadeInSection>
-
                     <StatsCards
-
                         stats={dashboard.stats}
-
                     />
-
                 </FadeInSection>
 
-                <div className="overviewChart">
-
+                <div id="overviewChart">
                     <FadeInSection>
-
                         <LineChart
-
                             chartData={dashboard.weeklyAttendance}
-
                         />
-
                     </FadeInSection>
 
                     <FadeInSection>
-
                         <AttendanceSummary
-
                             attendanceSummary={dashboard.attendanceSummary}
-
                         />
-
                     </FadeInSection>
-
                 </div>
 
-                <div className="overviewMiddle">
-
+                <div id="overviewMiddle">
                     <FadeInSection>
-
                         <RecentActivities
-
                             activities={dashboard.recentActivities}
-
                         />
-
                     </FadeInSection>
 
                     <FadeInSection>
-
                         <ActiveStudents
-
                             students={dashboard.activeStudents}
-
                         />
-
                     </FadeInSection>
 
                 </div>
 
-                <div className="overviewBottom">
-
+                <div id="overviewBottom">
                     <FadeInSection>
-
                         <TopInternships
-
                             internships={dashboard.topInternships}
-
                         />
-
                     </FadeInSection>
-
                     <FadeInSection>
-
                         <RecentTasks
-
                             tasks={dashboard.recentTasks}
-
                         />
-
                     </FadeInSection>
-
                 </div>
 
-                <div className="overviewFooter">
-
+                <div id="overviewFooter">
                     <FadeInSection>
-
                         <CertificateAnalytics
-
                             analytics={dashboard.certificateAnalytics}
-
                         />
-
                     </FadeInSection>
-
                     <FadeInSection>
-
                         <QuickActions />
-
                     </FadeInSection>
-
                 </div>
 
             </div>
-
         </>
-
     );
-
 }

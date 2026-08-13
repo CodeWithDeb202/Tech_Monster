@@ -13,7 +13,7 @@ export default function ActiveStudents({ students = [] }) {
                 {
                     students.length === 0 ? (
 
-                        <p className="emptyStudent">
+                        <p id="activeEmptyStudent">
                             No Active Students
                         </p>
 
@@ -22,7 +22,7 @@ export default function ActiveStudents({ students = [] }) {
                         students.map((student) => (
 
                             <div
-                                className="activeStudentCard"
+                                id="activeStudentCard"
                                 key={student._id}
                             >
 
@@ -31,7 +31,7 @@ export default function ActiveStudents({ students = [] }) {
                                     alt={student.fullName}
                                 />
 
-                                <div className="studentInfo">
+                                <div id="activeStudentInfo">
 
                                     <h4>{student.fullName}</h4>
 
@@ -39,10 +39,10 @@ export default function ActiveStudents({ students = [] }) {
                                         {student.internshipTitle}
                                     </span>
 
-                                    <div className="progressBar">
+                                    <div id="activeStudentProgressBar">
 
                                         <div
-                                            className="progress"
+                                            id="activeStudentProgress"
                                             style={{
                                                 width: `${student.progress}%`
                                             }}
