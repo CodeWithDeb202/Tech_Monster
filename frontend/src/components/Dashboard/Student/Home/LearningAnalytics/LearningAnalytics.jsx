@@ -9,103 +9,182 @@ import {
   HiArrowTrendingUp,
 } from "react-icons/hi2";
 
+
 const LearningAnalytics = ({ analytics }) => {
 
-  const weeklyData = analytics?.weeklyData || [45, 80, 55, 95, 70, 88, 100];
+  const weeklyData =
+    analytics?.weeklyData?.length === 7
+      ? analytics.weeklyData
+      : [0, 0, 0, 0, 0, 0, 0];
+
+
+  const completedCourses =
+    analytics?.completedCourses || 0;
+
+  const hours =
+    analytics?.hours || 0;
+
+  const growth =
+    analytics?.growth || 0;
+
 
   return (
     <motion.section
-      id="analytics-card"
-      initial={{ opacity: 0, y: 80 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: .8 }}
+      className="analytics-card"
+
+      initial={{
+        opacity: 0,
+        y: 80,
+      }}
+
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+
+      viewport={{
+        once: true,
+      }}
+
+      transition={{
+        duration: 0.8,
+      }}
     >
-      <div id="analytics-header">
+
+      <div className="analytics-glow"></div>
+
+
+      <div className="analytics-header">
+
         <div>
+
           <h2>
             <HiChartBar />
             Learning Analytics
           </h2>
+
           <p>
             Weekly learning performance overview
           </p>
+
         </div>
+
       </div>
 
-      <div id="analytics-body">
-        {/* LEFT */}
 
-        <div id="chart-wrapper">
-          <div id="chart-bars">
-            {
-              weeklyData.map((height, index) => (
-                <motion.div
-                  key={index}
-                  id="bar"
-                  initial={{
-                    height: 0
-                  }}
-                  whileInView={{
-                    height: `${height}%`
-                  }}
-                  transition={{
-                    delay: index * .12,
-                    duration: .7
-                  }}
-                >
-                  <span>
-                    {["M", "T", "W", "T", "F", "S", "S"][index]}
-                  </span>
-                </motion.div>
-              ))
-            }
+      <div className="analytics-body">
+
+        <div className="chart-wrapper">
+
+          <div className="chart-bars">
+
+            {weeklyData.map(
+              (value, index) => {
+
+                const safeHeight =
+                  Math.min(
+                    Math.max(
+                      Number(value) || 0,
+                      0
+                    ),
+                    100
+                  );
+
+                return (
+                  <motion.div
+                    key={index}
+                    className="chart-bar"
+
+                    initial={{
+                      height: 0,
+                    }}
+
+                    whileInView={{
+                      height:
+                        `${safeHeight}%`,
+                    }}
+
+                    transition={{
+                      delay:
+                        index * 0.12,
+                      duration: 0.7,
+                    }}
+                  >
+                    <span>
+                      {
+                        [
+                          "M",
+                          "T",
+                          "W",
+                          "T",
+                          "F",
+                          "S",
+                          "S",
+                        ][index]
+                      }
+                    </span>
+                  </motion.div>
+                );
+              }
+            )}
+
           </div>
+
         </div>
 
-        {/* RIGHT */}
 
-        <div id="analytics-info">
-          <div id="analytics-item">
+        <div className="analytics-info">
+
+          <div className="analytics-item">
             <HiAcademicCap />
+
             <div>
               <h3>
-                {analytics?.completedCourses || 0}
+                {completedCourses}
               </h3>
+
               <p>
-                Completed internships
+                Completed Internships
               </p>
             </div>
           </div>
 
-          <div id="analytics-item">
+
+          <div className="analytics-item">
             <HiClock />
+
             <div>
               <h3>
-                {analytics?.hours || 0}h
+                {hours}h
               </h3>
+
               <p>
                 Learning Hours
               </p>
             </div>
           </div>
 
-          <div id="analytics-item">
+
+          <div className="analytics-item">
             <HiArrowTrendingUp />
+
             <div>
               <h3>
-                {analytics?.growth || 0}%
+                {growth}%
               </h3>
+
               <p>
                 Weekly Growth
               </p>
             </div>
           </div>
+
         </div>
+
       </div>
+
     </motion.section>
   );
-
 };
 
 export default LearningAnalytics;

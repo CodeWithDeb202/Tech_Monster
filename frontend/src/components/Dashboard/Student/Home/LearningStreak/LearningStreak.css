@@ -1,217 +1,281 @@
-/*==================================
-        Learning Streak
-==================================*/
-
-#learning-streak {
+.learning-streak {
     position: relative;
     overflow: hidden;
+
     width: 100%;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     gap: 35px;
+
     padding: 32px;
+
     border-radius: 22px;
+
     background: var(--dark);
-    border: 1px solid rgba(255, 255, 255, .08);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
     backdrop-filter: blur(18px);
-    transition: .4s;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, .35);
-}
 
-#learning-streak:hover {
-    transform: translateY(-8px);
-    border-color: #ff7b00;
     box-shadow:
-        0 20px 45px rgba(0, 0, 0, .45),
-        0 0 35px rgba(255, 123, 0, .25);
+        0 15px 35px rgba(0, 0, 0, 0.35);
+
+    transition: 0.4s;
 }
 
-/*==============================
-            Glow
-==============================*/
 
-#streak-glow {
+.learning-streak:hover {
+    transform: translateY(-8px);
+
+    border-color: #ff7b00;
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.45),
+        0 0 35px rgba(255, 123, 0, 0.25);
+}
+
+
+.streak-glow {
     position: absolute;
+
     width: 260px;
     height: 260px;
-    background: rgba(255, 123, 0, .18);
+
+    background:
+        rgba(255, 123, 0, 0.18);
+
     border-radius: 50%;
+
     filter: blur(90px);
+
     right: -80px;
     top: -80px;
-    animation: glowMove 6s ease-in-out infinite;
+
+    animation:
+        glowMove 6s ease-in-out infinite;
+
+    pointer-events: none;
 }
 
-@keyframes glowMove {
 
-    0% {
-        transform: translate(0, 0);
-    }
-
-    50% {
-        transform: translate(-30px, 20px);
-    }
-
-    100% {
-        transform: translate(0, 0);
-    }
-}
-
-/*==============================
-            Left
-==============================*/
-
-#streak-left {
+.streak-left {
     display: flex;
     align-items: center;
+
     gap: 22px;
+
     flex: 1;
+
+    min-width: 0;
+
     z-index: 2;
 }
 
-#fire-icon {
+
+.fire-icon {
     width: 85px;
     height: 85px;
+
+    flex-shrink: 0;
+
     border-radius: 50%;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg,
+
+    background:
+        linear-gradient(135deg,
             #ff9800,
             #ff5722);
+
     color: #fff;
+
     font-size: 38px;
-    box-shadow: 0 0 30px rgba(255, 123, 0, .35);
+
+    box-shadow:
+        0 0 30px rgba(255, 123, 0, 0.35);
 }
 
-#streak-left h2 {
+
+.streak-left h2 {
     color: #fff;
+
     font-size: 30px;
+
     margin-bottom: 10px;
 }
 
-#streak-left p {
+
+.streak-left p {
     color: #b9c3cf;
+
     line-height: 28px;
 }
 
-/*==============================
-            Right
-==============================*/
 
-#streak-right {
+.streak-right {
     width: 340px;
+
     display: flex;
     flex-direction: column;
+
     gap: 20px;
+
     z-index: 2;
 }
 
-#streak-progress {
+
+.streak-progress {
     width: 100%;
     height: 12px;
+
     border-radius: 20px;
+
     overflow: hidden;
+
     background: #1d293d;
 }
 
-#streak-fill {
+
+.streak-fill {
     height: 100%;
+
     border-radius: 20px;
-    background: linear-gradient(90deg,
+
+    background:
+        linear-gradient(90deg,
             #ff9800,
             #ff5722);
-    box-shadow: 0 0 18px rgba(255, 123, 0, .5);
+
+    box-shadow:
+        0 0 18px rgba(255, 123, 0, 0.5);
 }
 
-#streak-footer {
+
+.streak-footer {
     display: flex;
+
     justify-content: space-between;
     align-items: center;
 }
 
-#streak-footer span {
+
+.streak-footer span {
     display: flex;
     align-items: center;
+
     gap: 8px;
+
     color: #b8c2cf;
 }
 
-#streak-footer svg {
+
+.streak-footer svg {
     color: #ff9800;
 }
 
-#streak-footer strong {
+
+.streak-footer strong {
     color: #fff;
+
     font-size: 20px;
 }
 
-#continue-streak-btn {
+
+.continue-streak-btn {
     height: 50px;
+
     border: none;
+
     border-radius: 14px;
+
     cursor: pointer;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     gap: 10px;
+
     color: #fff;
+
     font-weight: 600;
-    background: linear-gradient(135deg,
+
+    background:
+        linear-gradient(135deg,
             #ff9800,
             #ff5722);
-    transition: .35s;
+
+    transition: 0.35s;
 }
 
-#continue-streak-btn:hover {
-    box-shadow: 0 0 25px rgba(255, 123, 0, .35);
-}
 
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
-@media (max-width: 576px) {
-    #learning-streak{
-        padding: 1rem;
-    }
-    #fire-icon{
-        height: 40px;
-        width: 40px;
-        font-size: 1.2rem;
-    }
-    #streak-left h2{
-        font-size: 1.2rem;
-    }
-    #streak-left p{
-        font-size: 0.8rem;
-    }
-    #streak-progress{
-        height: 8px;
-    }
-    #streak-footer strong{
-        font-size: 1rem;
-    }
-
-    #continue-streak-btn{
-        height: 40px;
-    }
+.continue-streak-btn:hover {
+    box-shadow:
+        0 0 25px rgba(255, 123, 0, 0.35);
 }
 
 
 @media (max-width: 1140px) {
-    #learning-streak{
-        display: flex;
+
+    .learning-streak {
         flex-direction: column;
         align-items: center;
         gap: 1.5rem;
     }
-    #streak-left{
+
+    .streak-left {
         width: 100%;
-        justify-content: space-around;
+        justify-content: center;
     }
-    #streak-right{
+
+    .streak-right {
         width: 100%;
+    }
+}
+
+
+@media (max-width: 576px) {
+
+    .learning-streak {
+        padding: 1rem;
+    }
+
+    .fire-icon {
+        width: 50px;
+        height: 50px;
+
+        font-size: 1.4rem;
+    }
+
+    .streak-left {
+        justify-content: flex-start;
+        gap: 1rem;
+    }
+
+    .streak-left h2 {
+        font-size: 1.2rem;
+    }
+
+    .streak-left p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+
+    .streak-progress {
+        height: 8px;
+    }
+
+    .streak-footer strong {
+        font-size: 1rem;
+    }
+
+    .continue-streak-btn {
+        height: 40px;
     }
 }

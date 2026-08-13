@@ -18,7 +18,7 @@ import QuickActions from "../../../../components/Dashboard/Admin/Overview/QuickA
 import RecentActivities from "../../../../components/Dashboard/Admin/Overview/RecentActivities";
 
 import FadeInSection from "../../../../components/Dashboard/common/FadeInSection";
-import LoaderPage from "../../../../components/Dashboard/common/LoaderPage";
+import OverviewSkeleton from "./OverviewSkeleton";
 
 export default function Overview() {
 
@@ -53,15 +53,8 @@ export default function Overview() {
     };
 
     if (loading) {
-
-    return (
-        <LoaderPage
-            message="Loading admin dashboard..."
-            size={60}
-        />
-    );
-
-}
+        return <OverviewSkeleton />;
+    }
 
     if (!dashboard) {
         return <h2>Dashboard data not found.</h2>;

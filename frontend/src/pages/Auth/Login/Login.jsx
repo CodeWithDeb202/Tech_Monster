@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import LoaderPage from "../../../components/Dashboard/common/LoaderPage";
+import Hash from "../../../components/Dashboard/common/LoaderPage/Hash";
 
 import AuthLayout from "../../../layouts/AuthLayout/AuthLayout";
 
@@ -92,7 +92,7 @@ function Login() {
 
   {
     loading && (
-      <LoaderPage
+      <Hash
         fullScreen
         message="Logging you in..."
         size={70}

@@ -1,361 +1,463 @@
-/* ===================================
-   Profile Summary
-=================================== */
-
-#profile-summary {
+.profile-summary {
     position: relative;
     overflow: hidden;
+
     width: 100%;
+
     display: flex;
+
     justify-content: space-between;
     align-items: center;
+
     gap: 2rem;
+
     padding: 2rem;
+
     border-radius: 24px;
-    background: rgba(10, 18, 32, .88);
+
+    background:
+        rgba(10, 18, 32, 0.88);
+
     backdrop-filter: blur(18px);
-    border: 1px solid rgba(0, 229, 255, .15);
+
+    border:
+        1px solid rgba(0, 229, 255, 0.15);
+
     box-shadow:
-        0 20px 45px rgba(0, 0, 0, .45),
-        inset 0 1px rgba(255, 255, 255, .03);
-    transition: .4s;
+        0 20px 45px rgba(0, 0, 0, 0.45),
+        inset 0 1px rgba(255, 255, 255, 0.03);
+
+    transition: 0.4s;
 }
 
-#profile-summary:hover {
+
+.profile-summary:hover {
     transform: translateY(-6px);
-    border-color: #00E5FF;
-    box-shadow:
-        0 25px 55px rgba(0, 0, 0, .55),
-        0 0 30px rgba(0, 229, 255, .18);
 
+    border-color: #00E5FF;
+
+    box-shadow:
+        0 25px 55px rgba(0, 0, 0, 0.55),
+        0 0 30px rgba(0, 229, 255, 0.18);
 }
 
-/* ========================= */
 
 .profile-glow {
     position: absolute;
+
     border-radius: 50%;
+
     filter: blur(80px);
+
     pointer-events: none;
 }
 
-.profile-glow-1 {
+
+.profile-glow-one {
     width: 260px;
     height: 260px;
+
     background: #00d4ff15;
+
     top: -80px;
     left: -70px;
-    animation: glowOne 7s infinite ease-in-out;
+
+    animation:
+        glowOne 7s infinite ease-in-out;
 }
 
-.profile-glow-2 {
+
+.profile-glow-two {
     width: 220px;
     height: 220px;
+
     background: #3b82f620;
+
     bottom: -90px;
     right: -80px;
-    animation: glowTwo 6s infinite ease-in-out;
+
+    animation:
+        glowTwo 6s infinite ease-in-out;
 }
 
-@keyframes glowOne {
 
-    0% {
-        transform: translate(0, 0);
-    }
-
-    50% {
-        transform: translate(40px, 25px);
-    }
-
-    100% {
-        transform: translate(0, 0);
-    }
-
-}
-
-@keyframes glowTwo {
-
-    0% {
-        transform: translate(0, 0);
-    }
-
-    50% {
-        transform: translate(-30px, -25px);
-    }
-
-    100% {
-        transform: translate(0, 0);
-    }
-
-}
-
-/* ========================= */
-
-#profile-left {
+.profile-left {
     flex: 1;
+    min-width: 0;
+
     display: flex;
     align-items: center;
+
     gap: 25px;
+
     z-index: 2;
 }
 
-#profile-image {
+
+.profile-image {
     width: 120px;
     height: 120px;
-    border-radius: 50%;
-    padding: 4px;
-    background: linear-gradient(135deg, var(--neon), var(--glow));
 
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    padding: 4px;
+
+    background:
+        linear-gradient(135deg,
+            var(--neon),
+            var(--glow));
 }
 
-#profile-image img {
+
+.profile-image img {
     width: 100%;
     height: 100%;
+
     border-radius: 50%;
+
     object-fit: cover;
+
     display: block;
 }
 
-/* ========================= */
 
-#profile-info {
+.profile-info {
+    min-width: 0;
+
     display: flex;
     flex-direction: column;
+
     gap: 14px;
 }
 
-#profile-info h2 {
+
+.profile-info h2 {
     font-size: 28px;
+
     font-weight: 700;
+
     color: #fff;
+
+    overflow-wrap: anywhere;
 }
 
-#profile-info p {
+
+.profile-info p {
     display: flex;
     align-items: center;
+
     gap: 8px;
+
     font-size: 15px;
+
     color: #b6c1d0;
+
+    overflow-wrap: anywhere;
 }
 
-/* ========================= */
-#skills-wrapper {
+
+.skills-wrapper {
     display: flex;
+
     flex-wrap: wrap;
+
     gap: 10px;
+
     margin-top: 8px;
 }
 
-#skill-chip {
+
+.skill-chip {
     padding: 8px 16px;
+
     border-radius: 999px;
+
     font-size: 13px;
     font-weight: 600;
+
     color: #00E5FF;
-    background: rgba(255, 255, 255, .05);
-    border: 1px solid rgba(0, 229, 255, .25);
-    transition: .3s;
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    border:
+        1px solid rgba(0, 229, 255, 0.25);
+
+    transition: 0.3s;
+
     cursor: pointer;
 }
 
-#skill-chip:hover {
+
+.skill-chip:hover {
     background: #00D4FF;
+
     color: #04121d;
+
     transform: translateY(-3px);
-    box-shadow: 0 0 18px #00D4FF;
+
+    box-shadow:
+        0 0 18px #00D4FF;
 }
 
-/* ========================= */
 
-#profile-divider {
+.profile-divider {
     width: 2px;
     height: 190px;
-    background: linear-gradient(to bottom,
+
+    flex-shrink: 0;
+
+    background:
+        linear-gradient(to bottom,
             transparent,
             #00D4FF,
             transparent);
 }
 
-/* ========================= */
 
-#profile-right {
+.profile-right {
     width: 320px;
+
     display: flex;
     flex-direction: column;
+
     justify-content: center;
+
     z-index: 2;
 }
 
-#progress-title {
+
+.progress-title {
     display: flex;
     align-items: center;
+
     gap: 8px;
+
     color: #fff;
+
     font-size: 17px;
     font-weight: 600;
+
     margin-bottom: 20px;
 }
 
-#progress-title svg {
+
+.progress-title svg {
     color: #00D4FF;
     font-size: 22px;
 }
 
-#progress-bar {
+
+.progress-bar {
     width: 100%;
     height: 12px;
+
     border-radius: 30px;
+
     background: #162338;
+
     overflow: hidden;
+
     margin-bottom: 20px;
 }
 
-#progress-fill {
+
+.progress-fill {
     height: 100%;
+
     border-radius: 30px;
-    background: linear-gradient(90deg,
+
+    background:
+        linear-gradient(90deg,
             #00D4FF,
             #3B82F6);
-    box-shadow: 0 0 15px #00D4FF;
+
+    box-shadow:
+        0 0 15px #00D4FF;
 }
 
-#profile-right h1 {
+
+.profile-right h1 {
     font-size: 40px;
+
     color: #00D4FF;
+
     margin-bottom: 10px;
 }
 
-#profile-right p {
+
+.profile-right p {
     font-size: 15px;
+
     line-height: 28px;
+
     color: #aeb7c5;
+
     margin-bottom: 28px;
 }
 
-#complete-btn {
+
+.complete-btn {
     height: 52px;
+
     border: none;
+
     border-radius: 14px;
+
     cursor: pointer;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     gap: 10px;
+
     font-size: 15px;
     font-weight: 600;
-    background: linear-gradient(135deg,
+
+    background:
+        linear-gradient(135deg,
             #00D4FF,
             #3B82F6);
+
     color: var(--text);
-    transition: .35s;
+
+    transition: 0.35s;
 }
 
-#complete-btn:hover {
-    box-shadow: 0 0 25px rgba(0, 229, 255, .45);
+
+.complete-btn:hover {
+    box-shadow:
+        0 0 25px rgba(0, 229, 255, 0.45);
 }
 
-/* ==========================================
-   RESPONSIVE
-========================================== */
 
-@media (max-width: 439px){
-    #profile-summary{
-        padding: 0.5rem !important;
+@media (max-width: 1037px) {
+
+    .profile-summary {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
     }
 
-    #profile-left{
-        gap: 1rem;
+    .profile-left {
+        width: 100%;
     }
 
-    #profile-image{
+    .profile-divider {
+        height: 3px;
+        width: 70%;
+    }
+
+    .profile-right {
+        width: 100%;
+        padding: 0 1rem;
+    }
+}
+
+
+@media (max-width: 756px) {
+
+    .profile-summary {
+        padding: 1rem;
+    }
+
+    .profile-image {
         width: 100px;
         height: 100px;
     }
 
-    #profile-info{
-        gap: 0.5rem;
+    .profile-info h2 {
+        font-size: 1.5rem;
     }
 
-    #profile-info h2{
+    .profile-right h1 {
+        font-size: 1.6rem;
+    }
+
+    .progress-bar {
+        height: 10px;
+    }
+
+    .complete-btn {
+        height: 42px;
+    }
+}
+
+
+@media (max-width: 439px) {
+
+    .profile-summary {
+        padding: 0.75rem;
+    }
+
+    .profile-left {
+        gap: 0.75rem;
+    }
+
+    .profile-image {
+        width: 75px;
+        height: 75px;
+    }
+
+    .profile-info {
+        gap: 0.4rem;
+    }
+
+    .profile-info h2 {
+        font-size: 1.1rem;
+    }
+
+    .profile-info p {
+        font-size: 0.75rem;
+    }
+
+    .skills-wrapper {
+        gap: 5px;
+        margin-top: 3px;
+    }
+
+    .skill-chip {
+        padding: 0.35rem 0.55rem;
+        font-size: 0.65rem;
+    }
+
+    .profile-divider {
+        width: 90%;
+    }
+
+    .profile-right {
+        padding: 0 0.5rem;
+    }
+
+    .progress-title {
+        font-size: 0.85rem;
+        margin-bottom: 0.7rem;
+    }
+
+    .progress-title svg {
+        font-size: 0.9rem;
+    }
+
+    .progress-bar {
+        height: 8px;
+        margin-bottom: 0.7rem;
+    }
+
+    .profile-right h1 {
         font-size: 1.2rem;
     }
 
-    #profile-info p{
-        font-size: 0.9rem;
-    }
-    
-    #skill-chip{
-        padding: 0.5rem;
-    }
-
-    #profile-divider{
-        width: 90% !important;
-    }
-
-    #progress-title{
-        font-size: 1rem;
+    .profile-right p {
+        font-size: 0.75rem;
+        line-height: 1.4;
         margin-bottom: 0.8rem;
     }
 
-    #progress-title svg{
-        font-size: 0.9rem;
-    }
-
-    #progress-bar{
-        margin-bottom: 1rem;
-    }
-
-    #profile-right h1{
-        font-size: 1rem !important;
-    }
-
-    #profile-right p{
-        font-size: 0.8rem !important;
-        line-height: 1.3;
-        margin-bottom: 1rem;
-    }
-
-    #complete-btn{
-        height: 30px !important;
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 756px) {
-    #profile-summary{
-        padding: 1rem;
-    }
-    #profile-right h1{
-        font-size: 1.2rem !important;
-    }
-    #progress-bar{
-        height: 10px;
-    }
-    #complete-btn{
-        height: 40px;
-    }
-}
-
-
-@media (max-width: 1037px){
-    #profile-summary{
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
-    #profile-divider {
-        height: 3px;
-        width: 70%;
-        border-radius: 50%;
-    }
-    #profile-right{
-        width: 100%;
-        padding: 0 1rem;
-    }
-    #profile-right h1{
-        font-size: 1.6rem;
-    }
-    #profile-right p{
-        font-size: 0.9rem;
+    .complete-btn {
+        height: 34px;
+        font-size: 0.7rem;
     }
 }

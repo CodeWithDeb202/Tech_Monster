@@ -1,0 +1,166 @@
+.overview-skeleton {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.skeleton-card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: rgba(13, 27, 42, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+/* TOP */
+
+.overview-skeleton-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+.welcome-skeleton {
+    min-height: 180px;
+}
+
+.server-skeleton {
+    min-height: 180px;
+}
+
+
+/* STATS */
+
+.stats-skeleton {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.stats-item {
+    flex-direction: row;
+    align-items: center;
+}
+
+.stats-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+
+/* CHART */
+
+.overview-skeleton-chart {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+.chart-skeleton {
+    min-height: 350px;
+}
+
+.attendance-skeleton {
+    min-height: 350px;
+}
+
+.attendance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* MIDDLE */
+
+.overview-skeleton-middle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.large-list-skeleton {
+    min-height: 320px;
+}
+
+.list-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.list-row > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+
+/* BOTTOM */
+
+.overview-skeleton-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.bottom-skeleton {
+    min-height: 300px;
+}
+
+
+/* FOOTER */
+
+.overview-skeleton-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.footer-skeleton {
+    min-height: 250px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 991px) {
+
+    .overview-skeleton-top,
+    .overview-skeleton-chart {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-skeleton {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 767px) {
+
+    .overview-skeleton-middle,
+    .overview-skeleton-bottom,
+    .overview-skeleton-footer {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 439px) {
+
+    .stats-skeleton {
+        grid-template-columns: 1fr;
+    }
+
+    .skeleton-card {
+        padding: 1rem;
+    }
+
+}

@@ -1,8 +1,9 @@
 import "./Home.css";
 
 import { useEffect, useState } from "react";
+
 import api from "../../../../services/api/axios";
-import { API } from '../../../../services/api/endpoints';
+import { API } from "../../../../services/api/endpoints";
 
 import WelcomeCard from "../../../../components/Dashboard/Student/Home/WelcomeCard";
 import ProfileSummary from "../../../../components/Dashboard/Student/Home/ProfileSummary";
@@ -12,68 +13,133 @@ import SuggestedUsers from "../../../../components/Dashboard/Student/Home/Sugges
 import LearningStreak from "../../../../components/Dashboard/Student/Home/LearningStreak";
 import LearningAnalytics from "../../../../components/Dashboard/Student/Home/LearningAnalytics";
 
-import LoaderPage from '../../../../components/Dashboard/common/LoaderPage';
+import Skeleton from "../../../../components/Dashboard/common/LoaderPage/Skeleton";
 
 
 const Home = () => {
-
   const [dashboard, setDashboard] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const loadDashboard = async () => {
-
     try {
-      const res = await api.get(API.DASHBOARD.STUDENT);
+      const response = await api.get(API.DASHBOARD.STUDENT);
 
-      console.log("Home:Data=", res.data.dashboard);
+      console.log("Home: Data =", response.data?.dashboard);
 
+      setDashboard(response.data?.dashboard || null);
+    } catch (error) {
+      console.error("Dashboard Error:", error);
+      console.error("Response:", error.response?.data);
+      console.error("Status:", error.response?.status);
 
-      setDashboard(res.data.dashboard);
-
-    } catch (err) {
-      console.log("Dashboard Error:", err);
-      console.log(err.response?.data);
-      console.log(err.response?.status);
+      setDashboard(null);
     } finally {
-
       setLoading(false);
-
     }
   };
-  
-  if (loading) {
-    return (
-      <LoaderPage
-        message="Loading your dashboard..."
-        size={60}
-      />
-    );
-  }
-  
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    loadDashboard();
 
+  useEffect(() => {
+    loadDashboard();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="home-page home-skeleton">
 
-  const analytics = dashboard?.analytics || {
+        {/* Welcome */}
+        <div className="skeleton-welcome">
+          <div className="skeleton-welcome-content">
+            <Skeleton width="180px" height="28px" />
+            <Skeleton width="280px" height="18px" />
+            <Skeleton width="120px" height="18px" />
+          </div>
 
-    completedCourses: 0,
+          <Skeleton
+            width="80px"
+            height="80px"
+            borderRadius="50%"
+          />
+        </div>
 
-    hours: 0,
+        {/* Profile */}
+        <div className="skeleton-profile">
+          <Skeleton width="160px" height="24px" />
+          <Skeleton width="100%" height="18px" />
+          <Skeleton width="75%" height="18px" />
+        </div>
 
-    growth: 0,
+        {/* Stats */}
+        <div className="skeleton-stats">
+          {[1, 2, 3, 4].map((item) => (
+            <Skeleton
+              key={item}
+              height="120px"
+              borderRadius="16px"
+            />
+          ))}
+        </div>
 
-    weeklyData: [0, 0, 0, 0, 0, 0, 0]
+        {/* Streak */}
+        <Skeleton
+          width="100%"
+          height="180px"
+          borderRadius="16px"
+        />
 
+        {/* Analytics */}
+        <Skeleton
+          width="100%"
+          height="300px"
+          borderRadius="16px"
+        />
+
+        {/* Internships */}
+        <div className="skeleton-section">
+          <Skeleton width="220px" height="25px" />
+
+          <div className="skeleton-internships">
+            {[1, 2, 3].map((item) => (
+              <Skeleton
+                key={item}
+                height="180px"
+                borderRadius="16px"
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Users */}
+        <div className="skeleton-section">
+          <Skeleton width="180px" height="25px" />
+
+          <Skeleton
+            width="100%"
+            height="100px"
+            borderRadius="16px"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  const analytics = {
+    completedCourses:
+      dashboard?.analytics?.completedCourses || 0,
+
+    hours:
+      dashboard?.analytics?.hours || 0,
+
+    growth:
+      dashboard?.analytics?.growth || 0,
+
+    weeklyData:
+      dashboard?.analytics?.weeklyData?.length === 7
+        ? dashboard.analytics.weeklyData
+        : [0, 0, 0, 0, 0, 0, 0],
   };
 
-
-
   return (
-    <div className="home-page">
+    <main className="home-page">
 
       <WelcomeCard
         username={dashboard?.user}
@@ -81,19 +147,35 @@ const Home = () => {
         streak={dashboard?.streak}
       />
 
-      <ProfileSummary username={dashboard?.user} />
+      <ProfileSummary
+        username={dashboard?.user}
+      />
 
-      <StatsCards stats={dashboard?.stats} />
+      <StatsCards
+        stats={dashboard?.stats}
+      />
 
-      <LearningStreak streak={dashboard?.streak} />
+      <LearningStreak
+        streak={dashboard?.streak}
+      />
 
-      <LearningAnalytics analytics={analytics} />
+      <LearningAnalytics
+        analytics={analytics}
+      />
 
-      <InternshipRecommendation internships={dashboard?.recommendedInternships || []} />
+      <InternshipRecommendation
+        internships={
+          dashboard?.recommendedInternships || []
+        }
+      />
 
-      <SuggestedUsers users={dashboard?.suggestedUsers} />
+      <SuggestedUsers
+        users={
+          dashboard?.suggestedUsers || []
+        }
+      />
 
-    </div>
+    </main>
   );
 };
 

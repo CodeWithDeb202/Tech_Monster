@@ -9,7 +9,7 @@ import AuthLayout from "../../../layouts/AuthLayout";
 
 import OTPInput from "../../../components/Common/Form/OTPInput";
 import Button from "../../../components/Common/Form/Button";
-import LoaderPage from '../../../components/Dashboard/common/LoaderPage';
+import Hash from '../../../components/Dashboard/common/LoaderPage/Hash';
 
 import {
     verifyOtp,
@@ -222,140 +222,144 @@ function VerifySignupOTP() {
 
     };
 
-    {
-    loading && (
-        <LoaderPage
-            fullScreen
-            message="Verifying your account..."
-            size={70}
-        />
-    )
-}
-
 
 
 
 
     return (
 
+        <>
 
-        <AuthLayout
-
-            title="Verify Account"
-
-            subtitle="Enter OTP sent to your email"
-
-        >
-
-
-
-            <div className="verify-container">
-
-
-                <OTPInput
-
-                    length={6}
-
-                    value={otp}
-
-                    onChange={setOtp}
-
-                />
+            {
+                loading && (
+                    <Hash
+                        fullScreen
+                        message="Verifying your account..."
+                        size={70}
+                    />
+                )
+            }
 
 
 
-                {
-                    error &&
+            <AuthLayout
 
-                    <p className="otp-error">
+                title="Verify Account"
 
-                        {error}
+                subtitle="Enter OTP sent to your email"
 
-                    </p>
-                }
+            >
 
 
 
+                <div className="verify-container">
 
-                <Button
 
-                    fullWidth
+                    <OTPInput
 
-                    onClick={handleVerify}
+                        length={6}
 
-                    disabled={loading}
+                        value={otp}
 
-                >
+                        onChange={setOtp}
+
+                    />
+
+
 
                     {
-                        loading
+                        error &&
 
-                            ?
+                        <p className="otp-error">
 
-                            "Verifying..."
+                            {error}
 
-                            :
-
-                            "Verify OTP"
+                        </p>
                     }
 
 
-                </Button>
+
+
+                    <Button
+
+                        fullWidth
+
+                        onClick={handleVerify}
+
+                        disabled={loading}
+
+                    >
+
+                        {
+                            loading
+
+                                ?
+
+                                "Verifying..."
+
+                                :
+
+                                "Verify OTP"
+                        }
+
+
+                    </Button>
 
 
 
 
-                {
+                    {
 
 
-                    timer > 0
+                        timer > 0
 
-                        ?
+                            ?
 
-                        <p>
+                            <p>
 
-                            Resend OTP in {timer}s
-
-
-                        </p>
+                                Resend OTP in {timer}s
 
 
-                        :
-
-                        <button
-
-                            onClick={handleResend}
-
-                            disabled={resending}
-
-                        >
-
-                            {
-                                resending
-
-                                    ?
-
-                                    "Sending..."
-
-                                    :
-
-                                    "Resend OTP"
-                            }
+                            </p>
 
 
-                        </button>
+                            :
+
+                            <button
+
+                                onClick={handleResend}
+
+                                disabled={resending}
+
+                            >
+
+                                {
+                                    resending
+
+                                        ?
+
+                                        "Sending..."
+
+                                        :
+
+                                        "Resend OTP"
+                                }
 
 
-                }
+                            </button>
+
+
+                    }
 
 
 
-            </div>
+                </div>
 
 
-        </AuthLayout>
+            </AuthLayout>
 
 
+        </>
     );
 
 

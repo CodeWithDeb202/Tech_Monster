@@ -22,7 +22,7 @@ import {
     verifyOtp,
     resendOtp
 } from "../../../services/api/authService";
-import LoaderPage from "../../../components/Dashboard/common/LoaderPage";
+import Hash from "../../../components/Dashboard/common/LoaderPage/Hash";
 
 
 
@@ -165,16 +165,6 @@ function VerifyResetOTP() {
 
     };
 
-    {
-        loading && (
-            <LoaderPage
-                fullScreen
-                message="Verifying OTP..."
-                size={70}
-            />
-        )
-    }
-
 
 
 
@@ -204,111 +194,124 @@ function VerifyResetOTP() {
 
 
     return (
+        <>
 
 
-        <AuthLayout
-
-            title="Verify OTP"
-
-            subtitle="Verify OTP to reset password"
-
-
-        >
-
-
-            <div className="verify-container">
+            {
+                loading && (
+                    <Hash
+                        fullScreen
+                        message="Verifying OTP..."
+                        size={70}
+                    />
+                )
+            }
 
 
-                <OTPInput
+            <AuthLayout
 
-                    length={6}
+                title="Verify OTP"
 
-                    value={otp}
-
-                    onChange={setOtp}
-
-                />
+                subtitle="Verify OTP to reset password"
 
 
-
-                {
-
-                    error &&
-
-                    <p className="otp-error">
-
-                        {error}
-
-                    </p>
-
-                }
+            >
 
 
+                <div className="verify-container">
 
 
-                <Button
+                    <OTPInput
 
-                    fullWidth
+                        length={6}
 
-                    onClick={handleVerify}
+                        value={otp}
 
-                    disabled={loading}
+                        onChange={setOtp}
 
-                >
+                    />
+
+
 
                     {
-                        loading
 
-                            ?
+                        error &&
 
-                            "Verifying..."
+                        <p className="otp-error">
 
-                            :
+                            {error}
 
-                            "Verify OTP"
+                        </p>
 
                     }
 
 
-                </Button>
+
+
+                    <Button
+
+                        fullWidth
+
+                        onClick={handleVerify}
+
+                        disabled={loading}
+
+                    >
+
+                        {
+                            loading
+
+                                ?
+
+                                "Verifying..."
+
+                                :
+
+                                "Verify OTP"
+
+                        }
+
+
+                    </Button>
 
 
 
-                {
+                    {
 
-                    timer > 0
+                        timer > 0
 
-                        ?
+                            ?
 
-                        <p>
+                            <p>
 
-                            Resend OTP in {timer}s
+                                Resend OTP in {timer}s
 
-                        </p>
-
-
-                        :
-
-                        <button
-
-                            onClick={handleResend}
-
-                        >
-
-                            Resend OTP
-
-                        </button>
-
-                }
+                            </p>
 
 
+                            :
 
-            </div>
+                            <button
+
+                                onClick={handleResend}
+
+                            >
+
+                                Resend OTP
+
+                            </button>
+
+                    }
 
 
-        </AuthLayout>
+
+                </div>
 
 
+            </AuthLayout>
+
+
+        </>
     );
 
 

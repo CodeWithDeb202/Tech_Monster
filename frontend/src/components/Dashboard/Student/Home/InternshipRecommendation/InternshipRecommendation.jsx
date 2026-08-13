@@ -1,7 +1,6 @@
 import "./InternshipRecommendation.css";
 
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import {
@@ -11,23 +10,52 @@ import {
   HiPlayCircle,
 } from "react-icons/hi2";
 
-const InternshipRecommendation = ({ internships = [] }) => {
+
+const InternshipRecommendation = ({
+  internships = [],
+}) => {
+
   const navigate = useNavigate();
 
-  return (
 
+  const handleContinue = (internship) => {
+    const slug =
+      internship?.slug ||
+      internship?._id;
+
+    if (!slug) return;
+
+    navigate(`/student/lessions/${slug}`);
+  };
+
+
+  return (
     <motion.section
-      id="internship-recommendation-section"
-      initial={{ opacity: 0, y: 80 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: .7 }}
+      className="internship-recommendation"
+
+      initial={{
+        opacity: 0,
+        y: 80,
+      }}
+
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+
+      viewport={{
+        once: true,
+      }}
+
+      transition={{
+        duration: 0.7,
+      }}
     >
 
-      {/* Header */}
+      <div className="internship-header">
 
-      <div id="internship-recommendation-header">
         <div>
+
           <h2>
             <HiBookOpen />
             Recommended Internships
@@ -36,101 +64,179 @@ const InternshipRecommendation = ({ internships = [] }) => {
           <p>
             Internships selected specially for you.
           </p>
+
         </div>
 
+
         <motion.button
+          type="button"
+          className="view-btn"
+
           whileHover={{
-            scale: 1.05
+            scale: 1.05,
           }}
-          id="view-btn"
-          onClick={() => navigate('/student/dashboard')}
+
+          whileTap={{
+            scale: 0.97,
+          }}
+
+          onClick={() =>
+            navigate("/student/dashboard")
+          }
         >
           View All
           <HiArrowRight />
         </motion.button>
+
       </div>
 
-      {/* Cards */}
 
-      <div id="internship-recommendation-slider">
+      {internships.length === 0 ? (
 
-        {
-          internships.map((internship, index) => (
-            <motion.div
-              key={internship._id || index}
-              id="internship-recommendation-card"
-              initial={{
-                opacity: 0,
-                y: 50
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0
-              }}
-              transition={{
-                delay: index * .15
-              }}
-              whileHover={{
-                y: -12,
-                rotateX: 5,
-                rotateY: -5
-              }}
-            >
+        <div className="internship-empty">
+          <HiBookOpen />
 
-              {/* Image */}
+          <h3>
+            No recommendations yet
+          </h3>
 
-              <div id="internship-recommendation-card-image">
-                <img
-                  src={internship.thumbnail}
-                  alt={internship.title}
-                />
-              </div>
+          <p>
+            Complete your profile to get
+            personalized internship recommendations.
+          </p>
+        </div>
 
-              {/* Content */}
+      ) : (
 
-              <div id="internship-recommendation-card-content">
-                <span id="internship-recommendation-card-category">
-                  {internship.category}
-                </span>
-                <span id="internship-recommendation-card-category">
-                  {internship.level}
-                </span>
-                <h3>
-                  {internship.title}
-                </h3>
+        <div className="internship-slider">
 
-                <div id="internship-recommendation-card-meta">
-                  <span>
-                    <HiStar />
-                    {internship.rating || 0}
-                  </span>
-                  <span>
-                    {internship.totalNotes} lessons
-                  </span>
+          {internships.map(
+            (internship, index) => (
+
+              <motion.article
+                key={
+                  internship?._id ||
+                  internship?.slug ||
+                  index
+                }
+
+                className="internship-card"
+
+                initial={{
+                  opacity: 0,
+                  y: 50,
+                }}
+
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+
+                transition={{
+                  delay: index * 0.15,
+                }}
+
+                whileHover={{
+                  y: -10,
+                }}
+              >
+
+                <div className="internship-card-image">
+
+                  <img
+                    src={
+                      internship?.thumbnail ||
+                      "/default-internship.jpg"
+                    }
+
+                    alt={
+                      internship?.title ||
+                      "Internship"
+                    }
+
+                    onError={(event) => {
+                      event.currentTarget.src =
+                        "/default-internship.jpg";
+                    }}
+                  />
+
                 </div>
 
-                <motion.button
-                  whileHover={{
-                    x: 6
-                  }}
-                  id="internship-recommendation-continue-btn"
-                  onClick={() =>
-                    navigate(
-                      `/student/lessions/${internship.slug || internship._id || "frontend-dev"}`
-                    )
-                  }
-                >
-                  <HiPlayCircle />
-                  Continue
-                </motion.button>
-              </div>
-            </motion.div>
-          ))
-        }
-      </div>
+
+                <div className="internship-card-content">
+
+                  <div className="internship-tags">
+
+                    {internship?.category && (
+                      <span>
+                        {internship.category}
+                      </span>
+                    )}
+
+                    {internship?.level && (
+                      <span>
+                        {internship.level}
+                      </span>
+                    )}
+
+                  </div>
+
+
+                  <h3>
+                    {
+                      internship?.title ||
+                      "Untitled Internship"
+                    }
+                  </h3>
+
+
+                  <div className="internship-meta">
+
+                    <span>
+                      <HiStar />
+
+                      {internship?.rating || 0}
+                    </span>
+
+                    <span>
+                      {internship?.totalNotes || 0}
+                      {" "}
+                      lessons
+                    </span>
+
+                  </div>
+
+
+                  <motion.button
+                    type="button"
+
+                    className="internship-continue-btn"
+
+                    whileHover={{
+                      x: 5,
+                    }}
+
+                    onClick={() =>
+                      handleContinue(
+                        internship
+                      )
+                    }
+                  >
+                    <HiPlayCircle />
+                    Continue
+                  </motion.button>
+
+                </div>
+
+              </motion.article>
+            )
+          )}
+
+        </div>
+      )}
+
     </motion.section>
   );
-
 };
 
 export default InternshipRecommendation;

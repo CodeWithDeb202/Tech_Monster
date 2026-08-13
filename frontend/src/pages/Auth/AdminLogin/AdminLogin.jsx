@@ -14,7 +14,7 @@ import PasswordInput from "../../../components/Common/Form/PasswordInput";
 import Button from "../../../components/Common/Form/Button";
 
 import { adminLogin } from "../../../services/api/authService";
-import LoaderPage from "../../../components/Dashboard/common/LoaderPage";
+import Hash from "../../../components/Dashboard/common/LoaderPage/Hash";
 
 function AdminLogin() {
     const [loading, setLoading] = useState(false);
@@ -72,14 +72,14 @@ function AdminLogin() {
     };
 
     {
-    loading && (
-        <LoaderPage
-            fullScreen
-            message="Authenticating admin..."
-            size={70}
-        />
-    )
-}
+        loading && (
+            <Hash
+                fullScreen
+                message="Authenticating admin..."
+                size={70}
+            />
+        )
+    }
 
     return (
 

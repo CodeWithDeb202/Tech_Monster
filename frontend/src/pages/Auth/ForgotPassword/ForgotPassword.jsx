@@ -15,7 +15,7 @@ import Button from "../../../components/Common/Form/Button";
 import { forgotPasswordSchema } from "../../../validations/auth/forgotPasswordSchema";
 
 import { forgotPassword } from "../../../services/api/authService";
-import LoaderPage from "../../../components/Dashboard/common/LoaderPage";
+import Hash from "../../../components/Dashboard/common/LoaderPage/Hash";
 
 function ForgotPassword() {
 
@@ -81,7 +81,7 @@ function ForgotPassword() {
 
     {
         loading && (
-            <LoaderPage
+            <Hash
                 fullScreen
                 message="Sending OTP to your email..."
                 size={70}

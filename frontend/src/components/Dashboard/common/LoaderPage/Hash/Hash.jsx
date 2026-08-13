@@ -1,7 +1,7 @@
 import { HashLoader } from "react-spinners";
-import "./LoaderPage.css";
+import "./Hash.css";
 
-export default function LoaderPage({
+export default function Hash({
     message = "",
     size = 60,
     fullScreen = false

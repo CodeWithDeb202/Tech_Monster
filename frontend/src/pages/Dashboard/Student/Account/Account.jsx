@@ -10,7 +10,7 @@ import {
 import "./Account.css";
 
 import { toast } from "react-toastify";
-import LoaderPage from "../../../../components/Dashboard/common/LoaderPage";
+import Spinner from "../../../../components/Dashboard/common/LoaderPage/Spinner/Spinner";
 
 
 export default function Account() {
@@ -74,13 +74,13 @@ export default function Account() {
   if (loading) {
 
     return (
-        <LoaderPage
-            message="Loading your profile..."
-            size={60}
-        />
+      <Spinner
+        message="Loading your profile..."
+        size={60}
+      />
     );
 
-}
+  }
 
 
   // ==============================

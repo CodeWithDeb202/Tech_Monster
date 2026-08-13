@@ -1,130 +1,195 @@
 import "./ProfileSummary.css";
+
 import { motion } from "framer-motion";
+
 import {
   HiCheckBadge,
   HiEnvelope,
   HiUserCircle,
 } from "react-icons/hi2";
+
 import { useNavigate } from "react-router-dom";
 
-import defaultProfileImage from '../../../../../assets/profile/default-profile.svg';
+import defaultProfileImage
+  from "../../../../../assets/profile/default-profile.svg";
 
-import useAuth from "../../../../../hooks/useAuth";
+import useAuth
+  from "../../../../../hooks/useAuth";
+
 
 const ProfileSummary = ({ username }) => {
+
   const navigate = useNavigate();
-  const {user} = useAuth();
+  const { user } = useAuth();
+
+  const skills =
+    Array.isArray(username?.skills)
+      ? username.skills
+      : [];
+
+  const progress = Math.min(
+    Math.max(
+      Number(username?.profileCompletion) || 0,
+      0
+    ),
+    100
+  );
 
 
-  const skills = username?.skills || [];
-  const progress = username?.profileCompletion || 0;
+  const displayName =
+    username?.fullName?.trim()
+      ? username.fullName
+      : user?.username
+        ? user.username.charAt(0).toUpperCase() +
+        user.username.slice(1)
+        : "Student";
+
 
   return (
     <motion.section
-      id="profile-summary"
-      initial={{ opacity: 0, y: 80 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{once: true, amount: 0.3}}
-      transition={{duration: 0.7 }}
+      className="profile-summary"
+
+      initial={{
+        opacity: 0,
+        y: 80,
+      }}
+
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+
+      viewport={{
+        once: true,
+        amount: 0.3,
+      }}
+
+      transition={{
+        duration: 0.7,
+      }}
     >
-      {/* Glow */}
 
-      <div className="profile-glow profile-glow-1"></div>
-      <div className="profile-glow profile-glow-2"></div>
+      <div className="profile-glow profile-glow-one"></div>
+      <div className="profile-glow profile-glow-two"></div>
 
-      {/* LEFT */}
 
-      <div id="profile-left">
+      <div className="profile-left">
 
         <motion.div
+          className="profile-image"
+
           whileHover={{
             rotate: 3,
             scale: 1.05,
           }}
-          id="profile-image"
         >
           <img
             src={
-              username?.avatar || defaultProfileImage
+              username?.avatar ||
+              defaultProfileImage
             }
-            alt={username?.fullName}
+            alt={`${displayName} profile`}
+            onError={(event) => {
+              event.currentTarget.src =
+                defaultProfileImage;
+            }}
           />
         </motion.div>
 
-        <div id="profile-info">
 
-          <h2>{
-              username?.fullName?.trim() ? username?.fullName : user?.username?.charAt(0).toUpperCase() + user?.username?.slice(1)
-            }
+        <div className="profile-info">
+
+          <h2>
+            {displayName}
           </h2>
 
           <p>
-
             <HiEnvelope />
 
-            {username?.email}
-
+            {username?.email || "Email not available"}
           </p>
 
-          <div id="skills-wrapper">
 
-            {skills.map((skill, index) => (
-              <motion.span
-                key={index}
-                id="skill-chip"
-                initial={{
-                  opacity: 0,
-                  scale: .8,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  scale: 1,
-                }}
-                transition={{
-                  delay: index * .08,
-                }}
-              >
-                {skill}
-              </motion.span>
-            ))}
+          {skills.length > 0 && (
+            <div className="skills-wrapper">
 
-          </div>
+              {skills.map(
+                (skill, index) => (
+                  <motion.span
+                    key={`${skill}-${index}`}
+                    className="skill-chip"
+
+                    initial={{
+                      opacity: 0,
+                      scale: 0.8,
+                    }}
+
+                    whileInView={{
+                      opacity: 1,
+                      scale: 1,
+                    }}
+
+                    transition={{
+                      delay:
+                        index * 0.08,
+                    }}
+                  >
+                    {skill}
+                  </motion.span>
+                )
+              )}
+
+            </div>
+          )}
 
         </div>
 
       </div>
 
-      {/* Divider */}
 
       <motion.div
-        id="profile-divider"
-        initial={{ scaleY: 0 }}
-        whileInView={{ scaleY: 1 }}
-        transition={{ duration: .7 }}
+        className="profile-divider"
+
+        initial={{
+          scaleY: 0,
+        }}
+
+        whileInView={{
+          scaleY: 1,
+        }}
+
+        transition={{
+          duration: 0.7,
+        }}
       />
 
-      {/* Right */}
 
-      <div id="profile-right">
+      <div className="profile-right">
 
-        <div id="progress-title">
+        <div className="progress-title">
 
           <HiCheckBadge />
 
-          <span>Profile Completion</span>
+          <span>
+            Profile Completion
+          </span>
 
         </div>
 
-        <div id="progress-bar">
+
+        <div className="progress-bar">
 
           <motion.div
-            id="progress-fill"
+            className="progress-fill"
+
             initial={{
               width: 0,
             }}
+
             whileInView={{
               width: `${progress}%`,
             }}
+
             transition={{
               duration: 1.5,
             }}
@@ -132,7 +197,11 @@ const ProfileSummary = ({ username }) => {
 
         </div>
 
-        <h1>{progress}%</h1>
+
+        <h1>
+          {progress}%
+        </h1>
+
 
         <p>
           Complete your remaining profile
@@ -140,19 +209,32 @@ const ProfileSummary = ({ username }) => {
           features.
         </p>
 
+
         <motion.button
+          type="button"
+
           whileHover={{
             scale: 1.05,
             y: -3,
           }}
+
           whileTap={{
-            scale: .95,
+            scale: 0.95,
           }}
-          id="complete-btn"
-          onClick={() => navigate("/student/account")}
+
+          className="complete-btn"
+
+          onClick={() =>
+            navigate("/student/account")
+          }
         >
+
           <HiUserCircle />
-          {progress === 100 ? "Completed" : "Complete Profile"}
+
+          {progress === 100
+            ? "Completed"
+            : "Complete Profile"}
+
         </motion.button>
 
       </div>

@@ -2,50 +2,6 @@
    SIGNUP PAGE
 ========================================== */
 
-.loading-overlay {
-
-    position: fixed;
-
-    inset: 0;
-
-    background: rgba(255, 255, 255, .75);
-
-    backdrop-filter: blur(8px);
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    z-index: 99999;
-
-}
-
-.loading-overlay h3 {
-
-    margin-top: 25px;
-
-    font-size: 22px;
-
-    font-weight: 700;
-
-    color: #111;
-
-}
-
-.loading-overlay p {
-
-    margin-top: 8px;
-
-    color: #666;
-
-    font-size: 15px;
-
-}
-
 #signup-form {
     display: flex;
     flex-direction: column;

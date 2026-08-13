@@ -8,93 +8,143 @@ import {
   HiArrowTrendingUp,
 } from "react-icons/hi2";
 
+
 const LearningStreak = ({ streak }) => {
 
+  const days = streak?.days || 0;
+
+  const progress = Math.min(
+    Math.max(
+      Number(streak?.progress) || 0,
+      0
+    ),
+    100
+  );
+
+
   return (
-
     <motion.section
-      id="learning-streak"
-      initial={{ opacity:0,y:80 }}
-      whileInView={{ opacity:1,y:0 }}
-      viewport={{ once:true }}
-      transition={{ duration:.8 }}
+      className="learning-streak"
+
+      initial={{
+        opacity: 0,
+        y: 80,
+      }}
+
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+
+      viewport={{
+        once: true,
+      }}
+
+      transition={{
+        duration: 0.8,
+      }}
     >
-      <div id="streak-glow"></div>
 
-      <div id="streak-left">
+      <div className="streak-glow"></div>
+
+
+      <div className="streak-left">
+
         <motion.div
-          animate={{
-            rotate:[0,8,-8,0],
-            scale:[1,1.05,1]
-          }}
-          transition={{
-            repeat:Infinity,
-            duration:3
-          }}
-          id="fire-icon"
+          className="fire-icon"
 
+          animate={{
+            rotate: [0, 8, -8, 0],
+            scale: [1, 1.05, 1],
+          }}
+
+          transition={{
+            repeat: Infinity,
+            duration: 3,
+          }}
         >
-          <HiFire/>
+          <HiFire />
         </motion.div>
 
+
         <div>
+
           <h2>
-            {streak?.days || 0} Day Streak 🔥
+            {days} Day Streak 🔥
           </h2>
 
           <p>
-            Keep learning every day to maintain your streak.
+            Keep learning every day to
+            maintain your streak.
           </p>
+
         </div>
+
       </div>
 
-      <div id="streak-right">
-        <div id="streak-progress">
+
+      <div className="streak-right">
+
+        <div className="streak-progress">
+
           <motion.div
-            id="streak-fill"
-            initial={{ width:0 }}
-            whileInView={{
-              width:`${streak?.progress || 0}%`
+            className="streak-fill"
+
+            initial={{
+              width: 0,
             }}
+
+            whileInView={{
+              width: `${progress}%`,
+            }}
+
             transition={{
-              duration:2
+              duration: 2,
             }}
           />
+
         </div>
 
-        <div id="streak-footer">
+
+        <div className="streak-footer">
+
           <span>
-            <HiBolt/>
+            <HiBolt />
             Weekly Goal
           </span>
 
           <strong>
-            {streak?.progress || 0}%
+            {progress}%
           </strong>
+
         </div>
 
+
         <motion.button
+          type="button"
+
           whileHover={{
-            scale:1.05,
-            y:-4
+            scale: 1.05,
+            y: -4,
           }}
+
           whileTap={{
-            scale:.95
+            scale: 0.95,
           }}
-          id="continue-streak-btn"
+
+          className="continue-streak-btn"
         >
 
-          <HiArrowTrendingUp/>
+          <HiArrowTrendingUp />
 
           Continue Streak
 
         </motion.button>
 
       </div>
+
     </motion.section>
-
   );
-
 };
 
 export default LearningStreak;

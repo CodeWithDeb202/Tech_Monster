@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { toast } from "react-toastify";
-import { HashLoader } from "react-spinners";
+import Hash from '../../../components/Dashboard/common/LoaderPage/Hash';
 
 
 import AuthLayout from "../../../layouts/AuthLayout";
@@ -106,21 +106,11 @@ function Signup() {
       {
         loading && (
 
-          <div className="loading-overlay">
-
-            <HashLoader
-              color="#2563eb"
-              size={70}
-              speedMultiplier={1.2}
-            />
-
-            <h3>Creating your account...</h3>
-
-            <p>
-              Sending OTP to your Gmail...
-            </p>
-
-          </div>
+          <Hash
+            fullScreen
+            message="Sending OTP to your Gmail..."
+            size={70}
+          />
 
         )
       }

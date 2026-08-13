@@ -8,18 +8,32 @@ import {
   HiCheckBadge,
 } from "react-icons/hi2";
 
-const SuggestedUsers = ({ users = [] }) => {
+
+const SuggestedUsers = ({
+  users = [],
+}) => {
+
   return (
     <motion.section
       className="suggested-users"
 
-      initial={{ opacity: 0, y: 80 }}
+      initial={{
+        opacity: 0,
+        y: 80,
+      }}
 
-      whileInView={{ opacity: 1, y: 0 }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
 
-      viewport={{ once: true }}
+      viewport={{
+        once: true,
+      }}
 
-      transition={{ duration: .8 }}
+      transition={{
+        duration: 0.8,
+      }}
     >
 
       <div className="users-header">
@@ -27,169 +41,205 @@ const SuggestedUsers = ({ users = [] }) => {
         <div>
 
           <h2>
-
             <HiUsers />
-
             Suggested Users
-
           </h2>
 
           <p>
-            Connect with learners having similar interests.
+            Connect with learners having
+            similar interests.
           </p>
 
         </div>
 
+
         <motion.button
-
-          whileHover={{
-            scale: 1.05
-          }}
-
+          type="button"
           className="view-all-users"
 
+          whileHover={{
+            scale: 1.05,
+          }}
         >
-
           View All
-
           <HiArrowRight />
-
         </motion.button>
 
       </div>
 
-      <div className="users-grid">
 
-        {
+      {users.length === 0 ? (
 
-          users.map((user,index)=>(
+        <div className="users-empty">
 
-            <motion.div
+          <HiUsers />
 
-              key={user._id || index}
+          <h3>
+            No suggested users
+          </h3>
 
-              className="user-card"
+          <p>
+            More suggestions will appear
+            as you complete your profile.
+          </p>
 
-              initial={{
-                opacity:0,
-                y:50
-              }}
+        </div>
 
-              whileInView={{
-                opacity:1,
-                y:0
-              }}
+      ) : (
 
-              transition={{
-                delay:index*.15
-              }}
+        <div className="users-grid">
 
-              whileHover={{
-                y:-10,
-                scale:1.03
-              }}
+          {users.map(
+            (user, index) => (
 
-            >
-
-              <div className="user-top">
-
-                <div className="user-avatar">
-
-                  <img
-
-                    src={user.avatar}
-
-                    alt={user.fullName}
-
-                  />
-
-                  <span className="online-dot"></span>
-
-                </div>
-
-                <div>
-
-                  <h3>
-
-                    {user.fullName}
-
-                  </h3>
-
-                  <p>
-
-                    {user.role}
-
-                  </p>
-
-                </div>
-
-              </div>
-
-              <div className="user-skills">
-
-                {
-
-                  user.skills?.map((skill,i)=>(
-
-                    <span key={i}>
-
-                      {skill}
-
-                    </span>
-
-                  ))
-
+              <motion.article
+                key={
+                  user?._id ||
+                  index
                 }
 
-              </div>
+                className="user-card"
 
-              <div className="mutual">
+                initial={{
+                  opacity: 0,
+                  y: 50,
+                }}
 
-                <HiCheckBadge />
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
 
-                {user.mutual} Mutual Skills
+                transition={{
+                  delay:
+                    index * 0.15,
+                }}
 
-              </div>
+                whileHover={{
+                  y: -8,
+                  scale: 1.02,
+                }}
+              >
 
-              <div className="user-buttons">
+                <div className="user-top">
 
-                <motion.button
+                  <div className="user-avatar">
 
-                  whileHover={{
-                    scale:1.05
-                  }}
+                    <img
+                      src={
+                        user?.avatar ||
+                        "/default-profile.png"
+                      }
 
-                  className="follow-btn"
+                      alt={
+                        user?.fullName ||
+                        "User"
+                      }
 
-                >
+                      onError={(
+                        event
+                      ) => {
+                        event.currentTarget.src =
+                          "/default-profile.png";
+                      }}
+                    />
 
-                  Follow
+                    <span
+                      className="online-dot"
+                    />
 
-                </motion.button>
+                  </div>
 
-                <motion.button
 
-                  whileHover={{
-                    scale:1.05
-                  }}
+                  <div className="user-info">
 
-                  className="profile-btn"
+                    <h3>
+                      {
+                        user?.fullName ||
+                        "Unknown User"
+                      }
+                    </h3>
 
-                >
+                    <p>
+                      {
+                        user?.role ||
+                        "Learner"
+                      }
+                    </p>
 
-                  View Profile
+                  </div>
 
-                </motion.button>
+                </div>
 
-              </div>
 
-            </motion.div>
+                {user?.skills?.length > 0 && (
+                  <div className="user-skills">
 
-          ))
+                    {user.skills
+                      .slice(0, 6)
+                      .map(
+                        (
+                          skill,
+                          i
+                        ) => (
+                          <span
+                            key={
+                              `${skill}-${i}`
+                            }
+                          >
+                            {skill}
+                          </span>
+                        )
+                      )}
 
-        }
+                  </div>
+                )}
 
-      </div>
+
+                <div className="mutual">
+
+                  <HiCheckBadge />
+
+                  {user?.mutual || 0}
+                  {" "}
+                  Mutual Skills
+
+                </div>
+
+
+                <div className="user-buttons">
+
+                  <motion.button
+                    type="button"
+                    className="follow-btn"
+
+                    whileHover={{
+                      scale: 1.03,
+                    }}
+                  >
+                    Follow
+                  </motion.button>
+
+
+                  <motion.button
+                    type="button"
+                    className="profile-btn"
+
+                    whileHover={{
+                      scale: 1.03,
+                    }}
+                  >
+                    View Profile
+                  </motion.button>
+
+                </div>
+
+              </motion.article>
+            )
+          )}
+
+        </div>
+      )}
 
     </motion.section>
   );

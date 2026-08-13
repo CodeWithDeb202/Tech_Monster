@@ -12,7 +12,7 @@ import { API } from "../../../../services/api/endpoints";
 import LessonSidebar from "../../../../components/Dashboard/Student/Lessions/LessonSidebar";
 import LessonContent from "../../../../components/Dashboard/Student/Lessions/LessonContent";
 import Pagination from "../../../../components/Dashboard/Student/Lessions/Pagination";
-import LoaderPage from "../../../../components/Dashboard/common/LoaderPage";
+import Spinner from "../../../../components/Dashboard/common/LoaderPage/Spinner";
 
 const normalizeCourseData = (courseData) => {
     if (!courseData?.modules) {
@@ -516,7 +516,7 @@ export default function Lessions() {
                     id="lesson-right"
                     style={{ width: "100%" }}
                 >
-                    <LoaderPage
+                    <Spinner
                         message="Loading lesson content..."
                         size={60}
                     />

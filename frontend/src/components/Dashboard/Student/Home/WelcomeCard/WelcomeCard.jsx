@@ -2,106 +2,169 @@ import "./WelcomeCard.css";
 
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import useAuth from '../../../../../hooks/useAuth';
+import useAuth from "../../../../../hooks/useAuth";
 
-import { HiFire, HiAcademicCap, HiTrophy, HiSun, HiArrowRight } from "react-icons/hi2";
+import {
+  HiFire,
+  HiAcademicCap,
+  HiTrophy,
+  HiSun,
+  HiArrowRight,
+} from "react-icons/hi2";
 
-const WelcomeCard = ({ username, stats, streak }) => {
+
+const WelcomeCard = ({
+  username,
+  stats,
+  streak,
+}) => {
+
   const { user } = useAuth();
   const navigate = useNavigate();
 
-
-  // Generate Hour count for greeting title changing
   const hour = new Date().getHours();
+
   let greeting = "Good Evening";
-  if (hour < 12) greeting = "Good Morning";
-  else if (hour < 17) greeting = "Good Afternoon";
+
+  if (hour < 12) {
+    greeting = "Good Morning";
+  } else if (hour < 17) {
+    greeting = "Good Afternoon";
+  }
+
+  const displayName =
+    username?.fullName?.trim()
+      ? username.fullName
+      : user?.username
+        ? user.username.charAt(0).toUpperCase() +
+        user.username.slice(1)
+        : "Student";
+
+  const internshipCount =
+    stats?.internships?.total || 0;
+
+  const badgeCount =
+    stats?.badges || 0;
+
+  const streakDays =
+    streak?.days || 0;
 
 
   return (
-
     <motion.section
-      id="welcomeCardMainCont"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: .8 }}
+      className="welcome-card"
+      initial={{
+        opacity: 0,
+        y: 50,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
+      transition={{
+        duration: 0.8,
+      }}
     >
 
-      <div id="welcome-left">
+      <div className="welcome-glow"></div>
 
-        <div id="welocomeContent">
+      <div className="welcome-left">
 
+        <div className="welcome-content">
 
-          <span id="welcome-badge">
-            <div id="welcomeBadgeIcon">
+          <span className="welcome-badge">
+
+            <span className="welcome-badge-icon">
               <HiSun />
-            </div>
+            </span>
+
             {greeting}
+
           </span>
 
           <h1>
             Welcome Back,
             <span>
-              {
-                username?.fullName?.trim() ? username?.fullName : user?.username?.charAt(0).toUpperCase() + user?.username?.slice(1)
-              }
+              {displayName}
             </span>
           </h1>
 
-          <p>Continue your learning journey and complete today's goals.</p>
+          <p>
+            Continue your learning journey and
+            complete today's goals.
+          </p>
+
         </div>
 
         <motion.button
-          whileHover={{ scale: 1.05, x: 5 }}
-          id="welcome-btn"
-          onClick={() => navigate('/student/dashboard')}
+          type="button"
+          className="welcome-btn"
+          whileHover={{
+            scale: 1.05,
+            x: 5,
+          }}
+          whileTap={{
+            scale: 0.97,
+          }}
+          onClick={() =>
+            navigate("/student/dashboard")
+          }
         >
           Continue Learning
           <HiArrowRight />
         </motion.button>
+
       </div>
 
-      <div id="welcome-right">
 
-        {/* How many days you active on our site */}
+      <div className="welcome-right">
+
         <motion.div
-          whileHover={{ y: -8 }}
-          id="mini-card"
+          className="welcome-mini-card"
+          whileHover={{
+            y: -8,
+          }}
         >
           <HiFire />
+
           <div>
-            <h2>{streak?.days || '0'}</h2>
+            <h2>{streakDays}</h2>
             <span>Day Streak</span>
           </div>
         </motion.div>
 
 
-        {/* How many courses you enroll show here */}
         <motion.div
-          whileHover={{ y: -8 }}
-          id="mini-card"
+          className="welcome-mini-card"
+          whileHover={{
+            y: -8,
+          }}
         >
           <HiAcademicCap />
+
           <div>
-            <h2>{stats?.internships.total || '0'}</h2>
-            <span>Join internships</span>
+            <h2>{internshipCount}</h2>
+            <span>Join Internships</span>
           </div>
         </motion.div>
 
-        {/* All badges count show here */}
+
         <motion.div
-          whileHover={{ y: -8 }}
-          id="mini-card"
+          className="welcome-mini-card"
+          whileHover={{
+            y: -8,
+          }}
         >
           <HiTrophy />
+
           <div>
-            <h2>{stats?.badges || '0'}</h2>
+            <h2>{badgeCount}</h2>
             <span>Badges</span>
           </div>
         </motion.div>
 
-
       </div>
+
     </motion.section>
   );
 };

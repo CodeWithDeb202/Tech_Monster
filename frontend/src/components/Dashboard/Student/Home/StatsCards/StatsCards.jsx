@@ -1,4 +1,5 @@
 import "./StatsCards.css";
+
 import { motion } from "framer-motion";
 
 import {
@@ -8,19 +9,20 @@ import {
   HiTrophy,
 } from "react-icons/hi2";
 
+
 const StatsCards = ({ stats }) => {
 
   const data = [
     {
-      id: 1,
-      title: "Join internships",
+      id: "internships",
+      title: "Join Internships",
       value: stats?.internships?.total || 0,
       suffix: "",
       icon: HiAcademicCap,
       color: "#00E5FF",
     },
     {
-      id: 2,
+      id: "attendance",
       title: "Attendance",
       value: stats?.attendance?.percentage || 0,
       suffix: "%",
@@ -28,7 +30,7 @@ const StatsCards = ({ stats }) => {
       color: "#10B981",
     },
     {
-      id: 3,
+      id: "tasks",
       title: "Daily Tasks",
       value: stats?.tasks?.approved || 0,
       suffix: "",
@@ -36,7 +38,7 @@ const StatsCards = ({ stats }) => {
       color: "#F59E0B",
     },
     {
-      id: 4,
+      id: "badges",
       title: "Earned Badges",
       value: stats?.badges || 0,
       suffix: "",
@@ -45,41 +47,74 @@ const StatsCards = ({ stats }) => {
     },
   ];
 
+
   return (
-    <div id="stats-grid">
+    <div className="stats-grid">
+
       {data.map((item, index) => {
-        const IconComponent = item.icon;
+
+        const Icon = item.icon;
 
         return (
           <motion.div
             key={item.id}
-            id="stats-card"
-            initial={{ opacity: 0, y: 70 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ delay: index * 0.15, duration: 0.6 }}
-            whileHover={{ y: -10, scale: 1.04 }}
+            className="stats-card"
+
+            initial={{
+              opacity: 0,
+              y: 70,
+            }}
+
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+
+            viewport={{
+              once: true,
+              amount: 0.25,
+            }}
+
+            transition={{
+              delay: index * 0.15,
+              duration: 0.6,
+            }}
+
+            whileHover={{
+              y: -8,
+              scale: 1.02,
+            }}
           >
+
             <div
-              id="stats-icon"
-              style={{ background: item.color }}
+              className="stats-icon"
+              style={{
+                background: item.color,
+              }}
             >
-              {IconComponent && <IconComponent />}
+              <Icon />
             </div>
 
-            <h4>{item.title}</h4>
+            <h4>
+              {item.title}
+            </h4>
 
             <h2>
-              {item.value} {item.suffix}
+              {item.value}
+              {item.suffix}
             </h2>
 
             <div
-              id="stats-line"
-              style={{ background: item.color }}
+              className="stats-line"
+              style={{
+                background: item.color,
+              }}
             />
+
           </motion.div>
         );
       })}
+
     </div>
   );
 };
