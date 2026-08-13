@@ -71,71 +71,74 @@ function AdminLogin() {
 
     };
 
-    {
-        loading && (
-            <Hash
-                fullScreen
-                message="Authenticating admin..."
-                size={70}
-            />
-        )
-    }
-
     return (
 
-        <AuthLayout
-            title="Admin Login"
-            subtitle="Tech Monster Admin Panel"
-        >
+        <>
 
-            <motion.form onSubmit={handleSubmit(onSubmit)} className="admin-login-form">
+            {
+                loading && (
+                    <Hash
+                        fullScreen
+                        message="Authenticating admin..."
+                        size={70}
+                    />
+                )
+            }
 
-                <Input
-                    label="Admin Email"
-                    type="email"
-                    placeholder="admin@gmail.com"
-                    // eslint-disable-next-line react-hooks/incompatible-library
-                    value={watch("email")}
-                    {...register("email", {
-                        required: "Email is required",
-                    })}
-                    error={errors.email?.message}
-                />
+            <AuthLayout
+                title="Admin Login"
+                subtitle="Tech Monster Admin Panel"
+            >
 
-                <PasswordInput
-                    label="Password"
-                    value={watch("password")}
-                    {...register("password", {
-                        required: "Password is required",
-                    })}
-                    error={errors.password?.message}
-                />
+                <motion.form onSubmit={handleSubmit(onSubmit)} className="admin-login-form">
 
-                {error && (
-                    <p className="admin-error">
-                        {error}
+                    <Input
+                        label="Admin Email"
+                        type="email"
+                        placeholder="admin@gmail.com"
+                        // eslint-disable-next-line react-hooks/incompatible-library
+                        value={watch("email")}
+                        {...register("email", {
+                            required: "Email is required",
+                        })}
+                        error={errors.email?.message}
+                    />
+
+                    <PasswordInput
+                        label="Password"
+                        value={watch("password")}
+                        {...register("password", {
+                            required: "Password is required",
+                        })}
+                        error={errors.password?.message}
+                    />
+
+                    {error && (
+                        <p className="admin-error">
+                            {error}
+                        </p>
+                    )}
+
+                    <Button
+                        type="submit"
+                        fullWidth
+                        disabled={loading}
+                    >
+                        {loading ? "Logging in..." : "Login as Admin"}
+                    </Button>
+
+                    <p id="user-login-link">
+                        User login !
+                        <Link to="/login">
+                            Login
+                        </Link>
                     </p>
-                )}
 
-                <Button
-                    type="submit"
-                    fullWidth
-                    disabled={loading}
-                >
-                    {loading ? "Logging in..." : "Login as Admin"}
-                </Button>
+                </motion.form>
 
-                <p id="user-login-link">
-                    User login !
-                    <Link to="/login">
-                        Login
-                    </Link>
-                </p>
+            </AuthLayout>
 
-            </motion.form>
-
-        </AuthLayout>
-
+        </>
     );
 
 }

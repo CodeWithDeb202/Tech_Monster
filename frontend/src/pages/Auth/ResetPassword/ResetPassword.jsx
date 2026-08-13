@@ -103,120 +103,123 @@ function ResetPassword() {
 
     };
 
-    {
-        loading && (
-            <Hash
-                fullScreen
-                message="Updating your password..."
-                size={70}
-            />
-        )
-    }
-
     return (
 
-        <AuthLayout
+        <>
 
-            title="Reset Password"
+            {
+                loading && (
+                    <Hash
+                        fullScreen
+                        message="Updating your password..."
+                        size={70}
+                    />
+                )
+            }
 
-            subtitle="Create a strong password."
+            <AuthLayout
 
-        >
+                title="Reset Password"
 
-            <motion.form
-
-                className="reset-form"
-
-                onSubmit={handleSubmit(onSubmit)}
-
-                initial={{
-
-                    opacity: 0,
-
-                    y: 20
-
-                }}
-
-                animate={{
-
-                    opacity: 1,
-
-                    y: 0
-
-                }}
+                subtitle="Create a strong password."
 
             >
 
-                <PasswordInput
+                <motion.form
 
-                    label="New Password"
+                    className="reset-form"
 
-                    placeholder="Enter new password"
+                    onSubmit={handleSubmit(onSubmit)}
 
-                    showStrength
+                    initial={{
 
-                    {...register("password")}
+                        opacity: 0,
 
-                    error={errors.password?.message}
+                        y: 20
 
-                />
+                    }}
 
-                <PasswordInput
+                    animate={{
 
-                    label="Confirm Password"
+                        opacity: 1,
 
-                    placeholder="Confirm password"
+                        y: 0
 
-                    {...register("confirmPassword")}
-
-                    error={errors.confirmPassword?.message}
-
-                />
-
-                <PasswordStrength password={watch("password")} />
-
-                {
-
-                    serverError &&
-
-                    <p className="reset-error">
-
-                        {serverError}
-
-                    </p>
-
-                }
-
-                <Button
-
-                    fullWidth
-
-                    type="submit"
-
-                    disabled={loading}
+                    }}
 
                 >
 
+                    <PasswordInput
+
+                        label="New Password"
+
+                        placeholder="Enter new password"
+
+                        showStrength
+
+                        {...register("password")}
+
+                        error={errors.password?.message}
+
+                    />
+
+                    <PasswordInput
+
+                        label="Confirm Password"
+
+                        placeholder="Confirm password"
+
+                        {...register("confirmPassword")}
+
+                        error={errors.confirmPassword?.message}
+
+                    />
+
+                    <PasswordStrength password={watch("password")} />
+
                     {
 
-                        loading
+                        serverError &&
 
-                            ?
+                        <p className="reset-error">
 
-                            "Updating..."
+                            {serverError}
 
-                            :
-
-                            "Update Password"
+                        </p>
 
                     }
 
-                </Button>
+                    <Button
 
-            </motion.form>
+                        fullWidth
 
-        </AuthLayout>
+                        type="submit"
 
+                        disabled={loading}
+
+                    >
+
+                        {
+
+                            loading
+
+                                ?
+
+                                "Updating..."
+
+                                :
+
+                                "Update Password"
+
+                        }
+
+                    </Button>
+
+                </motion.form>
+
+            </AuthLayout>
+
+        </>
     );
 
 }

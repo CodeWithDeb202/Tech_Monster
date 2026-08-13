@@ -79,104 +79,110 @@ function ForgotPassword() {
 
     }
 
-    {
-        loading && (
-            <Hash
-                fullScreen
-                message="Sending OTP to your email..."
-                size={70}
-            />
-        )
-    }
+
 
     return (
 
-        <AuthLayout
+        <>
 
-            title="Forgot Password"
+            {
+                loading && (
+                    <Hash
+                        fullScreen
+                        message="Sending OTP to your email..."
+                        size={70}
+                    />
+                )
+            }
 
-            subtitle="Enter your registered email."
 
-        >
+            <AuthLayout
 
-            <motion.form
+                title="Forgot Password"
 
-                className="forgot-form"
-
-                onSubmit={handleSubmit(onSubmit)}
+                subtitle="Enter your registered email."
 
             >
 
-                <Input
+                <motion.form
 
-                    label="Email"
+                    className="forgot-form"
 
-                    type="email"
-
-                    placeholder="Enter registered email"
-
-                    icon={<FaEnvelope />}
-
-                    {...register("email")}
-
-                    error={errors.email?.message}
-
-                />
-
-                {
-
-                    serverError &&
-
-                    <p className="forgot-error">
-
-                        {serverError}
-
-                    </p>
-
-                }
-
-                <Button
-
-                    type="submit"
-
-                    fullWidth
-
-                    disabled={loading}
+                    onSubmit={handleSubmit(onSubmit)}
 
                 >
 
+                    <Input
+
+                        label="Email"
+
+                        type="email"
+
+                        placeholder="Enter registered email"
+
+                        icon={<FaEnvelope />}
+
+                        {...register("email")}
+
+                        error={errors.email?.message}
+
+                    />
+
                     {
 
-                        loading
+                        serverError &&
 
-                            ?
+                        <p className="forgot-error">
 
-                            "Sending OTP..."
+                            {serverError}
 
-                            :
-
-                            "Send OTP"
+                        </p>
 
                     }
 
-                </Button>
+                    <Button
 
-                <p className="login-back">
+                        type="submit"
 
-                    Remember password?
+                        fullWidth
 
-                    <Link to="/login">
+                        disabled={loading}
 
-                        Login
+                    >
 
-                    </Link>
+                        {
 
-                </p>
+                            loading
 
-            </motion.form>
+                                ?
 
-        </AuthLayout>
+                                "Sending OTP..."
 
+                                :
+
+                                "Send OTP"
+
+                        }
+
+                    </Button>
+
+                    <p className="login-back">
+
+                        Remember password?
+
+                        <Link to="/login">
+
+                            Login
+
+                        </Link>
+
+                    </p>
+
+                </motion.form>
+
+            </AuthLayout>
+
+        </>
     )
 
 }

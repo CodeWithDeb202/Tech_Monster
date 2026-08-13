@@ -90,95 +90,99 @@ function Login() {
     }
   };
 
-  {
-    loading && (
-      <Hash
-        fullScreen
-        message="Logging you in..."
-        size={70}
-      />
-    )
-  }
-
   return (
-    <AuthLayout
-      title="Welcome Back"
-      subtitle="Login to continue your internship journey."
-    >
+    <>
 
-      <motion.form
-        className="login-form"
-        onSubmit={handleSubmit}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+      {
+        loading && (
+          <Hash
+            fullScreen
+            message="Logging you in..."
+            size={70}
+          />
+        )
+      }
+
+      
+      <AuthLayout
+        title="Welcome Back"
+        subtitle="Login to continue your internship journey."
       >
 
-        <Input
-          label="Email"
-          type="email"
-          name="email"
-          placeholder="Enter your email"
-          value={formData.email}
-          onChange={handleChange}
-          icon={<FaEnvelope />}
-          required
-        />
-
-        <PasswordInput
-          label="Password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          placeholder="Enter your password"
-          required
-        />
-
-        {
-          error &&
-          <p className="login-error">
-            {error}
-          </p>
-        }
-
-        <div className="login-options">
-          <label className="remember-me">
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={() =>
-                setRememberMe(!rememberMe)
-              }
-            />
-            Remember Me
-          </label>
-          <Link
-            to="/forgot-password"
-            className="forgot-link"
-          >
-            Forgot Password?
-          </Link>
-        </div>
-
-        <Button
-          type="submit"
-          fullWidth
-          disabled={loading}
+        <motion.form
+          className="login-form"
+          onSubmit={handleSubmit}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         >
-          {loading ? "Logging In..." : "Login"}
-        </Button>
 
-        <p className="signup-text">
-          Don't have an account?
-          <Link to="/signup">Create Account </Link>
-        </p>
+          <Input
+            label="Email"
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleChange}
+            icon={<FaEnvelope />}
+            required
+          />
 
-        <p className="signup-text">
-          Log in as a admin
-          <Link to="/admin_login">Admin login</Link>
-        </p>
-      </motion.form>
+          <PasswordInput
+            label="Password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Enter your password"
+            required
+          />
 
-    </AuthLayout>
+          {
+            error &&
+            <p className="login-error">
+              {error}
+            </p>
+          }
+
+          <div className="login-options">
+            <label className="remember-me">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={() =>
+                  setRememberMe(!rememberMe)
+                }
+              />
+              Remember Me
+            </label>
+            <Link
+              to="/forgot-password"
+              className="forgot-link"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+
+          <Button
+            type="submit"
+            fullWidth
+            disabled={loading}
+          >
+            {loading ? "Logging In..." : "Login"}
+          </Button>
+
+          <p className="signup-text">
+            Don't have an account?
+            <Link to="/signup">Create Account </Link>
+          </p>
+
+          <p className="signup-text">
+            Log in as a admin
+            <Link to="/admin_login">Admin login</Link>
+          </p>
+        </motion.form>
+
+      </AuthLayout>
+    </>
   );
 }
 
