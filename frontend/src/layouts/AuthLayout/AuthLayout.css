@@ -189,182 +189,93 @@
    RESPONSIVE
 ========================================== */
 
-/* RESPONSIVE */
-@media(max-width: 439px) {
-    #authFullCont{
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        padding: 1rem 0;
-    }
-    #auth-left{
-        height: auto;
-        width: 90%;
-        padding: 0.5rem;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-    }
-    #authLogo{
-        margin: 0;
-    }
-    #authLogo img{
-        width: 50px;
-    }
-    #authLogo h2{
-        font-size: 1.3rem;
-    }
+/* Desktop / default styles: > 1200px */
 
-    #auth-left-content #auth-image{
-        display: none;
-    }
-
-    #auth-left-content h1{
-        display: none;
-    }
-
-    #auth-left-content p{
-        display: none;
-    }
-
-    #auth-right{
-        width: 90%;
-        margin: 0;
-        height: calc(100vh - 12rem);
-    }
-    
-
-}
-/* Mobile (Portrait + Small Phones) */
-@media(min-width: 440px) and (max-width: 767px) {
-    #authFullCont{
+/* Below 1200px */
+@media (max-width: 1200px) {
+    #authFullCont {
         display: flex;
         flex-direction: column;
         padding: 1rem 0;
     }
-    #auth-left{
-        height: auto;
-        width: 90%;
-        padding: 0.6rem;
-        align-items: center;
-        justify-content: center;
-        margin: 0;
-    }
-    #authLogo{
-        margin: 0;
-    }
-    #authLogo img{
-        width: 50px;
-    }
-    #authLogo h2{
-        font-size: 1.3rem;
-    }
 
-    #auth-left-content #auth-image{
-        display: none;
-    }
-
-    #auth-left-content h1{
-        display: none;
-    }
-
-    #auth-left-content p{
-        display: none;
-    }
-
-    #auth-right{
-        width: 90%;
-        margin: 0;
-        height: calc(100vh - 9rem);
-    }
-    
-}
-
-
-/* Tablet */
-@media (min-width: 768px) and (max-width: 991px) {
-    #authFullCont{
-        display: flex;
-        flex-direction: column;
-        padding: 1rem 0;
-    }
-    #auth-left{
-        height: auto;
-        width: 80%;
-        padding: 1rem;
-        margin: 0;
-        align-items: center;
-        justify-content: center;
-    }
-    #authLogo{
-        margin: 0;
-    }
-    #authLogo img{
-        width: 50px;
-    }
-    #authLogo h2{
-        font-size: 1.3rem;
-    }
-
-    #auth-left-content #auth-image{
-        display: none;
-    }
-
-    #auth-left-content h1{
-        display: none;
-    }
-
-    #auth-left-content p{
-        display: none;
-    }
-
-    #auth-right{
-        width: 80%;
-        margin: 0;
-        height: calc(100vh - 9rem);
-    }
-    
-}
-@media (min-width: 992px) and (max-width: 1200px){
-    #authFullCont{
-        display: flex;
-        flex-direction: column;
-        padding: 1rem 0;
-    }
-    #auth-left{
+    #auth-left {
         height: auto;
         width: 70%;
-        margin-bottom: 1rem;
         padding: 0.7rem;
+        margin-bottom: 1rem;
         align-items: center;
         justify-content: center;
     }
-    #authLogo{
+
+    #authLogo {
         margin: 0;
     }
-    #authLogo img{
+
+    #authLogo img {
         width: 50px;
     }
-    #authLogo h2{
+
+    #authLogo h2 {
         font-size: 1.5rem;
     }
 
-    #auth-left-content #auth-image{
+    #auth-left-content #auth-image,
+    #auth-left-content h1,
+    #auth-left-content p {
         display: none;
     }
 
-    #auth-left-content h1{
-        display: none;
-    }
-
-    #auth-left-content p{
-        display: none;
-    }
-
-    #auth-right{
+    #auth-right {
         width: 70%;
         margin: 0;
         height: calc(100vh - 9rem);
     }
+}
 
+
+/* Below 991px */
+@media (max-width: 991px) {
+
+    #auth-left,
+    #auth-right {
+        width: 80%;
+    }
+
+    #auth-left {
+        padding: 1rem;
+        margin: 0;
+    }
+
+    #authLogo h2 {
+        font-size: 1.3rem;
+    }
+}
+
+
+/* Below 767px */
+@media (max-width: 767px) {
+
+    #auth-left,
+    #auth-right {
+        width: 90%;
+    }
+
+    #auth-left {
+        padding: 0.6rem;
+    }
+}
+
+
+/* Below 439px */
+@media (max-width: 439px) {
+
+    #auth-left {
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    #auth-right {
+        height: calc(100vh - 12rem);
+    }
 }
