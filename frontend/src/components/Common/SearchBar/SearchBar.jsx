@@ -125,8 +125,8 @@ function SearchBar() {
     };
 
     return (
-        <div className="search-bar-container" ref={containerRef}>
-            <FiSearch className="search-icon" />
+        <div id="search-bar-container" ref={containerRef}>
+            <FiSearch id="search-icon" />
             <input
                 type="text"
                 value={searchTerm}
@@ -135,35 +135,35 @@ function SearchBar() {
                 placeholder="Search courses, users, categories..."
             />
             {searchTerm && (
-                <button className="clear-search-btn" onClick={handleClear}>
+                <button id="clear-search-btn" onClick={handleClear}>
                     <FiX />
                 </button>
             )}
 
             {showDropdown && searchTerm.trim() && (
-                <div className="search-results-dropdown">
+                <div id="search-results-dropdown">
                     {loading ? (
-                        <div className="search-loading">Searching...</div>
+                        <div id="search-loading">Searching...</div>
                     ) : (
                         <>
                             {/* Courses / Internships */}
-                            <div className="search-group">
-                                <div className="search-group-title">
+                            <div id="search-group">
+                                <div id="search-group-title">
                                     <FiBookOpen /> Courses & Internships
                                 </div>
                                 {courses.length > 0 ? (
                                     courses.map((course) => (
                                         <div
                                             key={course._id}
-                                            className="search-result-item"
+                                            id="search-result-item"
                                             onClick={() => handleCourseClick(course)}
                                         >
-                                            <FiBookOpen className="search-result-icon" />
-                                            <div className="search-result-text">
-                                                <span className="search-result-title">
+                                            <FiBookOpen id="search-result-icon" />
+                                            <div id="search-result-text">
+                                                <span id="search-result-title">
                                                     {course.title}
                                                 </span>
-                                                <span className="search-result-sub">
+                                                <span id="search-result-sub">
                                                     {course.category || course.level || "Course"}
                                                 </span>
                                             </div>
@@ -171,37 +171,37 @@ function SearchBar() {
                                     ))
                                 ) : (
                                     searched && (
-                                        <div className="search-empty">{COURSES_EMPTY_MSG}</div>
+                                        <div id="search-empty">{COURSES_EMPTY_MSG}</div>
                                     )
                                 )}
                             </div>
 
                             {/* Users */}
-                            <div className="search-group">
-                                <div className="search-group-title">
+                            <div id="search-group">
+                                <div id="search-group-title">
                                     <FiUser /> Users
                                 </div>
                                 {users.length > 0 ? (
                                     users.map((user) => (
                                         <div
                                             key={user._id}
-                                            className="search-result-item"
+                                            id="search-result-item"
                                             onClick={() => handleUserClick(user)}
                                         >
-                                            <div className="search-result-avatar">
+                                            <div id="search-result-avatar">
                                                 {user.avatar ? (
                                                     <img src={user.avatar} alt={user.username} />
                                                 ) : (
                                                     <FiUser />
                                                 )}
                                             </div>
-                                            <div className="search-result-text">
-                                                <span className="search-result-title">
+                                            <div id="search-result-text">
+                                                <span id="search-result-title">
                                                     {user.firstName || user.lastName
                                                         ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
                                                         : user.username}
                                                 </span>
-                                                <span className="search-result-sub">
+                                                <span id="search-result-sub">
                                                     @{user.username}
                                                 </span>
                                             </div>
@@ -209,7 +209,7 @@ function SearchBar() {
                                     ))
                                 ) : (
                                     searched && (
-                                        <div className="search-empty">{USERS_EMPTY_MSG}</div>
+                                        <div id="search-empty">{USERS_EMPTY_MSG}</div>
                                     )
                                 )}
                             </div>

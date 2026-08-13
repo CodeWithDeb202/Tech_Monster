@@ -22,7 +22,7 @@
     background-size: cover;
 }
 
-#authFullCont{
+#authFullCont {
     width: 100%;
     display: flex;
     align-items: center;
@@ -66,7 +66,7 @@
     transition: all 0.3s ease;
 }
 
-#authLogo img:hover{
+#authLogo img:hover {
     box-shadow: 0 0 20px var(--neon);
     transform: scale(1.2);
 }
@@ -90,7 +90,7 @@
     animation: float 4s ease-in-out infinite;
 }
 
-#auth-image:hover{
+#auth-image:hover {
     box-shadow: 0 0 10px var(--glow);
 }
 
@@ -104,6 +104,7 @@
     color: var(--muted);
     line-height: 1.8;
 }
+
 
 /* RIGHT */
 
@@ -127,7 +128,8 @@
     animation: blueNeon 6s linear infinite;
     transition: all .3s ease-in;
     /* Scrollbar Hide */
-    scrollbar-width: none;    /* Firefox */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 #auth-card.center {
@@ -140,7 +142,8 @@
 
 
 #auth-right::-webkit-scrollbar {
-    display: none;              /* Chrome, Edge, Safari */
+    display: none;
+    /* Chrome, Edge, Safari */
 }
 
 #auth-card {
@@ -162,19 +165,19 @@
     margin-bottom: 1rem;
 }
 
-#auth-header h2::after{
+#auth-header h2::after {
     content: "";
     position: absolute;
     bottom: -10px;
     left: 40%;
-    height: 2px;
+    height: 3px;
     width: 0;
     background-color: var(--glow);
     border-radius: 50%;
     transition: all 0.3s ease-in-out;
 }
 
-#auth-right:hover #auth-header h2::after{
+#auth-right:hover #auth-header h2::after {
     width: 20%;
 }
 
@@ -189,93 +192,105 @@
    RESPONSIVE
 ========================================== */
 
-/* Desktop / default styles: > 1200px */
-
 /* Below 1200px */
 @media (max-width: 1200px) {
     #authFullCont {
-        display: flex;
-        flex-direction: column;
-        padding: 1rem 0;
-    }
-
-    #auth-left {
-        height: auto;
-        width: 70%;
-        padding: 0.7rem;
-        margin-bottom: 1rem;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #authLogo {
-        margin: 0;
-    }
-
-    #authLogo img {
-        width: 50px;
-    }
-
-    #authLogo h2 {
-        font-size: 1.5rem;
-    }
-
-    #auth-left-content #auth-image,
-    #auth-left-content h1,
-    #auth-left-content p {
-        display: none;
-    }
-
-    #auth-right {
-        width: 70%;
-        margin: 0;
-        height: calc(100vh - 9rem);
+        gap: 1rem;
+        padding: 0 1rem;
     }
 }
 
 
 /* Below 991px */
 @media (max-width: 991px) {
-
-    #auth-left,
-    #auth-right {
-        width: 80%;
+    #authFullCont {
+        flex-direction: column;
+        padding: 1rem !important;
+        height: 100%;
     }
 
     #auth-left {
-        padding: 1rem;
+        width: 100%;
+        height: 100px !important;
+        padding: 0;
         margin: 0;
+        align-items: center;
     }
 
-    #authLogo h2 {
-        font-size: 1.3rem;
+    #authLogo {
+        margin: 0;
+        padding: 0.5rem;
+    }
+
+    #authLogo img {
+        width: 60px;
+    }
+
+    #auth-image {
+        display: none;
+    }
+
+    #auth-left-content h1 {
+        display: none;
+    }
+
+    #auth-left-content p {
+        display: none;
+    }
+
+    #auth-right {
+        width: 100%;
+        height: 100%;
+        margin: 0 0 1rem 0;
+    }
+
+    #auth-header h2::after{
+        border-radius: 50% !important;
     }
 }
 
-
 /* Below 767px */
 @media (max-width: 767px) {
-
-    #auth-left,
-    #auth-right {
-        width: 90%;
+    #authLogo h2 {
+        font-size: 1.4rem;
     }
 
-    #auth-left {
-        padding: 0.6rem;
+    #auth-header h2::after{
+        width: 40% !important;
+        left: 30%;
     }
 }
 
 
 /* Below 439px */
 @media (max-width: 439px) {
-
-    #auth-left {
-        padding: 0.5rem;
-        margin-bottom: 1rem;
+    #authFullCont {
+        padding: 0.5rem !important;
+        gap: 0.5rem !important;
     }
 
-    #auth-right {
-        height: calc(100vh - 12rem);
+    #auth-left{
+        height: 80px !important;
     }
+    #authLogo img{
+        width: 50px;
+    }
+
+    #authLogo h2{
+        font-size: 1.2rem;
+    }
+
+    #auth-right{
+        padding: 0.5rem !important;
+    }
+
+    #auth-header h2{
+        font-size: 1.2rem;
+    }
+
+    #auth-header p{
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+
 }

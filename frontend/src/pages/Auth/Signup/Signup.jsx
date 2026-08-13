@@ -80,10 +80,6 @@ function Signup() {
       }, 1200);
 
     } catch (err) {
-      console.log("FULL SIGNUP ERROR:", err);
-      console.log("ERROR MESSAGE:", err.message);
-      console.log("ERROR RESPONSE:", err.response);
-      console.log("ERROR RESPONSE DATA:", err.response?.data);
 
       toast.error(
         err.response?.data?.message ||

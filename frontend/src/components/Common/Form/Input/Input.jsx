@@ -16,15 +16,15 @@ function Input({
 
     return (
 
-        <div className="input-group">
+        <div id="input-group">
             {label && (
-                <label className="input-label" htmlFor={name}>
+                <label id="input-label" htmlFor={name}>
                     {label}
-                    <span className={value?.trim() ? 'labelSpanGreen' : 'labelSpanRed'}>{required && "*"}</span>
+                    <span id={value?.trim() ? 'labelSpanGreen' : 'labelSpanRed'}>{required && "*"}</span>
                 </label>
             )}
 
-            <div className="input-wrapper">
+            <div id="input-wrapper">
 
                 <input
                     id={name}
@@ -39,7 +39,7 @@ function Input({
                 />
             </div>
 
-            {error && <small className="errorText">{error} </small> }
+            {error && <small id="errorText">{error} </small> }
         </div>
     );
 }
