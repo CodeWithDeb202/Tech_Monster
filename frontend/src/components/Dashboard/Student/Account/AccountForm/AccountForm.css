@@ -1,13 +1,28 @@
+/* ==========================================
+   ACCOUNT FORM
+========================================== */
+
+#username-box h2{
+  color: var(--neon);
+  margin: 0;
+  text-shadow: 0 0 10px var(--neon);
+}
+
 #account-form-container {
   background: rgba(13, 27, 42, 0.6);
   border: 1px solid rgba(0, 240, 255, 0.2);
   backdrop-filter: blur(12px);
   padding: 1.6rem;
   border-radius: 1rem;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
   color: var(--text);
   margin-top: 0.8rem;
 }
+
+
+/* ==========================================
+   SECTION TITLE
+========================================== */
 
 #form-section-title {
   color: var(--neon);
@@ -17,12 +32,22 @@
   padding-bottom: 0.5rem;
 }
 
+
+/* ==========================================
+   FORM GRID
+========================================== */
+
 #form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
+
+
+/* ==========================================
+   FORM GROUP
+========================================== */
 
 #form-group {
   display: flex;
@@ -35,38 +60,85 @@
   color: var(--text);
 }
 
+
+/* ==========================================
+   INPUT / SELECT / TEXTAREA
+========================================== */
+
 #form-group input,
-#form-group select {
+#form-group select,
+#form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
+
   padding: 12px;
   border-radius: 8px;
-  color: #ffffff;
+
+  color: var(--text);
   font-size: 14px;
+
   outline: none;
+
   transition: all 0.3s ease;
 }
+
+#form-group textarea {
+  resize: none;
+  margin: 0;
+}
+
+
+/* ==========================================
+   SELECT
+========================================== */
 
 #form-group select option {
   background-color: #0d1b2a;
   color: var(--text);
 }
 
-#form-group select option:hover{
+#form-group select option:hover,
+#form-group select option:checked {
   background-color: var(--neon) !important;
   color: var(--dark) !important;
 }
 
-#form-group select option:checked {
-  background-color: var(--neon);
-  color: var(--dark);
-}
+
+/* ==========================================
+   FOCUS
+========================================== */
 
 #form-group input:focus,
-#form-group select:focus {
-  border-color: #00f0ff;
+#form-group select:focus,
+#form-group textarea:focus {
+  border-color: var(--neon);
   box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
 }
+
+
+/* ==========================================
+   PROFILE IMAGE
+========================================== */
+
+.profile-preview {
+  width: 120px;
+  height: 120px;
+
+  border-radius: 50%;
+  object-fit: cover;
+
+  margin-top: 15px;
+
+  border: 2px solid #ddd;
+}
+
+
+/* ==========================================
+   WHATSAPP
+========================================== */
 
 #whatsapp-row {
   display: flex;
@@ -74,28 +146,52 @@
   gap: 10px;
 }
 
+#whatsapp-row input {
+  flex: 1;
+  min-width: 0;
+}
+
 #whatsapp-link {
   font-size: 12px;
   color: #00ff66;
+
   text-decoration: none;
+
   background: rgba(0, 255, 102, 0.1);
+
   padding: 8px 12px;
   border-radius: 8px;
+
   border: 1px solid rgba(0, 255, 102, 0.3);
+
   white-space: nowrap;
 }
+
+
+/* ==========================================
+   SKILLS
+========================================== */
 
 #skills-input-container {
   display: flex;
   gap: 10px;
 }
 
+#skills-input-container input {
+  flex: 1;
+  min-width: 0;
+}
+
 #add-skill-btn {
-  background: #00f0ff;
+  background: var(--neon);
   color: #000;
+
   border: none;
+
   padding: 0 16px;
+
   border-radius: 8px;
+
   font-weight: 600;
   cursor: pointer;
 }
@@ -109,10 +205,15 @@
 
 #skill-tag {
   background: rgba(0, 240, 255, 0.1);
-  border: 1px solid #00f0ff;
+
+  border: 1px solid var(--neon);
+
   padding: 4px 10px;
+
   border-radius: 6px;
+
   font-size: 12px;
+
   display: flex;
   align-items: center;
   gap: 6px;
@@ -124,35 +225,95 @@
 }
 
 
-#form-group textarea{
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.75rem;
-  border-radius: 8px;
-  color: var(--text);
-  margin: 0;
-
-  font-size: 14px;
-  outline: none;
-  transition: all 0.3s ease;
-  resize: none;
-}
+/* ==========================================
+   SUBMIT
+========================================== */
 
 #submit-btn {
-  background: linear-gradient(135deg, var(--neon) 0%, var(--glow) 100%);
+  background:
+    linear-gradient(135deg,
+      var(--neon) 0%,
+      var(--glow) 100%);
+
   color: var(--dark);
+
   border: none;
+
   padding: 0.8rem 2rem;
-  margin: 2rem auto 0 auto;
+
+  margin: 2rem auto 0;
+
   display: block;
+
   border-radius: 10px;
+
   font-size: 1rem;
   font-weight: 700;
+
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+
+  box-shadow:
+    0 0 20px rgba(0, 240, 255, 0.4);
+
   transition: all 0.2s ease;
 }
 
 #submit-btn:hover {
   transform: translateY(-2px);
+}
+
+#submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 767px) {
+
+  #username-box h2{
+    font-size: 1.2rem;
+  }
+
+  #account-form-container {
+    padding: 1rem;
+  }
+
+  #form-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  #whatsapp-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #whatsapp-link {
+    text-align: center;
+  }
+
+  #skills-input-container {
+    flex-direction: column;
+  }
+
+  #add-skill-btn {
+    min-height: 40px;
+  }
+}
+
+
+@media (max-width: 439px) {
+
+  #account-form-container {
+    padding: 0.7rem;
+  }
+
+  #form-section-title {
+    font-size: 0.9rem;
+  }
 }

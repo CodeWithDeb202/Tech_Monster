@@ -1,14 +1,42 @@
-.account-page-wrapper {
-  padding: 24px;
-  color: #ffffff;
-  font-family: 'Inter', sans-serif;
+#account-page-wrapper {
+  padding: 1.5rem;
+  color: var(--text);
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.account-main-title {
+#account-main-title {
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 20px;
   letter-spacing: 0.5px;
+  text-align: center;
+  color: var(--glow);
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+/* Below 1200px */
+@media (max-width: 1200px) {
+  #account-page-wrapper{
+    padding: 1.2rem;
+  }
+}
+
+/* Below 767px */
+@media (max-width: 767px) {
+  #account-page-wrapper{
+    padding: 0.5rem;
+  }
+}
+
+
+/* Below 439px */
+@media (max-width: 439px) {
+  #account-main-title{
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+  }
 }
