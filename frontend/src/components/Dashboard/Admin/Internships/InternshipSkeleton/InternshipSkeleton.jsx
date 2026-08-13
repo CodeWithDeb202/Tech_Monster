@@ -1,42 +1,82 @@
+import Skeleton from "../../../common/LoaderPage/Skeleton";
 import "./InternshipSkeleton.css";
-
 
 export default function InternshipSkeleton() {
 
-
     return (
+        <div className="internshipSkeletonGrid">
 
-        <div className="skeleton-wrapper">
+            {Array.from({ length: 8 }).map((_, index) => (
+
+                <div
+                    className="internshipSkeletonCard"
+                    key={index}
+                >
+
+                    {/* Image */}
+
+                    <Skeleton
+                        width="100%"
+                        height="160px"
+                        borderRadius="15px"
+                    />
 
 
-            {
-                [1, 2, 3, 4].map(i => (
+                    {/* Title */}
 
-                    <div
-                        className="skeleton-card"
-                        key={i}
-                    >
-
-
-                        <div className="skeleton-img"></div>
+                    <Skeleton
+                        width="75%"
+                        height="20px"
+                    />
 
 
-                        <div className="line"></div>
+                    {/* Description */}
 
+                    <div className="internshipSkeletonDescription">
 
-                        <div className="small-line"></div>
+                        <Skeleton
+                            width="100%"
+                            height="13px"
+                        />
 
+                        <Skeleton
+                            width="90%"
+                            height="13px"
+                        />
+
+                        <Skeleton
+                            width="65%"
+                            height="13px"
+                        />
 
                     </div>
 
 
-                ))
+                    {/* Meta */}
 
-            }
+                    <div className="internshipSkeletonMeta">
 
+                        <Skeleton
+                            width="70px"
+                            height="13px"
+                        />
+
+                        <Skeleton
+                            width="70px"
+                            height="13px"
+                        />
+
+                        <Skeleton
+                            width="70px"
+                            height="13px"
+                        />
+
+                    </div>
+
+                </div>
+
+            ))}
 
         </div>
-
-    )
-
+    );
 }

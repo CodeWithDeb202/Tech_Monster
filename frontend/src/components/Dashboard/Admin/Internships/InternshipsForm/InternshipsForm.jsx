@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import api from "../../../../../services/api/axios";
 import { API } from "../../../../../services/api/endpoints";
+import InternshipFormSkeleton from "../InternshipFormSkeleton";
 
 import { toast } from "react-toastify";
 
@@ -13,6 +14,9 @@ export default function InternshipsForm() {
     const location = useLocation();
     const editData = location.state?.internshipData;
     const [preview, setPreview] = useState("");
+    const [loading, setLoading] = useState(
+        Boolean(editData)
+    );
 
     const [formData, setFormData] = useState({
         title: '',
@@ -29,6 +33,7 @@ export default function InternshipsForm() {
 
     useEffect(() => {
         if (editData) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setFormData({
                 title: editData.title || '',
                 slug: editData.slug || '',
@@ -40,7 +45,10 @@ export default function InternshipsForm() {
                 totalNotes: editData.totalNotes || '',
             });
             setIsEditMode(true);
+            setLoading(false);
         }
+
+
     }, [editData]);
 
     const handleInputChange = (e) => {
@@ -121,6 +129,12 @@ export default function InternshipsForm() {
             );
         }
     };
+
+    if (loading) {
+
+        return <InternshipFormSkeleton />;
+
+    }
 
 
 
