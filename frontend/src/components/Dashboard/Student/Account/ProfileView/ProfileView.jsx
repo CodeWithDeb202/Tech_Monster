@@ -1,159 +1,224 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FaPencilAlt } from 'react-icons/fa';
-import './ProfileView.css';
-import { updateProfile, uploadProfileImage } from '../../../../../services/api/profileService';
+import { motion } from "framer-motion";
 
-export default function ProfileView({ userData, onUpdateData }) {
-  const [editingField, setEditingField] = useState(null);
-  const [tempValue, setTempValue] = useState('');
+import "./ProfileView.css";
 
-  const [data, setData] = useState(userData);
+import useProfileEdit from "./hooks/useProfileEdit";
 
-  useEffect(() => {
-
-    setData(userData);
-
-  }, [userData]);
+import {
+  ProfileHeader,
+  PersonalDetails,
+  EducationDetails,
+  SkillsSection,
+  AddressDetails,
+  BioSection,
+  BadgesSection
+} from "./components";
 
 
-  const handleEditClick = (fieldName, currentValue) => {
-    setEditingField(fieldName);
-    setTempValue(currentValue);
-  };
+export default function ProfileView({
+  userData,
+  onUpdateData,
+  onEdit
+}) {
 
-  const handleSave = async (field) => {
+  const {
+    data,
 
-    try {
+    editingField,
+    tempValue,
 
-      const res = await updateProfile({
+    saving,
+    imageLoading,
 
-        [field]: tempValue
+    setTempValue,
 
-      });
+    handleEditClick,
+    handleCancel,
+    handleSave,
+    handleImageUpdate
 
-      setData(res.data.user);
+  } = useProfileEdit({
+    userData,
+    onUpdateData
+  });
 
-      onUpdateData(res.data.user);
-
-      setEditingField(null);
-
-    }
-
-    catch (err) {
-
-      console.log(err);
-
-    }
-
-  }
-
-  const handleImageUpdate = async (e) => {
-
-    try {
-
-      const file = e.target.files[0];
-
-      if (!file) return;
-
-      const form = new FormData();
-
-      form.append("image", file);
-
-      const res = await uploadProfileImage(form);
-
-      setData(res.data.user);
-
-      onUpdateData(res.data.user);
-
-    } catch (err) {
-
-      console.log(err);
-
-    }
-
-  }
 
   return (
+
     <motion.div
-      className="profile-view-container"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
+      id="profile-view-container"
+
+      initial={{
+        opacity: 0,
+        y: 20
+      }}
+
+      animate={{
+        opacity: 1,
+        y: 0
+      }}
+
+      transition={{
+        duration: 0.5
+      }}
     >
-      <div className="profile-top-grid">
-        <div className="profile-avatar-col">
-          <img src={data.avatar} alt="Profile" className="profile-large-avatar" />
-          <label className="edit-avatar-label">
-            Edit Photo
-            <input type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageUpdate} />
-          </label>
-        </div>
 
-        <div className="profile-info-col">
-          <div className="profile-name-row">
-            <h2>{data.firstName} {data.lastName}</h2>
-            <span className="profile-course-badge">Courses Completed: 4 / 10</span>
-          </div>
+      {/* ============================== */}
+      {/* PROFILE VIEW HEADER */}
+      {/* ============================== */}
 
-          <div className="profile-stats-row">
-            <div className="stat-item">
-              <span className="num">342</span>
-              <span className="label">Followers</span>
-            </div>
-            <div className="stat-item">
-              <span className="num">180</span>
-              <span className="label">Following</span>
-            </div>
-          </div>
+      <div id="profile-view-header">
 
-          <div className="badges-row">
-            <strong>Badges:</strong>
-            <span className="mini-badge">🔥 7 Days Streak</span>
-            <span className="mini-badge">🏆 Task Master</span>
-          </div>
+        <h2>
+          My Profile
+        </h2>
 
-          <div className="skills-tags">
-            <strong>Skills:</strong>
-            {data.skills?.map((s, idx) => (
-              <span key={idx} className="skill-tag">{s}</span>
-            ))}
-          </div>
-        </div>
+        <button
+          type="button"
+          id="edit-profile-btn"
+          onClick={onEdit}
+        >
+          Edit Profile
+        </button>
+
       </div>
 
-      <div className="editable-details-grid">
-        {Object.entries({
-          firstName: 'First Name',
-          lastName: 'Last Name',
-          email: 'Email',
-          phone: 'Phone',
-          college: 'College Name',
-          branch: 'Branch',
-          currentAddress: 'Current Address',
-          pincode: 'Pincode'
-        }).map(([key, label]) => (
-          <div className="editable-field-box" key={key}>
-            <div className="field-content">
-              <label>{label}</label>
-              {editingField === key ? (
-                <input
-                  type="text"
-                  value={tempValue}
-                  onChange={(e) => setTempValue(e.target.value)}
-                  onBlur={() => handleSave(key)}
-                  autoFocus
-                />
-              ) : (
-                <span>{data[key]}</span>
-              )}
-            </div>
-            <button className="pencil-btn" onClick={() => handleEditClick(key, data[key])}>
-              <FaPencilAlt />
-            </button>
-          </div>
-        ))}
-      </div>
+      {/* ============================== */}
+      {/* PROFILE HEADER */}
+      {/* ============================== */}
+
+      <ProfileHeader
+        data={data}
+        imageLoading={imageLoading}
+        handleImageUpdate={
+          handleImageUpdate
+        }
+      />
+
+
+      {/* ============================== */}
+      {/* PERSONAL DETAILS */}
+      {/* ============================== */}
+
+      <PersonalDetails
+        data={data}
+
+        editingField={editingField}
+        tempValue={tempValue}
+        setTempValue={setTempValue}
+
+        handleEditClick={
+          handleEditClick
+        }
+
+        handleCancel={
+          handleCancel
+        }
+
+        handleSave={
+          handleSave
+        }
+
+        saving={saving}
+      />
+
+
+      {/* ============================== */}
+      {/* EDUCATION DETAILS */}
+      {/* ============================== */}
+
+      <EducationDetails
+        data={data}
+
+        editingField={editingField}
+        tempValue={tempValue}
+        setTempValue={setTempValue}
+
+        handleEditClick={
+          handleEditClick
+        }
+
+        handleCancel={
+          handleCancel
+        }
+
+        handleSave={
+          handleSave
+        }
+
+        saving={saving}
+      />
+
+
+      {/* ============================== */}
+      {/* SKILLS */}
+      {/* ============================== */}
+
+      <SkillsSection
+        skills={data?.skills}
+      />
+
+
+      {/* ============================== */}
+      {/* ADDRESS DETAILS */}
+      {/* ============================== */}
+
+      <AddressDetails
+        data={data}
+
+        editingField={editingField}
+        tempValue={tempValue}
+        setTempValue={setTempValue}
+
+        handleEditClick={
+          handleEditClick
+        }
+
+        handleCancel={
+          handleCancel
+        }
+
+        handleSave={
+          handleSave
+        }
+
+        saving={saving}
+      />
+
+
+      {/* ============================== */}
+      {/* BIO */}
+      {/* ============================== */}
+
+      <BioSection
+        data={data}
+
+        editingField={editingField}
+        tempValue={tempValue}
+        setTempValue={setTempValue}
+
+        handleEditClick={
+          handleEditClick
+        }
+
+        handleCancel={
+          handleCancel
+        }
+
+        handleSave={
+          handleSave
+        }
+
+        saving={saving}
+      />
+
+
+      {/* ============================== */}
+      {/* BADGES */}
+      {/* ============================== */}
+
+      <BadgesSection />
+
     </motion.div>
   );
 }

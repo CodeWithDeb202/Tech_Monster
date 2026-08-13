@@ -20,9 +20,9 @@ import {
   validateForm
 } from "../../../../../utils/validation";
 
-import useProfileImage from "../../../../../hooks/useProfileImage";
-import usePincode from "../../../../../hooks/usePincode";
-import useSkills from "../../../../../hooks/useSkills";
+import useProfileImage from "./hooks/useProfileImage";
+import usePincode from "./hooks/usePincode";
+import useSkills from "./hooks/useSkills";
 
 import {
   PersonalDetails,
@@ -33,6 +33,7 @@ import {
 
 export default function AccountForm({
   initialEmail,
+  editData,
   onSubmitForm
 }) {
 
@@ -40,11 +41,27 @@ export default function AccountForm({
 
   const loginUser = tokenStorage.getUser();
 
-  const [formData, setFormData] = useState(
-    getInitialFormData(
-      loginUser?.email || initialEmail || ""
-    )
-  );
+  const [formData, setFormData] = useState(() => {
+
+    const initialData =
+      getInitialFormData(
+        loginUser?.email ||
+        initialEmail ||
+        ""
+      );
+
+    if (editData) {
+
+      return {
+        ...initialData,
+        ...editData
+      };
+
+    }
+
+    return initialData;
+
+  });
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -58,7 +75,9 @@ export default function AccountForm({
     imageFile,
     preview,
     handleImageChange
-  } = useProfileImage();
+  } = useProfileImage(
+    editData?.avatar
+  );
 
 
   // ==============================
@@ -112,8 +131,8 @@ export default function AccountForm({
   // ==============================
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
+    console.log("FORM DATA BEFORE SUBMIT:", formData);
 
     const {
       errors: validationErrors,
@@ -121,15 +140,11 @@ export default function AccountForm({
     } = validateForm(formData);
 
     setErrors(validationErrors);
-
     if (!isValid) return;
-
     setLoading(true);
 
     try {
-
       let latestUser = null;
-
 
       // Upload profile image
       if (imageFile) {
@@ -141,29 +156,21 @@ export default function AccountForm({
           imageFile
         );
 
-        const response =
-          await uploadProfileImage(form);
+        const response = await uploadProfileImage(form);
 
-        latestUser =
-          response.data.user;
+        latestUser = response.data.user;
       }
 
-
       // Update profile
-      const response =
-        await updateProfile(formData);
+      const response = await updateProfile(formData);
 
-      latestUser =
-        response.data.user;
-
+      latestUser = response.data.user;
 
       // Update auth context
       updateUser(latestUser);
 
-
       // Notify parent
       onSubmitForm(latestUser);
-
 
       toast.success(
         "Profile updated successfully!"
@@ -182,9 +189,7 @@ export default function AccountForm({
       );
 
     } finally {
-
       setLoading(false);
-
     }
   };
 
@@ -198,7 +203,6 @@ export default function AccountForm({
           @{loginUser?.username}
         </h2>
       </div>
-
 
       {/* Account Form */}
 
@@ -230,7 +234,6 @@ export default function AccountForm({
           handleImageChange={handleImageChange}
         />
 
-
         <EducationDetails
           formData={formData}
           errors={errors}
@@ -241,13 +244,11 @@ export default function AccountForm({
           removeSkill={removeSkill}
         />
 
-
         <AddressDetails
           formData={formData}
           errors={errors}
           handleChange={handleChange}
         />
-
 
         {/* Submit */}
 
@@ -261,9 +262,7 @@ export default function AccountForm({
             : "Save & profile view"
           }
         </button>
-
       </motion.form>
-
     </>
   );
 }

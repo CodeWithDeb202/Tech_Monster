@@ -35,6 +35,9 @@
 
 /* Below 439px */
 @media (max-width: 439px) {
+  #account-page-wrapper{
+    padding: 0
+  }
   #account-main-title{
     margin-bottom: 1rem;
     font-size: 1.4rem;

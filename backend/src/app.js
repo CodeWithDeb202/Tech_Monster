@@ -16,6 +16,7 @@ import adminRoutes from "./routes/admin.routes.js";
 import notificationRoutes from "./routes/Notification/notification.routes.js";
 import analyticsRoutes from "./routes/analytics.routes.js";
 import searchRoutes from "./routes/search.routes.js";
+import followRoutes from "./routes/Follow/follow.routes.js";
 
 import adminTaskRoutes from "./routes/Admin/adminTask.routes.js";
 import internshipRoutes from "./routes/internship.routes.js";
@@ -156,6 +157,7 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 
 app.use("/api/profile", profileRoutes);
+app.use("/api/follow", followRoutes);
 
 app.use("/api/users", userRoutes);
 

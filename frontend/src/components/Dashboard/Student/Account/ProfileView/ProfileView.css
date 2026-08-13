@@ -1,155 +1,653 @@
-.profile-view-container {
+/* =========================================
+   PROFILE VIEW CONTAINER
+========================================= */
+
+#profile-view-container {
+  width: 100%;
   background: rgba(13, 27, 42, 0.6);
   border: 1px solid rgba(0, 240, 255, 0.2);
   backdrop-filter: blur(12px);
   padding: 30px;
   border-radius: 16px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
   color: #ffffff;
   margin-top: 20px;
+  box-sizing: border-box;
 }
 
-.profile-top-grid {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 30px;
-  align-items: start;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 24px;
-}
 
-.profile-avatar-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
+/* =========================================
+   PROFILE HEADER
+========================================= */
 
-.profile-large-avatar {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  border: 3px solid #00f0ff;
-  object-fit: cover;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
-}
-
-.edit-avatar-label {
-  background: rgba(0, 240, 255, 0.1);
-  border: 1px solid #00f0ff;
-  color: #00f0ff;
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.edit-avatar-label:hover {
-  background: rgba(0, 240, 255, 0.2);
-}
-
-.profile-info-col {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.profile-name-row {
+#profile-view-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  margin-bottom: 24px;
 }
 
-.profile-name-row h2 {
+#profile-view-header h2 {
   margin: 0;
+
   font-size: 24px;
+  font-weight: 700;
+
+  color: #ffffff;
 }
 
-.profile-course-badge {
-  background: rgba(0, 255, 102, 0.1);
-  border: 1px solid #00ff66;
-  color: #00ff66;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-
-.profile-stats-row {
+#edit-profile-btn {
   display: flex;
-  gap: 30px;
+  align-items: center;
+  justify-content: center;
+
+  padding: 9px 18px;
+
+  border: 1px solid #00f0ff;
+  border-radius: 8px;
+
+  background: rgba(0, 240, 255, 0.08);
+
+  color: #00f0ff;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
 }
 
-.stat-item span {
+#edit-profile-btn:hover {
+  background: rgba(0, 240, 255, 0.16);
+
+  box-shadow:
+    0 0 15px rgba(0, 240, 255, 0.2);
+
+  transform: translateY(-1px);
+}
+
+#edit-profile-btn:active {
+  transform: translateY(0);
+}
+
+#profile-header {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 30px;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 30px;
+}
+
+
+/* =========================================
+   AVATAR
+========================================= */
+
+#profile-avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+#profile-avatar-wrapper {
+  position: relative;
+}
+
+#profile-large-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #00f0ff;
+  box-shadow:
+    0 0 20px rgba(0, 240, 255, 0.3);
   display: block;
 }
 
-.stat-item .num {
-  font-size: 18px;
-  font-weight: 700;
-  color: #00f0ff;
-}
+#avatar-loading {
+  position: absolute;
+  inset: 0;
 
-.stat-item .label {
-  font-size: 12px;
-  color: #8a9bb8;
-}
-
-.badges-row {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, 0.65);
+
+  color: #00f0ff;
+  font-size: 12px;
+}
+
+
+/* =========================================
+   EDIT PHOTO
+========================================= */
+
+#edit-photo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid #00f0ff;
+
+  color: #00f0ff;
+
+  padding: 7px 15px;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+#edit-photo-btn:hover {
+  background: rgba(0, 240, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+#edit-photo-btn input {
+  display: none;
+}
+
+
+/* =========================================
+   PROFILE HEADER INFO
+========================================= */
+
+#profile-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#profile-name-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
   flex-wrap: wrap;
 }
 
-.mini-badge {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 4px 10px;
+#profile-name-row h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+#profile-username {
+  color: #00f0ff;
+
+  background: rgba(0, 240, 255, 0.08);
+
+  border: 1px solid rgba(0, 240, 255, 0.25);
+
+  padding: 5px 10px;
+
   border-radius: 6px;
-  font-size: 11px;
+
+  font-size: 12px;
 }
 
-.editable-details-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-top: 24px;
-}
+#profile-email {
+  margin: 0;
 
-.editable-field-box {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 12px 16px;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.field-content label {
-  display: block;
-  font-size: 11px;
   color: #8a9bb8;
+
+  font-size: 14px;
 }
 
-.field-content span {
+
+/* =========================================
+   STATS
+========================================= */
+
+#profile-stats-row {
+  display: flex;
+  gap: 35px;
+  margin-top: 5px;
+}
+
+.profile-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.profile-stat strong {
+  color: #00f0ff;
+  font-size: 18px;
+}
+
+.profile-stat span {
+  color: #8a9bb8;
+  font-size: 12px;
+}
+
+
+/* =========================================
+   SECTION TITLE
+========================================= */
+
+#form-section-title {
+  margin: 30px 0 18px;
+
+  font-size: 17px;
+  font-weight: 600;
+
+  color: #ffffff;
+
+  border-left: 3px solid #00f0ff;
+
+  padding-left: 10px;
+}
+
+
+/* =========================================
+   FORM GRID
+========================================= */
+
+#form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+
+/* =========================================
+   FIELD BOX
+========================================= */
+
+.profile-field-box {
+  min-height: 72px;
+
+  background: rgba(255, 255, 255, 0.02);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  padding: 12px 15px;
+
+  border-radius: 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.profile-field-box:hover {
+  border-color: rgba(0, 240, 255, 0.2);
+
+  background: rgba(255, 255, 255, 0.035);
+}
+
+
+/* =========================================
+   FIELD CONTENT
+========================================= */
+
+.profile-field-content {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.profile-field-content label {
+  display: block;
+
+  font-size: 11px;
+
+  color: #8a9bb8;
+
+  margin-bottom: 6px;
+}
+
+.profile-field-content span {
+  display: block;
+
   font-size: 14px;
+
   font-weight: 500;
+
+  color: #ffffff;
+
+  word-break: break-word;
 }
 
-.field-content input {
+
+/* =========================================
+   FIELD INPUT
+========================================= */
+
+.profile-field-content input,
+.profile-field-content textarea {
+  width: 100%;
+
   background: transparent;
+
   border: none;
+
   border-bottom: 1px solid #00f0ff;
-  color: #fff;
+
+  color: #ffffff;
+
   font-size: 14px;
+
   outline: none;
+
+  padding: 4px 0;
+
+  box-sizing: border-box;
+}
+
+.profile-field-content textarea {
+  min-height: 90px;
+
+  resize: vertical;
+
+  border: 1px solid rgba(0, 240, 255, 0.35);
+
+  border-radius: 6px;
+
+  padding: 8px;
+}
+
+
+/* =========================================
+   FIELD ACTIONS
+========================================= */
+
+.profile-field-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+}
+
+
+/* =========================================
+   PENCIL BUTTON
+========================================= */
+
+.pencil-btn,
+.field-save-btn,
+.field-cancel-btn {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .pencil-btn {
-  background: none;
+  background: transparent;
+
   border: none;
-  cursor: pointer;
-  font-size: 16px;
+
   color: #00f0ff;
+
+  font-size: 14px;
+}
+
+.pencil-btn:hover {
+  background: rgba(0, 240, 255, 0.1);
+
+  transform: scale(1.05);
+}
+
+
+/* =========================================
+   SAVE BUTTON
+========================================= */
+
+.field-save-btn {
+  background: rgba(0, 255, 102, 0.1);
+
+  border: 1px solid #00ff66;
+
+  color: #00ff66;
+}
+
+.field-save-btn:hover {
+  background: rgba(0, 255, 102, 0.2);
+}
+
+
+/* =========================================
+   CANCEL BUTTON
+========================================= */
+
+.field-cancel-btn {
+  background: rgba(255, 80, 80, 0.1);
+
+  border: 1px solid #ff5050;
+
+  color: #ff5050;
+}
+
+.field-cancel-btn:hover {
+  background: rgba(255, 80, 80, 0.2);
+}
+
+
+.pencil-btn:disabled,
+.field-save-btn:disabled,
+.field-cancel-btn:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   SKILLS
+========================================= */
+
+#skills-profile-box {
+  margin-top: 18px;
+
+  padding: 15px;
+
+  background: rgba(255, 255, 255, 0.02);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 10px;
+}
+
+#skills-profile-box>label {
+  display: block;
+
+  color: #8a9bb8;
+
+  font-size: 11px;
+
+  margin-bottom: 10px;
+}
+
+#skills-tags {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.skill-tag {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 5px 10px;
+
+  border-radius: 6px;
+
+  background: rgba(0, 240, 255, 0.08);
+
+  border: 1px solid rgba(0, 240, 255, 0.3);
+
+  color: #00f0ff;
+
+  font-size: 12px;
+}
+
+.empty-value {
+  color: #8a9bb8;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   BIO
+========================================= */
+
+#bio-profile-box {
+  margin-top: 16px;
+}
+
+
+/* =========================================
+   BADGES
+========================================= */
+
+#badges-profile-box {
+  margin-top: 20px;
+
+  padding-top: 20px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#badges-profile-box>label {
+  display: block;
+
+  color: #8a9bb8;
+
+  font-size: 11px;
+
+  margin-bottom: 10px;
+}
+
+#badges-row {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.profile-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 6px 11px;
+
+  border-radius: 6px;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+  #profile-header {
+    grid-template-columns: 1fr;
+
+    text-align: center;
+  }
+
+  #profile-avatar-section {
+    justify-content: center;
+  }
+
+  #profile-name-row {
+    justify-content: center;
+  }
+
+  #profile-stats-row {
+    justify-content: center;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  #profile-view-container {
+    padding: 20px;
+  }
+
+  #form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #profile-name-row h2 {
+    font-size: 22px;
+  }
+
+  #profile-stats-row {
+    gap: 20px;
+  }
+
+}
+
+
+@media (max-width: 450px) {
+
+  #profile-view-container {
+    padding: 15px;
+  }
+
+  #profile-large-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .profile-field-box {
+    padding: 10px 12px;
+  }
+
 }
