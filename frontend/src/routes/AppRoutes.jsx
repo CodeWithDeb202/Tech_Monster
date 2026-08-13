@@ -42,6 +42,8 @@ import StudentAccount from '../pages/Dashboard/Student/Account';
 import StudentCertificate from '../pages/Dashboard/Student/Certificate';
 import StudentSetting from '../pages/Dashboard/Student/Setting';
 
+import StudentProfile from '../pages/Dashboard/Common/StudentProfile';
+
 
 
 import Notification from '../components/Dashboard/common/Notification';
@@ -127,6 +129,7 @@ function AppRoutes() {
                     <Route path="tasks" element={<StudentTask />} />
                     <Route path="attendance" element={<StudentAttendance />} />
                     <Route path="account" element={<StudentAccount />} />
+                    <Route path="user-profile" element={<StudentProfile />} />
                     <Route path="certificate" element={<StudentCertificate />} />
                     <Route path="settings" element={<StudentSetting />} />
                     <Route path="notification" element={<Notification />} />

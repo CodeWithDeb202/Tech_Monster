@@ -121,7 +121,7 @@ function SearchBar() {
 
     const handleUserClick = (user) => {
         setShowDropdown(false);
-        navigate(`/student/account`, { state: { userId: user?._id } });
+        navigate(`/student/user-profile`, { state: { userId: user?._id } });
     };
 
     return (
