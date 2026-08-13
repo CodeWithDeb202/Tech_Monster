@@ -12,6 +12,7 @@ import { API } from "../../../../services/api/endpoints";
 import LessonSidebar from "../../../../components/Dashboard/Student/Lessions/LessonSidebar";
 import LessonContent from "../../../../components/Dashboard/Student/Lessions/LessonContent";
 import Pagination from "../../../../components/Dashboard/Student/Lessions/Pagination";
+import LoaderPage from "../../../../components/Dashboard/common/LoaderPage";
 
 const normalizeCourseData = (courseData) => {
     if (!courseData?.modules) {
@@ -504,13 +505,25 @@ export default function Lessions() {
     }, [lessonData, search]);
 
     if (loading) {
+
         return (
-            <motion.div className="lesson-layout" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <div id="lesson-right" style={{ width: "100%" }}>
-                    <div className="lesson-page--loading">Loading lesson content...</div>
+            <motion.div
+                className="lesson-layout"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+            >
+                <div
+                    id="lesson-right"
+                    style={{ width: "100%" }}
+                >
+                    <LoaderPage
+                        message="Loading lesson content..."
+                        size={60}
+                    />
                 </div>
             </motion.div>
         );
+
     }
 
     if (error || !lessonData || !lessons.length) {

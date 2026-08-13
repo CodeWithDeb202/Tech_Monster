@@ -12,10 +12,13 @@ import SuggestedUsers from "../../../../components/Dashboard/Student/Home/Sugges
 import LearningStreak from "../../../../components/Dashboard/Student/Home/LearningStreak";
 import LearningAnalytics from "../../../../components/Dashboard/Student/Home/LearningAnalytics";
 
+import LoaderPage from '../../../../components/Dashboard/common/LoaderPage';
+
 
 const Home = () => {
-  
+
   const [dashboard, setDashboard] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const loadDashboard = async () => {
 
@@ -23,7 +26,7 @@ const Home = () => {
       const res = await api.get(API.DASHBOARD.STUDENT);
 
       console.log("Home:Data=", res.data.dashboard);
-      
+
 
       setDashboard(res.data.dashboard);
 
@@ -31,6 +34,10 @@ const Home = () => {
       console.log("Dashboard Error:", err);
       console.log(err.response?.data);
       console.log(err.response?.status);
+    } finally {
+
+      setLoading(false);
+
     }
   };
 
@@ -52,6 +59,15 @@ const Home = () => {
     weeklyData: [0, 0, 0, 0, 0, 0, 0]
 
   };
+
+  if (loading) {
+    return (
+        <LoaderPage
+            message="Loading your dashboard..."
+            size={60}
+        />
+    );
+}
 
 
   return (

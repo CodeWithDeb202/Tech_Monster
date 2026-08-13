@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import LoaderPage from "../../../components/Dashboard/common/LoaderPage";
 
 import AuthLayout from "../../../layouts/AuthLayout/AuthLayout";
 
@@ -88,6 +89,16 @@ function Login() {
       setLoading(false);
     }
   };
+
+  {
+    loading && (
+      <LoaderPage
+        fullScreen
+        message="Logging you in..."
+        size={70}
+      />
+    )
+  }
 
   return (
     <AuthLayout

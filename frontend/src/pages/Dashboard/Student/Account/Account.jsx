@@ -10,18 +10,16 @@ import {
 import "./Account.css";
 
 import { toast } from "react-toastify";
+import LoaderPage from "../../../../components/Dashboard/common/LoaderPage";
 
 
 export default function Account() {
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [userData, setUserData] =
-    useState(null);
+  const [userData, setUserData] = useState(null);
 
-  const [isSubmitted, setIsSubmitted] =
-    useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
 
   useEffect(() => {
@@ -76,12 +74,13 @@ export default function Account() {
   if (loading) {
 
     return (
-      <h3>
-        Loading...
-      </h3>
+        <LoaderPage
+            message="Loading your profile..."
+            size={60}
+        />
     );
 
-  }
+}
 
 
   // ==============================

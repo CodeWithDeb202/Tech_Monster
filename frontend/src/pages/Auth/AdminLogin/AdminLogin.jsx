@@ -14,8 +14,10 @@ import PasswordInput from "../../../components/Common/Form/PasswordInput";
 import Button from "../../../components/Common/Form/Button";
 
 import { adminLogin } from "../../../services/api/authService";
+import LoaderPage from "../../../components/Dashboard/common/LoaderPage";
 
 function AdminLogin() {
+    const [loading, setLoading] = useState(false);
 
     const { login } = useAuth();
 
@@ -40,6 +42,7 @@ function AdminLogin() {
     const onSubmit = async (data) => {
 
         setError("");
+        setLoading(true);
 
         try {
 
@@ -67,6 +70,16 @@ function AdminLogin() {
         }
 
     };
+
+    {
+    loading && (
+        <LoaderPage
+            fullScreen
+            message="Authenticating admin..."
+            size={70}
+        />
+    )
+}
 
     return (
 
@@ -107,8 +120,9 @@ function AdminLogin() {
                 <Button
                     type="submit"
                     fullWidth
+                    disabled={loading}
                 >
-                    Login as Admin
+                    {loading ? "Logging in..." : "Login as Admin"}
                 </Button>
 
                 <p id="user-login-link">

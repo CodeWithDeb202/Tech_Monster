@@ -9,6 +9,7 @@ import AuthLayout from "../../../layouts/AuthLayout";
 
 import OTPInput from "../../../components/Common/Form/OTPInput";
 import Button from "../../../components/Common/Form/Button";
+import LoaderPage from '../../../components/Dashboard/common/LoaderPage';
 
 import {
     verifyOtp,
@@ -19,29 +20,16 @@ import {
 
 function VerifySignupOTP() {
 
-
     const navigate = useNavigate();
-
     const location = useLocation();
-
     const { login } = useAuth();
 
-
     const email = location.state?.email;
-
     const [otp, setOtp] = useState("");
-
     const [timer, setTimer] = useState(60);
-
     const [loading, setLoading] = useState(false);
-
     const [resending, setResending] = useState(false);
-
     const [error, setError] = useState("");
-
-
-
-
 
     useEffect(() => {
 
@@ -233,6 +221,16 @@ function VerifySignupOTP() {
 
 
     };
+
+    {
+    loading && (
+        <LoaderPage
+            fullScreen
+            message="Verifying your account..."
+            size={70}
+        />
+    )
+}
 
 
 

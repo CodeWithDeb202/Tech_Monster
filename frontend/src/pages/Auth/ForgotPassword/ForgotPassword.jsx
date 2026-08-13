@@ -15,6 +15,7 @@ import Button from "../../../components/Common/Form/Button";
 import { forgotPasswordSchema } from "../../../validations/auth/forgotPasswordSchema";
 
 import { forgotPassword } from "../../../services/api/authService";
+import LoaderPage from "../../../components/Dashboard/common/LoaderPage";
 
 function ForgotPassword() {
 
@@ -50,7 +51,7 @@ function ForgotPassword() {
 
                 state: {
 
-                    email:data.email
+                    email: data.email
 
                 }
 
@@ -76,6 +77,16 @@ function ForgotPassword() {
 
         }
 
+    }
+
+    {
+        loading && (
+            <LoaderPage
+                fullScreen
+                message="Sending OTP to your email..."
+                size={70}
+            />
+        )
     }
 
     return (

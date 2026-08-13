@@ -15,6 +15,7 @@ import PasswordStrength from "../../../components/Common/Form/PasswordStrength";
 
 import { resetPasswordSchema } from "../../../validations/auth/resetPasswordSchema";
 import { resetPassword } from "../../../services/api/authService";
+import LoaderPage from "../../../components/Dashboard/common/LoaderPage";
 
 function ResetPassword() {
 
@@ -101,6 +102,16 @@ function ResetPassword() {
         }
 
     };
+
+    {
+        loading && (
+            <LoaderPage
+                fullScreen
+                message="Updating your password..."
+                size={70}
+            />
+        )
+    }
 
     return (
 

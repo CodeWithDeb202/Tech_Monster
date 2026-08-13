@@ -22,12 +22,13 @@ import {
     verifyOtp,
     resendOtp
 } from "../../../services/api/authService";
+import LoaderPage from "../../../components/Dashboard/common/LoaderPage";
 
 
 
 
 
-function VerifyResetOTP(){
+function VerifyResetOTP() {
 
 
 
@@ -41,68 +42,68 @@ function VerifyResetOTP(){
 
 
 
-    const [otp,setOtp]=useState("");
+    const [otp, setOtp] = useState("");
 
-    const [error,setError]=useState("");
+    const [error, setError] = useState("");
 
-    const [loading,setLoading]=useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const [timer,setTimer]=useState(60);
-
-
+    const [timer, setTimer] = useState(60);
 
 
 
 
-    useEffect(()=>{
 
 
-        if(!email){
+    useEffect(() => {
+
+
+        if (!email) {
 
             navigate("/forgot-password");
 
         }
 
 
-    },[email,navigate]);
+    }, [email, navigate]);
 
 
 
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
 
-        if(timer===0)return;
+        if (timer === 0) return;
 
 
-        const id=setInterval(()=>{
+        const id = setInterval(() => {
 
 
             setTimer(
-                prev=>prev-1
+                prev => prev - 1
             );
 
 
-        },1000);
+        }, 1000);
 
 
 
-        return ()=>clearInterval(id);
+        return () => clearInterval(id);
 
 
-    },[timer]);
-
-
-
+    }, [timer]);
 
 
 
 
-    const handleVerify=async()=>{
 
 
-        try{
+
+    const handleVerify = async () => {
+
+
+        try {
 
 
             setLoading(true);
@@ -115,16 +116,16 @@ function VerifyResetOTP(){
 
                 otp,
 
-                purpose:"forgot-password"
+                purpose: "forgot-password"
 
             });
 
 
 
-            navigate("/reset-password",{
+            navigate("/reset-password", {
 
 
-                state:{
+                state: {
 
                     email
 
@@ -138,7 +139,7 @@ function VerifyResetOTP(){
         }
 
 
-        catch(err){
+        catch (err) {
 
 
             setError(
@@ -153,7 +154,7 @@ function VerifyResetOTP(){
         }
 
 
-        finally{
+        finally {
 
 
             setLoading(false);
@@ -164,19 +165,29 @@ function VerifyResetOTP(){
 
     };
 
+    {
+        loading && (
+            <LoaderPage
+                fullScreen
+                message="Verifying OTP..."
+                size={70}
+            />
+        )
+    }
 
 
 
 
 
-    const handleResend=async()=>{
+
+    const handleResend = async () => {
 
 
         await resendOtp({
 
             email,
 
-            purpose:"forgot-password"
+            purpose: "forgot-password"
 
         });
 
@@ -192,7 +203,7 @@ function VerifyResetOTP(){
 
 
 
-    return(
+    return (
 
 
         <AuthLayout
@@ -248,13 +259,13 @@ function VerifyResetOTP(){
                     {
                         loading
 
-                        ?
+                            ?
 
-                        "Verifying..."
+                            "Verifying..."
 
-                        :
+                            :
 
-                        "Verify OTP"
+                            "Verify OTP"
 
                     }
 
@@ -265,28 +276,28 @@ function VerifyResetOTP(){
 
                 {
 
-                    timer>0
+                    timer > 0
 
-                    ?
+                        ?
 
-                    <p>
+                        <p>
 
-                    Resend OTP in {timer}s
+                            Resend OTP in {timer}s
 
-                    </p>
+                        </p>
 
 
-                    :
+                        :
 
-                    <button
+                        <button
 
-                    onClick={handleResend}
+                            onClick={handleResend}
 
-                    >
+                        >
 
-                    Resend OTP
+                            Resend OTP
 
-                    </button>
+                        </button>
 
                 }
 

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
 import "./AccountForm.css";
+import { CircleLoader} from "react-spinners";
 
 import useAuth from "../../../../../hooks/useAuth";
 import { tokenStorage } from "../../../../../services/auth/tokenStorage";
@@ -257,10 +258,17 @@ export default function AccountForm({
           type="submit"
           id="submit-btn"
         >
-          {loading
-            ? "Saving..."
-            : "Save & profile view"
-          }
+          {loading ? (
+            <>
+              <CircleLoader
+                size={20}
+                color="#ffffff"
+              />
+              Saving...
+            </>
+          ) : (
+            "Save & profile view"
+          )}
         </button>
       </motion.form>
     </>
