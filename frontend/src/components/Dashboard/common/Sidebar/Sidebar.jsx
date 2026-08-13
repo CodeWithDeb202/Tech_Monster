@@ -1,11 +1,12 @@
 import './Sidebar.css';
 
 import useAuth from '../../../../hooks/useAuth';
-import {  useEffect } from "react";
+import {  useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from 'react-toastify';
 import SearchBar from "../../../Common/SearchBar";
+import Loader from "../../../Common/Loader";
 
 import {
     FiHome,
@@ -36,6 +37,8 @@ function Sidebar({
 }) {
     const navigate = useNavigate();
     const location = useLocation();
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (mobileSidebarOpen) {
@@ -77,12 +80,22 @@ function Sidebar({
     const { logout } = useAuth();
 
     const handleLogout = async () => {
-        await logout();
+        setLoading(true);
 
-        sessionStorage.setItem("logoutSuccess", "true");
-
-        navigate("/login", { replace: true });
+        try {
+            await logout();
+            sessionStorage.setItem("logoutSuccess", "true");
+            navigate("/login", { replace: true });
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
+
+    if(loading){
+        return <Loader />
+    }
 
     return (
         <>

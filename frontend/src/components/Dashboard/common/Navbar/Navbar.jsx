@@ -16,6 +16,7 @@ import {
 import logo from "../../../../assets/logo/logo.png";
 import SystemBar from '../../../Common/Navbar/SystemBar';
 import SearchBar from '../../../Common/SearchBar';
+import Loader from "../../../Common/Loader";
 
 function Navbar({ role = "student", onMobileMenuClick }) {
 
@@ -23,6 +24,8 @@ function Navbar({ role = "student", onMobileMenuClick }) {
 
     const userName = user?.username || '';
     const capitalName = userName.toUpperCase() || userName;
+
+    const [loading, setLoading] = useState(false);
 
     // Resolve the profile image URL: support `profilePic` or `avatar` fields.
     // If neither is a valid image URL, fall back to the FiUser placeholder.
@@ -51,12 +54,22 @@ function Navbar({ role = "student", onMobileMenuClick }) {
     };
 
     const handleLogout = async () => {
-        await logout();
+        setLoading(true);
 
-        sessionStorage.setItem("logoutSuccess", "true");
-
-        navigate("/login", { replace: true });
+        try{
+            await logout();
+            sessionStorage.setItem("logoutSuccess", "true");
+            navigate("/login", { replace: true });
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
+
+    if (loading) {
+        return <Loader />;
+    }
 
     return (
         <>
