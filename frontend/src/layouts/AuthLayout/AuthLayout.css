@@ -264,9 +264,6 @@
 
 /* Below 439px */
 @media (max-width: 439px) {
-    #auth-layout{
-        height: calc(100vh - 2rem);
-    }
 
     #authFullCont {
         padding: 0.5rem !important;
