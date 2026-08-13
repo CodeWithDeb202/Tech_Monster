@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import api from "../../../../../services/api/axios";
+import StudentDetailsSkeleton from "./StudentDetailsSkeleton";
 
 export default function StudentDetails() {
 
@@ -34,21 +35,38 @@ export default function StudentDetails() {
 
         try {
 
-            const res = await api.get(`/admin/users/${id}`);
+            setLoading(true);
+
+            const res = await api.get(
+                `/admin/users/${id}`
+            );
 
             setStudent(res.data.student);
 
-            setInternships(res.data.internships);
+            setInternships(
+                res.data.internships || []
+            );
 
-            setAttendance(res.data.attendance);
+            setAttendance(
+                res.data.attendance || []
+            );
 
-            setTasks(res.data.tasks);
+            setTasks(
+                res.data.tasks || []
+            );
 
-            setNotifications(res.data.notifications);
+            setNotifications(
+                res.data.notifications || []
+            );
 
-        }
+        } catch (err) {
 
-        finally {
+            console.error(
+                "Failed to fetch student:",
+                err
+            );
+
+        } finally {
 
             setLoading(false);
 
@@ -58,7 +76,7 @@ export default function StudentDetails() {
 
     if (loading) {
 
-        return <h2>Loading...</h2>;
+        return <StudentDetailsSkeleton />;
 
     }
 
@@ -72,17 +90,17 @@ export default function StudentDetails() {
 
                 initial={{
 
-                    opacity:0,
+                    opacity: 0,
 
-                    y:30
+                    y: 30
 
                 }}
 
                 animate={{
 
-                    opacity:1,
+                    opacity: 1,
 
-                    y:0
+                    y: 0
 
                 }}
 
@@ -214,7 +232,7 @@ export default function StudentDetails() {
 
                         {
 
-                            internships.map(item=>(
+                            internships.map(item => (
 
                                 <tr key={item._id}>
 
@@ -258,7 +276,7 @@ export default function StudentDetails() {
 
                         {
 
-                            attendance.map(item=>(
+                            attendance.map(item => (
 
                                 <tr key={item._id}>
 
@@ -300,7 +318,7 @@ export default function StudentDetails() {
 
                         {
 
-                            tasks.map(item=>(
+                            tasks.map(item => (
 
                                 <tr key={item._id}>
 
@@ -344,7 +362,7 @@ export default function StudentDetails() {
 
                         {
 
-                            notifications.map(item=>(
+                            notifications.map(item => (
 
                                 <tr key={item._id}>
 

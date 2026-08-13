@@ -1,19 +1,23 @@
-/* src/pages/Dashboard/Admin/Students/Students.css */
-
-.studentsPage{
-
-    width:100%;
-
-    padding:20px;
-
+.studentsPage {
+    width: 100%;
+    padding: 20px;
 }
 
-.studentGrid{
+.studentGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 25px;
+}
 
-    display:grid;
+@media (max-width: 767px) {
 
-    grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+    .studentsPage {
+        padding: 15px;
+    }
 
-    gap:25px;
+    .studentGrid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
 
 }

@@ -1,0 +1,48 @@
+.studentSkeletonCard {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 22px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.studentSkeletonTop {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.studentSkeletonInfo {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.studentSkeletonStats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.studentSkeletonStats > div {
+    background: #1b2130;
+    border-radius: 12px;
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+}
+
+.studentSkeletonActions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}

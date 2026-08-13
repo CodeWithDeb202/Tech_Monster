@@ -11,6 +11,7 @@ import {
 import StudentCard from "../../../../components/Dashboard/Admin/Students/StudentCard";
 import EditStudentModal from "../../../../components/Dashboard/Admin/Students/EditStudentModal";
 import NotificationModal from "../../../../components/Dashboard/Admin/Students/NotificationModal";
+import StudentSkeleton from "../../../../components/Dashboard/Admin/Students/StudentSkeleton";
 
 export default function Students() {
 
@@ -56,7 +57,19 @@ export default function Students() {
 
     if (loading) {
 
-        return <h2>Loading...</h2>;
+        return (
+            <div className="studentsPage">
+
+                <div className="studentGrid">
+
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <StudentSkeleton key={index} />
+                    ))}
+
+                </div>
+
+            </div>
+        );
 
     }
 
