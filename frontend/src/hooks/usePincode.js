@@ -45,12 +45,14 @@ export default function usePincode(setFormData) {
                     district: "",
                     state: ""
                 }));
+
+                toast.error("Invalid pincode");
             }
 
         } catch (error) {
-            toast.error("Failed to fetch pincode details", error);
             console.error("Pincode API Error:", error);
-
+            
+            toast.error("Failed to fetch pincode details", error);
             setFormData((prev) => ({
                 ...prev,
                 pincode: value,
