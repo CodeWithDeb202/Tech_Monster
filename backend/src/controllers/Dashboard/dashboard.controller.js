@@ -1,25 +1,17 @@
 import asyncHandler from "../../utils/asyncHandler.js";
 
 import {
-
     getUserInfo,
-
     getStats as getStudentStats,
-
     getAttendance as getStudentAttendance,
-
     getWeeklyAnalytics,
-
     getMyInternships,
-
+    getMyCourses,
     getAllInternships,
-
+    getAllCourses,
     getRecommendedInternships,
-
     getSuggestedUsers,
-
     getBadges
-
 } from "../../services/dashboard/StudentDashboard/index.js";
 
 import {
@@ -49,7 +41,11 @@ export const studentDashboard = asyncHandler(async (req, res) => {
 
         internships,
 
+        courses,
+
         allInternships,
+
+        allCourses,
 
         recommendedInternships,
 
@@ -69,7 +65,11 @@ export const studentDashboard = asyncHandler(async (req, res) => {
 
         getMyInternships(userId),
 
+        getMyCourses(userId),
+
         getAllInternships(userId),
+
+        getAllCourses(userId),
 
         getRecommendedInternships(userId),
 
@@ -95,7 +95,11 @@ export const studentDashboard = asyncHandler(async (req, res) => {
 
             internships,
 
+            courses,
+
             allInternships,
+
+            allCourses,
 
             recommendedInternships,
 

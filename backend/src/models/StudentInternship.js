@@ -11,7 +11,11 @@ const studentInternshipSchema = new mongoose.Schema({
     internship: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Internship",
-        required: true
+    },
+
+    course: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
     },
 
     completedTasks: {
@@ -55,6 +59,29 @@ const studentInternshipSchema = new mongoose.Schema({
     certificateIssued: {
         type: Boolean,
         default: false
+    },
+
+    emailFlags: {
+        joinedEmailSent: {
+            type: Boolean,
+            default: false
+        },
+        allLessonsEmailSent: {
+            type: Boolean,
+            default: false
+        },
+        allTasksEmailSent: {
+            type: Boolean,
+            default: false
+        },
+        completionEmailSent: {
+            type: Boolean,
+            default: false
+        },
+        certificateEmailSent: {
+            type: Boolean,
+            default: false
+        }
     }
 
 }, {

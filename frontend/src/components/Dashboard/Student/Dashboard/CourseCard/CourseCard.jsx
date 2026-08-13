@@ -2,27 +2,34 @@ import { motion } from "framer-motion";
 import { Clock3, ArrowRight } from "lucide-react";
 import "./CourseCard.css";
 import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 import api from "../../../../../services/api/axios";
 import { API } from "../../../../../services/api/endpoints";
 
-const CourseCard = ({ internship, refreshDashboard, index }) => {
+const CourseCard = ({ internship, refreshDashboard, index, type = "internship" }) => {
+  const navigate = useNavigate();
+  const isCourse = type === "course";
+  const label = isCourse ? "Course" : "Internship";
+
   const handleJoin = async () => {
     try {
 
       await api.post(
-        API.INTERNSHIPS.JOIN(internship._id)
+        isCourse
+          ? API.COURSES.JOIN(internship._id)
+          : API.INTERNSHIPS.JOIN(internship._id)
       );
 
-      await refreshDashboard();
+      await refreshDashboard?.();
 
-      toast.success("Internship joined successfully");
+      toast.success(`${label} joined successfully`);
 
     } catch (err) {
 
       toast.error(
         err.response?.data?.message ||
-        "Unable to join internship"
+        `Unable to join ${label.toLowerCase()}`
       );
 
     }
@@ -73,9 +80,11 @@ const CourseCard = ({ internship, refreshDashboard, index }) => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.96 }}
-          onClick={handleJoin}
+          onClick={internship?.enrolled
+            ? () => navigate(`/student/lessions/${internship.slug}`)
+            : handleJoin}
         >
-          Enroll Now
+          {internship?.enrolled ? "Continue" : "Enroll Now"}
           <ArrowRight size={18} />
         </motion.button>
       </div>

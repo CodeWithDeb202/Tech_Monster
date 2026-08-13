@@ -7,6 +7,7 @@ import ContinueLearning from "../../../../components/Dashboard/Student/Dashboard
 import AllInternship from "../../../../components/Dashboard/Student/Dashboard/AllInternship";
 import api from "../../../../services/api/axios";
 import { API } from "../../../../services/api/endpoints";
+import AllCourses from '../../../../components/Dashboard/Student/Dashboard/AllCourses';
 
 function Dashboard() {
     const [dashboard, setDashboard] = useState(null);
@@ -36,6 +37,12 @@ function Dashboard() {
             <DashboardHeader />
             <ContinueLearning
                 internships={dashboard?.internships || []}
+            />
+            <AllCourses
+                courses={
+                    dashboard?.allCourses || []
+                }
+                refreshDashboard={loadDashboard}
             />
             <AllInternship
                 internships={

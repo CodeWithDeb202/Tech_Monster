@@ -54,6 +54,8 @@ import Students from '../pages/Dashboard/Admin/Students';
 import StudentDetails from "../pages/Dashboard/Admin/Students/StudentDetails";
 import Reports from '../pages/Dashboard/Admin/Reports';
 import Internships from '../pages/Dashboard/Admin/Internships';
+import Course from '../pages/Dashboard/Admin/Course';
+import CourseForm from '../components/Dashboard/Admin/Course/CoursesForm';
 import TaskApproval from '../pages/Dashboard/Admin/TasksApproval';
 import TaskApprovalDetails from "../pages/Dashboard/Admin/TasksApproval/TaskApprovalDetails";
 import CertificateApproval from '../pages/Dashboard/Admin/CertificateApproval';
@@ -108,6 +110,7 @@ function AppRoutes() {
                 >
                     <Route index element={<StudentHome />} />
                     <Route path="dashboard" element={<StudentDashboard />} />
+                    <Route path="courses/:slug" element={<Lessions />} />
                     {/* 1. Base Lessions Page */}
                     <Route path="lessions" element={<Lessions />} />
 
@@ -147,6 +150,9 @@ function AppRoutes() {
                     <Route path="students/:id" element={<StudentDetails />} />
                     <Route path='internships' element={<Internships />} />
                     <Route path='internships-form' element={<InternshipsForm />} />
+
+                    <Route path='courses' element={<Course />} />
+                    <Route path='course-form' element={<CourseForm />} />
 
                     <Route path='tasks' element={<TaskApproval />} />
                     <Route

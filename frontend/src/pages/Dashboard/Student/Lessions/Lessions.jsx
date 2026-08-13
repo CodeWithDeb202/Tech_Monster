@@ -118,6 +118,7 @@ export default function Lessions() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [readPercent, setReadPercent] = useState(0);
+    const [contentType, setContentType] = useState("course");
 
     // Completed lesson IDs for the current course. This is the single source
     // of truth for completion. Persisted to localStorage (fast cache) and
@@ -177,10 +178,34 @@ export default function Lessions() {
         localStorage.setItem("readingMode", readingMode);
     }, [readingMode]);
 
+    const getContentEndpoint = (targetSlug) =>
+        API.COURSES?.BY_SLUG
+            ? API.COURSES.BY_SLUG(targetSlug)
+            : `/courses/slug/${targetSlug}`;
+
+    const getCompleteLessonEndpoint = (targetSlug) =>
+        contentType === "course" && API.COURSES?.COMPLETE_LESSON
+            ? API.COURSES.COMPLETE_LESSON(targetSlug)
+            : API.INTERNSHIPS.COMPLETE_LESSON(targetSlug);
+
     // Resolve a course slug when the URL does not provide one.
-    // Priority: (1) enrolled internship from "my internships",
-    // (2) first available published internship.
+    // Priority: (1) enrolled course/internship, (2) first available course.
     const resolveCourseSlug = async () => {
+        try {
+            const myCourseRes = await api.get("/courses/student/my");
+            const myCourses = myCourseRes?.data?.courses || [];
+            const enrolledCourseSlug =
+                myCourses.find((item) => item.slug)?.slug ||
+                myCourses[0]?.course?.slug ||
+                myCourses[0]?.slug;
+
+            if (enrolledCourseSlug) {
+                return normalizeSlug(enrolledCourseSlug);
+            }
+        } catch {
+            // Fall through to internships for backwards compatibility.
+        }
+
         // 1) Try the logged-in student's enrolled internships first.
         try {
             const myRes = await api.get("/internships/student/my");
@@ -197,7 +222,20 @@ export default function Lessions() {
             // Fall through to the public list if the auth call fails.
         }
 
-        // 2) Fall back to the first available published internship.
+        // 2) Fall back to the first available published course.
+        try {
+            const allCourseRes = await api.get("/courses");
+            const allCourses = allCourseRes?.data?.courses || [];
+            const firstCourseSlug =
+                allCourses.find((item) => item.slug)?.slug || allCourses[0]?.slug || null;
+            if (firstCourseSlug) {
+                return normalizeSlug(firstCourseSlug);
+            }
+        } catch {
+            // Fall through to internships for backwards compatibility.
+        }
+
+        // 3) Fall back to the first available published internship.
         try {
             const allRes = await api.get("/internships");
             const allList = allRes?.data?.internships || [];
@@ -235,12 +273,26 @@ export default function Lessions() {
                     return;
                 }
 
-                const response = await api.get(`/internships/slug/${targetSlug}`);
-                const courseData = response?.data?.internship || response?.data || null;
+                let response = null;
+                let sourceType = "course";
+
+                try {
+                    response = await api.get(getContentEndpoint(targetSlug));
+                } catch {
+                    response = await api.get(`/internships/slug/${targetSlug}`);
+                    sourceType = "internship";
+                }
+
+                const courseData =
+                    response?.data?.course ||
+                    response?.data?.internship ||
+                    response?.data ||
+                    null;
 
                 if (!mounted) return;
 
                 if (courseData) {
+                    setContentType(sourceType);
                     setLessonDataState(normalizeCourseData(courseData));
                     setActiveLesson(0);
                 } else {
@@ -294,9 +346,12 @@ export default function Lessions() {
             }
 
             try {
-                const res = await api.get(
-                    API.INTERNSHIPS.COMPLETED_LESSONS(courseSlug)
-                );
+                const completedEndpoint =
+                    contentType === "course" && API.COURSES?.COMPLETED_LESSONS
+                        ? API.COURSES.COMPLETED_LESSONS(courseSlug)
+                        : API.INTERNSHIPS.COMPLETED_LESSONS(courseSlug);
+
+                const res = await api.get(completedEndpoint);
                 const list = res?.data?.completedLessons;
                 if (active && Array.isArray(list)) {
                     // setCompletedLessonIds(list);
@@ -317,7 +372,7 @@ export default function Lessions() {
         return () => {
             active = false;
         };
-    }, [courseSlug]);
+    }, [courseSlug, contentType]);
 
     // Persist completed lesson IDs to localStorage whenever they change.
     useEffect(() => {
@@ -524,7 +579,7 @@ export default function Lessions() {
             // Fire-and-forget persistence to the database.
             if (courseSlug) {
                 api.post(
-                    API.INTERNSHIPS.COMPLETE_LESSON(courseSlug),
+                    getCompleteLessonEndpoint(courseSlug),
                     { lessonId }
                 ).catch(() => {
                     // Backend sync is best-effort; local cache keeps progress.

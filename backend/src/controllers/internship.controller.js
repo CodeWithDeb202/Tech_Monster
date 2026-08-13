@@ -10,6 +10,13 @@ import { emitToUser } from "../socket/socket.js";
 
 import asyncHandler from "../utils/asyncHandler.js";
 import AppError from "../utils/AppError.js";
+import {
+    safeSendActivityEmail,
+    sendAllLessonsCompletedEmail,
+    sendInternshipJoinedEmail,
+    sendLessonCompletedEmail,
+    sendProgramCompletedEmail
+} from "../services/email.service.js";
 
 import cloudinary from "../config/cloudinary.js";
 import streamifier from "streamifier";
@@ -41,6 +48,14 @@ const normalizeSlug = (slug) => {
         .trim()
         .toLowerCase()
         .replace(/_/g, "-");
+};
+
+const findLessonName = (courseData, lessonId) => {
+    for (const module of courseData?.modules || []) {
+        const lesson = (module.lessons || []).find((item) => item.lessonId === lessonId);
+        if (lesson) return lesson.lessonTitle || lessonId;
+    }
+    return lessonId;
 };
 
 const getOrderedCourseTasks = (courseData, courseSlug) => {
@@ -397,8 +412,17 @@ export const joinInternship = asyncHandler(async (req, res) => {
 
     });
 
-    const data = await StudentInternship.find();
+    studentInternship.emailFlags.joinedEmailSent = true;
+    await studentInternship.save();
 
+    safeSendActivityEmail(
+        "internship joined email",
+        () => sendInternshipJoinedEmail({
+            student: req.user,
+            internship,
+            enrollment: studentInternship
+        })
+    );
 
 
 

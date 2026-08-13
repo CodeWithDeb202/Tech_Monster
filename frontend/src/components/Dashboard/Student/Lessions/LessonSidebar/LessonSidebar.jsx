@@ -38,7 +38,7 @@ export default function LessonSidebar({
 
                 <div id="lesson_sidebar_heading_content">
                     <BookOpen size={22} />
-                    <h2>Intenship Lessons</h2>
+                    <h2>Course Lessons</h2>
                     <p>{lessons.length} Lessons</p>
                 </div>
             </div>
@@ -72,7 +72,7 @@ export default function LessonSidebar({
             {/* Footer */}
 
             <div id="lesson-sidebar-footer">
-                <h4>Internship Progress</h4>
+                <h4>Course Progress</h4>
                 <div id="sidebar-progress">
                     <div
                         id="sidebar-progress-fill"

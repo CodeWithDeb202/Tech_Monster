@@ -5,7 +5,12 @@ import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
 import OTP from "../models/OTP.js";
 import generateOTP from "../utils/generateOTP.js";
-import { sendOTPEmail, sendResetPasswordOTP } from "../services/email.service.js";
+import {
+    safeSendActivityEmail,
+    sendOTPEmail,
+    sendResetPasswordOTP,
+    sendWelcomeEmail
+} from "../services/email.service.js";
 import logActivity from "../utils/logActivity.js";
 import RefreshToken from "../models/RefreshToken.js";
 import generateRefreshToken from "../utils/generateRefreshToken.js";
@@ -49,6 +54,11 @@ export const signup = asyncHandler(async (req, res) => {
     sendOTPEmail(email, otp).catch((error) => {
         console.error("❌ Signup OTP sending failed in background:", error.message);
     });
+
+    safeSendActivityEmail(
+        "welcome email",
+        () => sendWelcomeEmail(user)
+    );
 
     // 4. Log Activity
     await logActivity(

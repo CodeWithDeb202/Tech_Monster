@@ -133,6 +133,17 @@ const submissionSchema = new mongoose.Schema(
         reviewedAt: {
             type: Date,
             default: null
+        },
+
+        emailFlags: {
+            submittedEmailSent: {
+                type: Boolean,
+                default: false
+            },
+            approvedEmailSent: {
+                type: Boolean,
+                default: false
+            }
         }
     },
     {

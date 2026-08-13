@@ -3,7 +3,9 @@ import getStats from "./getStats.js";
 import getAttendance from "./getAttendance.js";
 import getWeeklyAnalytics from "./getWeeklyAnalytics.js";
 import getMyInternships from "./getMyInternships.js";
+import getMyCourses from "./getMyCourses.js";
 import getAllInternships from "./getAllInternships.js";
+import getAllCourses from "./getAllCourses.js";
 import getRecommendedInternships from "./getRecommendedInternships.js";
 import getSuggestedUsers from "./getSuggestedUsers.js";
 import getBadges from "./getBadges.js";
@@ -20,7 +22,11 @@ export {
 
     getMyInternships,
 
+    getMyCourses,
+
     getAllInternships,
+
+    getAllCourses,
 
     getRecommendedInternships,
 

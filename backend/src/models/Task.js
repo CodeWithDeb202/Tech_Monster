@@ -196,6 +196,17 @@ const taskSchema = new mongoose.Schema(
         adminComment: {
             type: String,
             default: ""
+        },
+
+        emailFlags: {
+            submittedEmailSent: {
+                type: Boolean,
+                default: false
+            },
+            approvedEmailSent: {
+                type: Boolean,
+                default: false
+            }
         }
 
     },

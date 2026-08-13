@@ -24,8 +24,10 @@ const AllInternship = ({ internships = [], refreshDashboard }) => {
         {internships.map((internship, index) => (
           
             <CourseCard
+              key={internship._id || internship.slug}
               index={index}
               internship={internship}
+              type="internship"
               refreshDashboard={refreshDashboard}
             />
         ))}

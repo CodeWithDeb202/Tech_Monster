@@ -6,6 +6,155 @@ const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 const SENDER_EMAIL = process.env.EMAIL_USER || "techmonsterx6@gmail.com";
 const SENDER_NAME = "Tech Monster";
 
+const formatDate = (date = new Date()) =>
+  new Date(date).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+
+const getStudentName = (student = {}) =>
+  [student.firstName, student.lastName].filter(Boolean).join(" ") ||
+  student.username ||
+  "Student";
+
+const buildTemplate = ({ heading, intro, details = [], note }) => `
+  <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px;">
+    <h2 style="color: #1a1a1a; margin-bottom: 12px;">${heading}</h2>
+    <p style="color: #555555; line-height: 1.6;">${intro}</p>
+    ${details.length
+    ? `<div style="background: #f8fafc; border-radius: 6px; padding: 14px; margin: 18px 0;">
+        ${details.map((item) => `
+          <p style="margin: 6px 0; color: #374151;">
+            <b>${item.label}:</b> ${item.value || "N/A"}
+          </p>
+        `).join("")}
+      </div>`
+    : ""}
+    ${note ? `<p style="color: #555555; line-height: 1.6;">${note}</p>` : ""}
+    <p style="color: #333333; font-weight: bold; margin-top: 24px;">Tech Monster Pvt. Ltd.</p>
+  </div>
+`;
+
+export const sendActivityEmail = async ({ to, subject, heading, intro, details, note }) => {
+  const payload = {
+    sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+    to: [{ email: to }],
+    subject,
+    htmlContent: buildTemplate({ heading, intro, details, note })
+  };
+
+  return sendBrevoEmail(payload);
+};
+
+export const sendWelcomeEmail = (student) =>
+  sendActivityEmail({
+    to: student.email,
+    subject: "Welcome to Tech Monster",
+    heading: "Welcome to Tech Monster",
+    intro: `Hi ${getStudentName(student)}, your account has been created successfully.`,
+    note: "Verify your email and start learning with your dashboard."
+  });
+
+export const sendInternshipJoinedEmail = ({ student, internship, enrollment }) =>
+  sendActivityEmail({
+    to: student.email,
+    subject: "Internship Enrollment Successful",
+    heading: "Internship Enrollment Successful",
+    intro: `Hi ${getStudentName(student)}, you have successfully joined an internship.`,
+    details: [
+      { label: "Internship", value: internship.title },
+      { label: "Duration", value: internship.duration },
+      { label: "Start Date", value: formatDate(enrollment.startedAt || enrollment.createdAt) }
+    ]
+  });
+
+export const sendCourseJoinedEmail = ({ student, course, enrollment }) =>
+  sendActivityEmail({
+    to: student.email,
+    subject: "Course Enrollment Successful",
+    heading: "Course Enrollment Successful",
+    intro: `Hi ${getStudentName(student)}, you have successfully joined a course.`,
+    details: [
+      { label: "Course", value: course.title },
+      { label: "Duration", value: course.duration },
+      { label: "Enrollment Date", value: formatDate(enrollment.startedAt || enrollment.createdAt) }
+    ]
+  });
+
+export const sendLessonCompletedEmail = ({ student, title, lessonName, progress, type = "course" }) =>
+  sendActivityEmail({
+    to: student.email,
+    subject: "Lesson Completed",
+    heading: "Lesson Completed",
+    intro: `Great work, ${getStudentName(student)}. You completed a lesson in your ${type}.`,
+    details: [
+      { label: type === "internship" ? "Internship" : "Course", value: title },
+      { label: "Lesson", value: lessonName },
+      { label: "Progress", value: `${progress || 0}%` }
+    ]
+  });
+
+export const sendAllLessonsCompletedEmail = ({ student, title, type = "course" }) =>
+  sendActivityEmail({
+    to: student.email,
+    subject: "All Lessons Completed",
+    heading: "All Lessons Completed",
+    intro: `Congratulations ${getStudentName(student)}, you have completed all lessons.`,
+    details: [
+      { label: type === "internship" ? "Internship" : "Course", value: title },
+      { label: "Completion Date", value: formatDate() },
+      { label: "Progress", value: "100%" }
+    ]
+  });
+
+export const sendTaskCompletedEmail = ({ student, title, taskTitle, type = "course" }) =>
+  sendActivityEmail({
+    to: student.email,
+    subject: "Task Completed",
+    heading: "Task Completed",
+    intro: `Nice work, ${getStudentName(student)}. Your task has been submitted for review.`,
+    details: [
+      { label: type === "internship" ? "Internship" : "Course", value: title },
+      { label: "Task", value: taskTitle },
+      { label: "Status", value: "Submitted" }
+    ]
+  });
+
+export const sendAllTasksCompletedEmail = ({ student, title, type = "course", progress = 100 }) =>
+  sendActivityEmail({
+    to: student.email,
+    subject: "All Tasks Completed",
+    heading: "All Tasks Completed",
+    intro: `Congratulations ${getStudentName(student)}, all required tasks are complete.`,
+    details: [
+      { label: type === "internship" ? "Internship" : "Course", value: title },
+      { label: "Completion Date", value: formatDate() },
+      { label: "Progress", value: `${progress}%` }
+    ]
+  });
+
+export const sendProgramCompletedEmail = ({ student, title, type = "course", certificateAvailable = false }) =>
+  sendActivityEmail({
+    to: student.email,
+    subject: `${type === "internship" ? "Internship" : "Course"} Completed`,
+    heading: `Congratulations! ${type === "internship" ? "Internship" : "Course"} Completed`,
+    intro: `Hi ${getStudentName(student)}, you have completed your ${type}.`,
+    details: [
+      { label: type === "internship" ? "Internship" : "Course", value: title },
+      { label: "Completion Date", value: formatDate() },
+      { label: "Certificate", value: certificateAvailable ? "Available after issue" : "Not available" }
+    ]
+  });
+
+export const safeSendActivityEmail = (label, sendEmail) => {
+  Promise.resolve()
+    .then(sendEmail)
+    .catch((error) => {
+      console.error(`[EMAIL] Failed to send ${label}:`, error.message);
+    });
+};
+
 // Helper function to send email via Brevo REST API (100% Error-Free)
 const sendBrevoEmail = async (payload) => {
   if (!process.env.BREVO_API_KEY) {

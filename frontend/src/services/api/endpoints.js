@@ -100,6 +100,17 @@ export const API = {
     COMPLETED_LESSONS: (slug) => `/internships/slug/${slug}/completed-lessons`,
   },
 
+  COURSES: {
+    BASE: "/courses",
+    BY_ID: (id) => `/courses/${id}`,
+    BY_SLUG: (slug) => `/courses/slug/${slug}`,
+    JOIN: (id) => `/courses/${id}/join`,
+    PROGRESS: (id) => `/courses/${id}/progress`,
+    COMPLETE: (id) => `/courses/${id}/complete`,
+    COMPLETE_LESSON: (slug) => `/courses/slug/${slug}/complete-lesson`,
+    COMPLETED_LESSONS: (slug) => `/courses/slug/${slug}/completed-lessons`,
+  },
+
   SUBMISSIONS: {
     BASE: "/submissions",
     MY: "/submissions/my",

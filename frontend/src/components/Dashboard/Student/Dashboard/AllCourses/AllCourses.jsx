@@ -1,0 +1,41 @@
+import { motion } from "framer-motion";
+import CourseCard from "../CourseCard";
+import "../AllInternship/AllInternship.css";
+
+
+
+const AllCourses = ({ courses = [], refreshDashboard }) => {
+  const allCount = Array.isArray(courses) ? courses.length : 0;
+
+  return (
+    <section id="all-courses">
+
+      <motion.div
+        id="course-heading"
+        initial={{ opacity: 0, x: -40 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+      >
+        <h2>All Courses ({allCount})</h2>
+        <p>Explore every available course</p>
+      </motion.div>
+
+      <div id="course-grid">
+        {courses.map((course, index) => (
+          
+            <CourseCard
+              key={course._id || course.slug}
+              index={index}
+              internship={course}
+              type="course"
+              refreshDashboard={refreshDashboard}
+            />
+        ))}
+
+      </div>
+
+    </section>
+  );
+};
+
+export default AllCourses;

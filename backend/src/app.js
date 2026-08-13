@@ -20,7 +20,8 @@ import followRoutes from "./routes/Follow/follow.routes.js";
 
 import adminTaskRoutes from "./routes/Admin/adminTask.routes.js";
 import internshipRoutes from "./routes/internship.routes.js";
-import serverRoutes from ".//routes/Server/server.routes.js";
+import courseRoutes from "./routes/course.routes.js";
+import serverRoutes from "./routes/Server/server.routes.js";
 import submissionRoutes from "./routes/submission.routes.js";
 import adminSubmissionRoutes from "./routes/adminSubmissions.routes.js";
 
@@ -192,6 +193,8 @@ app.use(
   "/api/internships",
   internshipRoutes
 );
+
+app.use("/api/courses", courseRoutes);
 
 app.use(
   "/api/server",

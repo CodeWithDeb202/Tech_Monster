@@ -59,6 +59,7 @@ function Sidebar({
         { name: "Overview", path: "/admin", icon: <FiHome /> },
         { name: "Manage Students", path: "/admin/students", icon: <FiUser /> },
         { name: "Internships", path: "/admin/internships", icon: <FiBookOpen /> },
+        { name: "Courses", path: "/admin/courses", icon: <FiBookOpen /> },
         { name: "Task Approval", path: "/admin/tasks", icon: <FiCheckSquare /> },
         { name: "Reports", path: "/admin/reports", icon: <FiGrid /> },
         { name: "Certificate Approval", path: "/admin/certificates", icon: <FiCreditCard /> },
