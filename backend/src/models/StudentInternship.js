@@ -106,8 +106,6 @@ studentInternshipSchema.pre("validate", function (next) {
         );
     }
 
-    next();
-
 });
 
 export default mongoose.model(

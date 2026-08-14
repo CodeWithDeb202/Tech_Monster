@@ -117,18 +117,7 @@ function AppRoutes() {
                         element={<StudentDashboard />}
                     />
 
-                    {/* Lesson Page */}
-                    <Route
-                        path="lessions"
-                        element={<Lessions />}
-                    />
-
-                    <Route
-                        path="lessions/:type/:slug"
-                        element={<Lessions />}
-                    />
-
-                    {/* Old spelling compatibility */}
+                    {/* Lessons Routes */}
                     <Route
                         path="lessons"
                         element={<Lessions />}
@@ -136,6 +125,17 @@ function AppRoutes() {
 
                     <Route
                         path="lessons/:type/:slug"
+                        element={<Lessions />}
+                    />
+
+                    {/* Old spelling compatibility */}
+                    <Route
+                        path="lessions"
+                        element={<Lessions />}
+                    />
+
+                    <Route
+                        path="lessions/:type/:slug"
                         element={<Lessions />}
                     />
 

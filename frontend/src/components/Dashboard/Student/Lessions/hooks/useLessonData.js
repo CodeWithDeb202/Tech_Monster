@@ -49,12 +49,23 @@ const useLessonData = (
                 setLoading(true);
                 setError(null);
 
-                const response = await api.get(
-                    getContentEndpoint(
-                        contentType,
-                        courseSlug
-                    )
+                const endpoint = getContentEndpoint(
+                    contentType,
+                    courseSlug
                 );
+
+                console.log("========== LESSON DEBUG ==========");
+                console.log("Content Type:", contentType);
+                console.log("Course Slug:", courseSlug);
+                console.log("API Endpoint:", endpoint);
+
+                const response = await api.get(endpoint);
+
+                console.log("API Status:", response.status);
+                console.log("API Response:", response.data);
+                console.log("==================================");
+
+
 
                 if (!mounted) return;
 
@@ -65,6 +76,14 @@ const useLessonData = (
                     response?.data ||
                     null;
 
+                console.log("========== EXTRACTED DATA ==========");
+                console.log("data:", data);
+                console.log("data.modules:", data?.modules);
+                console.log("modules count:", data?.modules?.length);
+                console.log("first module:", data?.modules?.[0]);
+                console.log("first module lessons:", data?.modules?.[0]?.lessons);
+                console.log("====================================");
+
                 if (!data) {
 
                     throw new Error(
@@ -72,9 +91,16 @@ const useLessonData = (
                     );
                 }
 
-                setLessonData(
-                    normalizeLessonData(data)
-                );
+                const normalized = normalizeLessonData(data);
+
+                console.log("========== NORMALIZED DATA ==========");
+                console.log("normalized:", normalized);
+                console.log("modules:", normalized?.modules);
+                console.log("lessons:", normalized?.lessons);
+                console.log("lesson count:", normalized?.lessons?.length);
+                console.log("====================================");
+
+                setLessonData(normalized);
 
             } catch (err) {
 
