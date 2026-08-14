@@ -3,7 +3,7 @@ import Follow from "../models/Follow.js";
 import Internship from "../models/Internship.js";
 import StudentInternship from "../models/StudentInternship.js";
 import UserBadge from "../models/UserBadge.js";
-import Badge from "../models/Badge.js";
+import Badge from "../models/Badges.js";
 import Certificate from "../models/Certificate.js";
 import Course from "../models/Course.js";
 
