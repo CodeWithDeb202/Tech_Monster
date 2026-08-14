@@ -1,8 +1,17 @@
 import { io } from "socket.io-client";
 
-const URL = import.meta.env.VITE_API_URL.replace("/api", "");
+const API_URL =
+    import.meta.env.VITE_API_URL ||
+    "https://tech-monster.onrender.com/api";
 
-export const socket = io(URL, {
-    autoConnect: false,
-    withCredentials: true,
-});
+const SOCKET_URL =
+    API_URL.replace(/\/api\/?$/, "");
+
+export const socket = io(
+    SOCKET_URL,
+    {
+        autoConnect: false,
+        withCredentials: true,
+        transports: ["websocket", "polling"]
+    }
+);

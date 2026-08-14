@@ -120,8 +120,12 @@ function SearchBar() {
     };
 
     const handleUserClick = (user) => {
+
         setShowDropdown(false);
-        navigate(`/student/user-profile`, { state: { userId: user?._id } });
+
+        navigate(
+            `/student/user-profile/${user?._id}`
+        );
     };
 
     return (

@@ -7,6 +7,10 @@ export const getProfile=()=>{
 
 }
 
+export const getUserProfile = (userId) => {
+    return api.get(API.PROFILE.GET_USER(userId));
+};
+
 export const updateProfile=(data)=>{
 
     return api.put(API.PROFILE.UPDATE,data);

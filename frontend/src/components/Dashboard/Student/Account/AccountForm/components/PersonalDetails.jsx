@@ -72,24 +72,28 @@ function PersonalDetails({
                     />
                 </motion.div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 }}
-                    id="form-group"
+                <select
+                    name="gender"
+                    value={formData.gender || ""}
+                    onChange={handleChange}
+                    required
                 >
-                    <label>Gender *</label>
+                    <option value="">
+                        Select Gender
+                    </option>
 
-                    <select
-                        name="gender"
-                        value={formData.gender}
-                        onChange={handleChange}
-                    >
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </motion.div>
+                    <option value="male">
+                        Male
+                    </option>
+
+                    <option value="female">
+                        Female
+                    </option>
+
+                    <option value="other">
+                        Other
+                    </option>
+                </select>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

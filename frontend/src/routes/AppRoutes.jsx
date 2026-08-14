@@ -129,7 +129,7 @@ function AppRoutes() {
                     <Route path="tasks" element={<StudentTask />} />
                     <Route path="attendance" element={<StudentAttendance />} />
                     <Route path="account" element={<StudentAccount />} />
-                    <Route path="user-profile" element={<StudentProfile />} />
+                    <Route path="user-profile/:userId" element={<StudentProfile />}/>
                     <Route path="certificate" element={<StudentCertificate />} />
                     <Route path="settings" element={<StudentSetting />} />
                     <Route path="notification" element={<Notification />} />

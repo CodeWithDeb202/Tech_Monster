@@ -6,8 +6,6 @@ export default function ProfileHeader({
     handleImageUpdate
 }) {
 
-    console.log("Header data", data);
-
     return (
         <motion.div
             id="profile-header"

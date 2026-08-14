@@ -4,75 +4,133 @@ import User from "../../models/User.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import AppError from "../../utils/AppError.js";
 
+import Notification from "../../models/Notification.js";
+import { emitToUser } from "../../socket/socket.js";
+
 
 // =====================================
 // FOLLOW USER
 // =====================================
 
-export const followUser = asyncHandler(
-    async (req, res) => {
+export const followUser = asyncHandler(async (req, res) => {
 
-        const followerId = req.user._id;
-        const followingId = req.params.userId;
+    const followerId = req.user._id;
+    const followingId = req.params.userId;
 
+    // =====================================
+    // CANNOT FOLLOW YOURSELF
+    // =====================================
 
-        if (
-            followerId.toString() ===
-            followingId.toString()
-        ) {
-            throw new AppError(
-                "You cannot follow yourself",
-                400
-            );
-        }
-
-
-        const user =
-            await User.findById(followingId);
-
-        if (!user) {
-
-            throw new AppError(
-                "User not found",
-                404
-            );
-
-        }
-
-
-        const existingFollow =
-            await Follow.findOne({
-                follower: followerId,
-                following: followingId
-            });
-
-
-        if (existingFollow) {
-
-            throw new AppError(
-                "Already following this user",
-                400
-            );
-
-        }
-
-
-        await Follow.create({
-            follower: followerId,
-            following: followingId
-        });
-
-
-        res.status(201).json({
-
-            success: true,
-
-            message: "User followed successfully"
-
-        });
-
+    if (
+        followerId.toString() ===
+        followingId.toString()
+    ) {
+        throw new AppError(
+            "You cannot follow yourself",
+            400
+        );
     }
-);
+
+    // =====================================
+    // TARGET USER
+    // =====================================
+
+    const user = await User.findById(followingId)
+        .select("username firstName lastName avatar isBlocked");
+
+    if (!user) {
+        throw new AppError(
+            "User not found",
+            404
+        );
+    }
+
+    if (user.isBlocked) {
+        throw new AppError(
+            "This user is not available",
+            403
+        );
+    }
+
+    // =====================================
+    // CHECK EXISTING FOLLOW
+    // =====================================
+
+    const existingFollow = await Follow.findOne({
+        follower: followerId,
+        following: followingId
+    });
+
+    if (existingFollow) {
+        throw new AppError(
+            "Already following this user",
+            400
+        );
+    }
+
+    // =====================================
+    // CREATE FOLLOW
+    // =====================================
+
+    await Follow.create({
+        follower: followerId,
+        following: followingId
+    });
+
+    // =====================================
+    // FOLLOWER DETAILS
+    // =====================================
+
+    const follower = await User.findById(followerId)
+        .select("username firstName lastName avatar");
+
+    const followerName =
+        `${follower?.firstName || ""} ${follower?.lastName || ""}`
+            .trim() ||
+        follower?.username ||
+        "Someone";
+
+    // =====================================
+    // CREATE NOTIFICATION
+    // =====================================
+
+    const notification = await Notification.create({
+
+        user: followingId,
+
+        title: "New Follower",
+
+        message: `${followerName} started following you`,
+
+        type: "follow"
+
+    });
+
+    // =====================================
+    // LIVE SOCKET NOTIFICATION
+    // =====================================
+
+    emitToUser(
+        followingId,
+        "newNotification",
+        notification
+    );
+
+    // =====================================
+    // RESPONSE
+    // =====================================
+
+    return res.status(201).json({
+
+        success: true,
+
+        message: "User followed successfully",
+
+        notification
+
+    });
+
+});
 
 
 // =====================================

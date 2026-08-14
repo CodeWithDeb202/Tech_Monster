@@ -31,29 +31,18 @@ const notificationSchema = new mongoose.Schema(
         },
 
         type: {
-
             type: String,
-
             enum: [
-
                 "application",
-
                 "interview",
-
                 "offer",
-
                 "certificate",
-
                 "message",
-
                 "company",
-
+                "follow",
                 "system"
-
             ],
-
             default: "system"
-
         },
 
         isRead: {

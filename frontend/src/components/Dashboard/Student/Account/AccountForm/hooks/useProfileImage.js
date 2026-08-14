@@ -1,18 +1,34 @@
 import { useEffect, useState } from "react";
 
+import defaultProfileImg from '../../../../../../assets/profile/default-profile.svg';
+
 export default function useProfileImage(initialImage = "") {
 
-    const [imageFile, setImageFile] =
-        useState(null);
+    const [imageFile, setImageFile] = useState(null);
 
-    const [preview, setPreview] =
-        useState(initialImage || "");
+    const getInitialPreview = () => {
 
+        // Backend default image path
+        if (
+            !initialImage ||
+            initialImage === "/profile/default-profile.svg"
+        ) {
+            return defaultProfileImg;
+        }
+
+        return initialImage;
+    };
+
+    const [preview, setPreview] = useState(
+        getInitialPreview()
+    );
 
     useEffect(() => {
 
-        setPreview(initialImage || "");
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setPreview(getInitialPreview());
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initialImage]);
 
 

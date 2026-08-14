@@ -20,35 +20,20 @@ export const initSocket = (server) => {
 
     io.on("connection", (socket) => {
 
-        socket.on(
+        socket.on("join", (userId) => {
 
-            "join",
+            if (!userId) return;
 
-            (userId) => {
+            onlineUsers.set(
+                String(userId),
+                socket.id
+            );
 
-                onlineUsers.set(
-
-                    userId,
-
-                    socket.id
-
-                );
-
-                io.emit(
-
-                    "onlineUsers",
-
-                    Array.from(
-
-                        onlineUsers.keys()
-
-                    )
-
-                );
-
-            }
-
-        );
+            io.emit(
+                "onlineUsers",
+                Array.from(onlineUsers.keys())
+            );
+        });
 
         socket.on(
 

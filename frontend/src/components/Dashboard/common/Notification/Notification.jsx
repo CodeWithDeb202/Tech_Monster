@@ -9,6 +9,8 @@ import {
 import { motion } from 'framer-motion';
 import './Notification.css';
 
+import { socket } from "../../../../socket/socket";
+
 export default function Notification() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,6 +38,35 @@ export default function Notification() {
   useEffect(() => {
 
     loadNotifications();
+
+  }, []);
+
+  useEffect(() => {
+
+    loadNotifications();
+
+    const handleNewNotification = (notification) => {
+
+      setNotifications((prev) => [
+        notification,
+        ...prev
+      ]);
+
+    };
+
+    socket.on(
+      "newNotification",
+      handleNewNotification
+    );
+
+    return () => {
+
+      socket.off(
+        "newNotification",
+        handleNewNotification
+      );
+
+    };
 
   }, []);
 

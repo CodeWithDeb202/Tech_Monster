@@ -38,6 +38,8 @@ export default function AccountForm({
   onSubmitForm
 }) {
 
+  console.log("EDIT DATA:", editData);
+
   const { updateUser } = useAuth();
 
   const loginUser = tokenStorage.getUser();
@@ -116,6 +118,8 @@ export default function AccountForm({
       value
     } = e.target;
 
+    console.log("Name=",name,"-- Value=", value);
+
     setFormData((prev) => ({
       ...prev,
       [name]: value
@@ -133,7 +137,6 @@ export default function AccountForm({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("FORM DATA BEFORE SUBMIT:", formData);
 
     const {
       errors: validationErrors,

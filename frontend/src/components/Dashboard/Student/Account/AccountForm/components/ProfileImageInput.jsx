@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 
+import defaultProfileImg from '../../../../../../assets/profile/default-profile.svg';
+
 function ProfileImageInput({
-    preview,
+    preview = defaultProfileImg,
     onChange
 }) {
     return (

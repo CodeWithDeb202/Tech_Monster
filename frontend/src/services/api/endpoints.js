@@ -1,10 +1,10 @@
 export const API = {
-  
+
   PUBLIC: {
     HERO_STATS: "/public/hero-stats"
   },
 
-  
+
   AUTH: {
 
     LOGIN: "/auth/login",
@@ -76,6 +76,7 @@ export const API = {
 
   PROFILE: {
     GET: "/profile",
+    GET_USER: (userId) => `/profile/user/${userId}`,
     UPDATE: "/profile",
     IMAGE: "/profile/profile-image"
   },
@@ -125,5 +126,12 @@ export const API = {
 
     SEARCH: "/messages/search"
 
+  },
+
+  FOLLOW: {
+    FOLLOW_USER: (userId) => `/follow/${userId}`,
+    UNFOLLOW_USER: (userId) => `/follow/${userId}`,
+    FOLLOWERS: (userId) => `/follow/${userId}/followers`,
+    FOLLOWING: (userId) => `/follow/${userId}/following`
   },
 };
