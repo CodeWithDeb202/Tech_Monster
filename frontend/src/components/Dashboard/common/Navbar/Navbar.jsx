@@ -18,7 +18,7 @@ import SystemBar from '../../../Common/Navbar/SystemBar';
 import SearchBar from '../../../Common/SearchBar';
 import Loader from "../../../Common/Loader";
 
-import { useNotification } from "../../../../hooks/useNotification";
+import useNotification from "../../../../hooks/useNotification";
 
 function Navbar({ role = "student", onMobileMenuClick }) {
 
@@ -34,6 +34,7 @@ function Navbar({ role = "student", onMobileMenuClick }) {
 
     const [loading, setLoading] = useState(false);
     const [showNotificationPopup, setShowNotificationPopup] = useState(false);
+    const [showProfilePopup, setShowProfilePopup] = useState(false);
 
     // Resolve the profile image URL: support `profilePic` or `avatar` fields.
     // If neither is a valid image URL, fall back to the FiUser placeholder.

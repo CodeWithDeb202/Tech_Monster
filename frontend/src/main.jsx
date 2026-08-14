@@ -4,7 +4,7 @@ import './styles/global.css';
 
 
 import { AuthProvider } from './context/Auth/AuthProvider.jsx';
-import { NotificationProvider } from './context/Notification/NotificationProvider.jsx';
+import NotificationProvider from './context/Notification/NotificationProvider.jsx';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.jsx';
 import App from './App.jsx';
 
