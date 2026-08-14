@@ -1,10 +1,10 @@
 import Follow from "../../models/Follow.js";
 import User from "../../models/User.js";
+import Notification from "../../models/Notification.js";
 
 import asyncHandler from "../../utils/asyncHandler.js";
 import AppError from "../../utils/AppError.js";
 
-import Notification from "../../models/Notification.js";
 import { emitToUser } from "../../socket/socket.js";
 
 
@@ -32,11 +32,13 @@ export const followUser = asyncHandler(async (req, res) => {
     }
 
     // =====================================
-    // TARGET USER
+    // FIND TARGET USER
     // =====================================
 
     const user = await User.findById(followingId)
-        .select("username firstName lastName avatar isBlocked");
+        .select(
+            "username firstName lastName avatar isBlocked"
+        );
 
     if (!user) {
         throw new AppError(
@@ -78,11 +80,13 @@ export const followUser = asyncHandler(async (req, res) => {
     });
 
     // =====================================
-    // FOLLOWER DETAILS
+    // GET FOLLOWER DETAILS
     // =====================================
 
     const follower = await User.findById(followerId)
-        .select("username firstName lastName avatar");
+        .select(
+            "username firstName lastName avatar"
+        );
 
     const followerName =
         `${follower?.firstName || ""} ${follower?.lastName || ""}`
@@ -107,7 +111,7 @@ export const followUser = asyncHandler(async (req, res) => {
     });
 
     // =====================================
-    // LIVE SOCKET NOTIFICATION
+    // SEND LIVE NOTIFICATION
     // =====================================
 
     emitToUser(
@@ -120,7 +124,7 @@ export const followUser = asyncHandler(async (req, res) => {
     // RESPONSE
     // =====================================
 
-    return res.status(201).json({
+    res.status(201).json({
 
         success: true,
 

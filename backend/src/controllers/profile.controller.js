@@ -2,13 +2,17 @@ import User from "../models/User.js";
 import Follow from "../models/Follow.js";
 import Internship from "../models/Internship.js";
 import StudentInternship from "../models/StudentInternship.js";
-import Certificate from "../models/Certificate.js";
 import UserBadge from "../models/UserBadge.js";
+import Badge from "../models/Badge.js";
+import Certificate from "../models/Certificate.js";
+import Course from "../models/Course.js";
+
 
 import uploadToCloudinary from "../utils/uploadCloudinary.js";
 
 import asyncHandler from "../utils/asyncHandler.js";
 import AppError from "../utils/AppError.js";
+
 
 
 // =====================================
@@ -268,26 +272,26 @@ export const getProfile = asyncHandler(
 // =====================================
 
 export const getUserProfile = asyncHandler(async (req, res) => {
+
     const { userId } = req.params;
 
-    if (!userId) {
-        throw new AppError("User ID is required", 400);
-    }
+    // ---------------------------------
+    // Validate target user
+    // ---------------------------------
 
     const user = await User.findById(userId)
         .select("-password -refreshToken");
 
     if (!user) {
-        throw new AppError("User not found", 404);
+        throw new AppError(
+            "User profile not found",
+            404
+        );
     }
 
-    if (user.isBlocked) {
-        throw new AppError("This user is not available", 403);
-    }
-
-    // =====================================
-    // FOLLOW STATS
-    // =====================================
+    // ---------------------------------
+    // Followers / Following count
+    // ---------------------------------
 
     const followersCount = await Follow.countDocuments({
         following: userId
@@ -297,31 +301,36 @@ export const getUserProfile = asyncHandler(async (req, res) => {
         follower: userId
     });
 
-    // =====================================
-    // IS CURRENT USER FOLLOWING TARGET USER?
-    // =====================================
+    // ---------------------------------
+    // Check current logged-in user
+    // follows target user or not
+    // ---------------------------------
 
-    const isFollowing = await Follow.exists({
+    const existingFollow = await Follow.exists({
         follower: req.user._id,
         following: userId
     });
 
-    // =====================================
-    // STUDENT INTERNSHIPS + COURSES
-    // =====================================
+    const isFollowing = !!existingFollow;
+
+    // ---------------------------------
+    // User internships / courses
+    // ---------------------------------
 
     const enrollments = await StudentInternship.find({
         student: userId
     })
         .populate(
             "internship",
-            "title slug category level"
+            "title slug category level thumbnail"
         )
         .populate(
             "course",
-            "title slug category level"
+            "title slug category level thumbnail"
         )
-        .sort({ createdAt: -1 });
+        .sort({
+            createdAt: -1
+        });
 
     const internships = enrollments
         .filter(item => item.internship)
@@ -331,11 +340,9 @@ export const getUserProfile = asyncHandler(async (req, res) => {
             slug: item.internship.slug,
             category: item.internship.category,
             level: item.internship.level,
+            thumbnail: item.internship.thumbnail,
             progress: item.progress,
-            status: item.status,
-            startedAt: item.startedAt,
-            completedAt: item.completedAt,
-            certificateIssued: item.certificateIssued
+            status: item.status
         }));
 
     const courses = enrollments
@@ -346,15 +353,14 @@ export const getUserProfile = asyncHandler(async (req, res) => {
             slug: item.course.slug,
             category: item.course.category,
             level: item.course.level,
+            thumbnail: item.course.thumbnail,
             progress: item.progress,
-            status: item.status,
-            startedAt: item.startedAt,
-            completedAt: item.completedAt
+            status: item.status
         }));
 
-    // =====================================
-    // CERTIFICATES
-    // =====================================
+    // ---------------------------------
+    // Certificates
+    // ---------------------------------
 
     const certificates = await Certificate.find({
         student: userId
@@ -363,36 +369,49 @@ export const getUserProfile = asyncHandler(async (req, res) => {
             "internship",
             "title slug"
         )
-        .sort({ issueDate: -1 });
+        .sort({
+            issueDate: -1
+        });
 
-    // =====================================
-    // BADGES
-    // =====================================
+    // ---------------------------------
+    // Badges
+    // ---------------------------------
 
     const badges = await UserBadge.find({
         user: userId
     })
-        .populate("badge")
-        .sort({ earnedAt: -1 });
+        .populate(
+            "badge",
+            "title icon description color requirement"
+        )
+        .sort({
+            earnedAt: -1
+        });
 
-    // =====================================
-    // RESPONSE
-    // =====================================
+    // ---------------------------------
+    // Response
+    // ---------------------------------
 
     return res.status(200).json({
+
         success: true,
 
         user,
 
-        stats: {
-            followersCount,
-            followingCount,
-            isFollowing: Boolean(isFollowing)
-        },
+        followersCount,
+
+        followingCount,
+
+        isFollowing,
 
         internships,
+
         courses,
+
         certificates,
+
         badges
+
     });
+
 });

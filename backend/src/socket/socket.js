@@ -4,106 +4,165 @@ let io;
 
 const onlineUsers = new Map();
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:5199",
+    "http://localhost:3000",
+
+    "https://tech-monster.vercel.app",
+
+    "https://tech-monster-5zqd74uad-deb24.vercel.app"
+];
+
+
+// =====================================
+// INITIALIZE SOCKET
+// =====================================
+
 export const initSocket = (server) => {
 
     io = new Server(server, {
 
         cors: {
 
-            origin: "*",
+            origin: allowedOrigins,
 
-            methods: ["GET", "POST"]
+            methods: [
+                "GET",
+                "POST"
+            ],
+
+            credentials: true
 
         }
 
     });
 
+
     io.on("connection", (socket) => {
+
+        console.log(
+            "🟢 Socket connected:",
+            socket.id
+        );
+
+
+        // =====================================
+        // JOIN USER
+        // =====================================
 
         socket.on("join", (userId) => {
 
-            if (!userId) return;
+            if (!userId) {
+                return;
+            }
+
+            const id = String(userId);
 
             onlineUsers.set(
-                String(userId),
+                id,
                 socket.id
             );
 
+            console.log(
+                `👤 User ${id} connected with socket ${socket.id}`
+            );
+
+
             io.emit(
                 "onlineUsers",
-                Array.from(onlineUsers.keys())
+                Array.from(
+                    onlineUsers.keys()
+                )
             );
+
         });
 
-        socket.on(
 
+        // =====================================
+        // TYPING
+        // =====================================
+
+        socket.on(
             "typing",
-
             ({ receiver }) => {
 
-                const receiverSocketId = onlineUsers.get(receiver);
+                if (!receiver) {
+                    return;
+                }
+
+                const receiverSocketId =
+                    onlineUsers.get(
+                        String(receiver)
+                    );
 
                 if (receiverSocketId) {
 
-                    io.to(receiverSocketId).emit(
-
-                        "typing"
-
-                    );
+                    io.to(receiverSocketId)
+                        .emit("typing");
 
                 }
 
             }
-
         );
 
-        socket.on(
 
+        // =====================================
+        // STOP TYPING
+        // =====================================
+
+        socket.on(
             "stopTyping",
-
             ({ receiver }) => {
 
-                const receiverSocketId = onlineUsers.get(receiver);
+                if (!receiver) {
+                    return;
+                }
+
+                const receiverSocketId =
+                    onlineUsers.get(
+                        String(receiver)
+                    );
 
                 if (receiverSocketId) {
 
-                    io.to(receiverSocketId).emit(
-
-                        "stopTyping"
-
-                    );
+                    io.to(receiverSocketId)
+                        .emit("stopTyping");
 
                 }
 
             }
-
         );
 
+
+        // =====================================
+        // DISCONNECT
+        // =====================================
+
         socket.on(
-
             "disconnect",
-
             () => {
 
+                console.log(
+                    "🔴 Socket disconnected:",
+                    socket.id
+                );
+
                 for (
-
                     const [
-
                         userId,
-
                         socketId
-
-                    ] of onlineUsers.entries()
-
+                    ]
+                    of onlineUsers.entries()
                 ) {
 
                     if (
-
                         socketId === socket.id
-
                     ) {
 
-                        onlineUsers.delete(userId);
+                        onlineUsers.delete(
+                            userId
+                        );
 
                         break;
 
@@ -111,34 +170,79 @@ export const initSocket = (server) => {
 
                 }
 
+
                 io.emit(
-
                     "onlineUsers",
-
                     Array.from(
-
                         onlineUsers.keys()
-
                     )
-
                 );
 
             }
-
         );
 
     });
 
 };
 
-export const getIO = () => io;
 
-export const getOnlineUsers = () => onlineUsers;
+// =====================================
+// GET SOCKET IO
+// =====================================
 
-export const emitToUser = (userId, event, payload) => {
-    const socketId = onlineUsers.get(String(userId));
+export const getIO = () => {
 
-    if (io && socketId) {
-        io.to(socketId).emit(event, payload);
+    if (!io) {
+        throw new Error(
+            "Socket.io has not been initialized"
+        );
     }
+
+    return io;
+};
+
+
+// =====================================
+// GET ONLINE USERS
+// =====================================
+
+export const getOnlineUsers = () => {
+
+    return onlineUsers;
+
+};
+
+
+// =====================================
+// EMIT TO SPECIFIC USER
+// =====================================
+
+export const emitToUser = (
+    userId,
+    event,
+    payload
+) => {
+
+    if (!io) {
+        return;
+    }
+
+    const socketId =
+        onlineUsers.get(
+            String(userId)
+        );
+
+    if (socketId) {
+
+        io.to(socketId).emit(
+            event,
+            payload
+        );
+
+        console.log(
+            `🔔 ${event} sent to user ${userId}`
+        );
+
+    }
+
 };

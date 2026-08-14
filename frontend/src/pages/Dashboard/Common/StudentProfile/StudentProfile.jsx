@@ -35,66 +35,44 @@ export default function StudentProfile() {
   // FETCH USER PROFILE
   // =================================
 
+
+  const fetchProfile = async () => {
+
+    try {
+
+      const response = await getUserProfile(userId);
+      const data = response.data;
+
+      setUser(data.user);
+      setIsFollowing(!!data.isFollowing);
+
+      setFollowersCount(data.followersCount ?? 0);
+      setFollowingCount(data.followingCount ?? 0);
+
+      setInternships(data.internships || []);
+      setCourses(data.courses || []);
+      setBadges(data.badges || []);
+      setCertificates(data.certificates || []);
+
+    } catch (error) {
+
+      console.error(
+        "Failed to fetch user profile:",
+        error
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  };
+
   useEffect(() => {
 
     if (!userId) return;
 
-    const fetchProfile = async () => {
-
-      setLoading(true);
-
-      try {
-
-        const response = await getUserProfile(userId);
-
-        console.log("User-response=", response);
-        const data = response.data;
-        console.log("User-Data=", data);
-        console.log("User-Data-user=", data.user);
-
-        setUser(data.user);
-
-        setIsFollowing(
-          data.isFollowing
-        );
-
-        setFollowersCount(
-          data.followersCount || 0
-        );
-
-        setFollowingCount(
-          data.followingCount || 0
-        );
-
-        setInternships(
-          data.internships || []
-        );
-
-        setCourses(
-          data.courses || []
-        );
-
-        setBadges(
-          data.badges || []
-        );
-
-        setCertificates(
-          data.certificates || []
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Failed to fetch user profile:",
-          error
-        );
-
-      } finally {
-
-        setLoading(false);
-
-      }
-    };
+    setLoading(true);
 
     fetchProfile();
 
@@ -118,22 +96,14 @@ export default function StudentProfile() {
 
         await unfollowUser(userId);
 
-        setIsFollowing(false);
-
-        setFollowersCount(
-          prev => Math.max(0, prev - 1)
-        );
-
       } else {
 
         await followUser(userId);
 
-        setIsFollowing(true);
-
-        setFollowersCount(
-          prev => prev + 1
-        );
       }
+
+      // MongoDB ru latest data ana
+      await fetchProfile();
 
     } catch (error) {
 
