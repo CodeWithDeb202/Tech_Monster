@@ -15,7 +15,7 @@ const CourseCard = ({ internship, refreshDashboard, index, type }) => {
 
   const handleJoin = async () => {
     try {
-      await api.post( isCourse ? API.COURSES.JOIN(internship._id) : API.INTERNSHIPS.JOIN(internship._id));
+      await api.post(isCourse ? API.COURSES.JOIN(internship._id) : API.INTERNSHIPS.JOIN(internship._id));
 
       await refreshDashboard?.();
       toast.success(`${label} joined successfully`);
@@ -74,7 +74,14 @@ const CourseCard = ({ internship, refreshDashboard, index, type }) => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.96 }}
-          onClick={internship?.enrolled ? () => navigate(`/student/lessions/${internship.slug}`) : handleJoin}
+          onClick={
+            internship?.enrolled
+              ? () =>
+                navigate(
+                  `/student/lessions/${type}/${internship.slug}`
+                )
+              : handleJoin
+          }
         >
           {internship?.enrolled ? "Continue" : "Enroll Now"}
           <ArrowRight size={18} />

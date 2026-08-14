@@ -1,11 +1,13 @@
 import StudentInternship from "../../../models/StudentInternship.js";
-import Course from "../../../models/Course.js";
 
 const getMyCourses = async (userId) => {
 
     const courses = await StudentInternship.find({
         student: userId,
-        course: { $ne: null }
+        course: {
+            $exists: true,
+            $ne: null
+        }
     })
         .populate({
             path: "course",
@@ -22,28 +24,30 @@ const getMyCourses = async (userId) => {
                 badge
             `
         })
-        .sort({ createdAt: -1 });
+        .sort({
+            createdAt: -1
+        });
 
     return courses
         .filter(item => item.course)
         .map(item => {
 
+            const completedTasks = item.completedTasks || 0;
+            const completedNotes = item.completedNotes || 0;
+
             const remainingTasks = Math.max(
-                (item.course.totalTasks || 0) -
-                item.completedTasks,
+                (item.course.totalTasks || 0) - completedTasks,
                 0
             );
 
             const remainingNotes = Math.max(
-                (item.course.totalNotes || 0) -
-                item.completedNotes,
+                (item.course.totalNotes || 0) - completedNotes,
                 0
             );
 
             return {
                 _id: item._id,
 
-                // IMPORTANT
                 type: "course",
 
                 courseId: item.course._id,
@@ -60,28 +64,30 @@ const getMyCourses = async (userId) => {
 
                 duration: item.course.duration,
 
-                totalTasks: item.course.totalTasks,
+                totalTasks: item.course.totalTasks || 0,
 
-                totalNotes: item.course.totalNotes,
+                totalNotes: item.course.totalNotes || 0,
 
-                completedTasks: item.completedTasks,
+                completedTasks,
+
+                completedNotes,
 
                 remainingTasks,
 
                 remainingNotes,
 
-                progress: item.progress,
+                progress: item.progress || 0,
 
-                status: item.status,
+                status: item.status || "Not Started",
 
                 certificateEligible:
-                    item.course.certificate,
+                    item.course.certificate || false,
 
                 badgeEligible:
-                    item.course.badge,
+                    item.course.badge || false,
 
                 certificateIssued:
-                    item.certificateIssued,
+                    item.certificateIssued || false,
 
                 startedAt: item.startedAt,
 
