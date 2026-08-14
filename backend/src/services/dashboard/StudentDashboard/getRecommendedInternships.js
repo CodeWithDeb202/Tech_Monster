@@ -4,35 +4,30 @@ import StudentInternship from "../../../models/StudentInternship.js";
 const getRecommendedInternships = async (userId) => {
 
     const [
-
         internships,
-
         enrolledInternships
-
     ] = await Promise.all([
 
         Internship.find({
-
             isPublished: true
-
         })
-
             .sort({
-
                 createdAt: -1
-
             })
-
             .limit(6),
 
         StudentInternship.find({
+            student: userId,
 
-            student: userId
-
+            // IMPORTANT:
+            // Only fetch internship enrollments,
+            // not course enrollments.
+            internship: {
+                $exists: true,
+                $ne: null
+            }
         }).select(
-
             "internship completedTasks progress status"
-
         )
 
     ]);
@@ -41,18 +36,23 @@ const getRecommendedInternships = async (userId) => {
 
     enrolledInternships.forEach(item => {
 
+        if (!item.internship) {
+            return;
+        }
+
         enrolledMap.set(
 
             item.internship.toString(),
 
             {
+                completedTasks:
+                    item.completedTasks || 0,
 
-                completedTasks: item.completedTasks,
+                progress:
+                    item.progress || 0,
 
-                progress: item.progress,
-
-                status: item.status
-
+                status:
+                    item.status || "Not Started"
             }
 
         );
@@ -62,9 +62,7 @@ const getRecommendedInternships = async (userId) => {
     return internships.map(item => {
 
         const enrolled = enrolledMap.get(
-
             item._id.toString()
-
         );
 
         return {
@@ -95,7 +93,8 @@ const getRecommendedInternships = async (userId) => {
 
             enrolled: !!enrolled,
 
-            progress: enrolled?.progress || 0,
+            progress:
+                enrolled?.progress || 0,
 
             completedTasks:
                 enrolled?.completedTasks || 0,
