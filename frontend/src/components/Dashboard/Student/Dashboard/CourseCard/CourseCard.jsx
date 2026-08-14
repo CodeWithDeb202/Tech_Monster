@@ -7,26 +7,20 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../../../services/api/axios";
 import { API } from "../../../../../services/api/endpoints";
 
-const CourseCard = ({ internship, refreshDashboard, index, type = "internship" }) => {
+const CourseCard = ({ internship, refreshDashboard, index, type }) => {
   const navigate = useNavigate();
   const isCourse = type === "course";
+  console.log("isCourse", isCourse);
   const label = isCourse ? "Course" : "Internship";
 
   const handleJoin = async () => {
     try {
-
-      await api.post(
-        isCourse
-          ? API.COURSES.JOIN(internship._id)
-          : API.INTERNSHIPS.JOIN(internship._id)
-      );
+      await api.post( isCourse ? API.COURSES.JOIN(internship._id) : API.INTERNSHIPS.JOIN(internship._id));
 
       await refreshDashboard?.();
-
       toast.success(`${label} joined successfully`);
 
     } catch (err) {
-
       toast.error(
         err.response?.data?.message ||
         `Unable to join ${label.toLowerCase()}`
@@ -80,9 +74,7 @@ const CourseCard = ({ internship, refreshDashboard, index, type = "internship" }
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.96 }}
-          onClick={internship?.enrolled
-            ? () => navigate(`/student/lessions/${internship.slug}`)
-            : handleJoin}
+          onClick={internship?.enrolled ? () => navigate(`/student/lessions/${internship.slug}`) : handleJoin}
         >
           {internship?.enrolled ? "Continue" : "Enroll Now"}
           <ArrowRight size={18} />

@@ -11,6 +11,7 @@ import DashboardSkeleton from "./DashboardSkeleton";
 
 import api from "../../../../services/api/axios";
 import { API } from "../../../../services/api/endpoints";
+import { toast } from "react-toastify";
 
 function Dashboard() {
 
@@ -28,17 +29,11 @@ function Dashboard() {
                 API.DASHBOARD.STUDENT
             );
 
-            console.log("studentdashboard");
-            console.log(
-                "data:= ",
-                data.dashboard?.internships
-            );
-
             setDashboard(data.dashboard);
 
         } catch (err) {
-
             console.log(err);
+            toast.error("Failed to load dashboard", err?.message);
 
         } finally {
 

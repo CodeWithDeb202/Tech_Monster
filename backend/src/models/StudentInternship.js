@@ -10,12 +10,12 @@ const studentInternshipSchema = new mongoose.Schema({
 
     internship: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Internship",
+        ref: "Internship"
     },
 
     course: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Course",
+        ref: "Course"
     },
 
     completedTasks: {
@@ -86,6 +86,28 @@ const studentInternshipSchema = new mongoose.Schema({
 
 }, {
     timestamps: true
+});
+
+studentInternshipSchema.pre("validate", function (next) {
+
+    if (!this.internship && !this.course) {
+        return next(
+            new Error(
+                "Either internship or course is required"
+            )
+        );
+    }
+
+    if (this.internship && this.course) {
+        return next(
+            new Error(
+                "A record cannot have both internship and course"
+            )
+        );
+    }
+
+    next();
+
 });
 
 export default mongoose.model(

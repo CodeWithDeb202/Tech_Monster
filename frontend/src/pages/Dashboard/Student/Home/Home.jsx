@@ -24,12 +24,9 @@ const Home = () => {
     try {
       const response = await api.get(API.DASHBOARD.STUDENT);
 
-      console.log("Home: Data =", response.data?.dashboard);
-
       setDashboard(response.data?.dashboard || null);
     } catch (error) {
-      console.error("Dashboard Error:", error);
-      console.error("Response:", error.response?.data);
+      
       console.error("Status:", error.response?.status);
 
       setDashboard(null);
@@ -39,6 +36,7 @@ const Home = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadDashboard();
   }, []);
 

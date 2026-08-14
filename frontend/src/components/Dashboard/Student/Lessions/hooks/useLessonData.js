@@ -28,17 +28,12 @@ const useLessonData = (
     contentType
 ) => {
 
-    const [lessonData, setLessonData] =
-        useState(null);
+    const [lessonData, setLessonData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const [loading, setLoading] =
-        useState(true);
-
-    const [error, setError] =
-        useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-
         if (!courseSlug) {
             setError("Learning content not found.");
             setLoading(false);

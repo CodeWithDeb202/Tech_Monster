@@ -26,9 +26,8 @@ import {
 } from "../../services/dashboard/AdminDashboard/index.js";
 
 export const studentDashboard = asyncHandler(async (req, res) => {
-
     const userId = req.user._id;
-
+    console.log("userId", userId);
     const [
         user,
         stats,
@@ -56,35 +55,20 @@ export const studentDashboard = asyncHandler(async (req, res) => {
     ]);
 
     return res.status(200).json({
-
         success: true,
-
         dashboard: {
-
             user,
-
             stats,
-
             attendance,
-
             analytics,
-
             internships,
-
             courses,
-
             allInternships,
-
             allCourses,
-
             recommendedInternships,
-
             suggestedUsers,
-
             badges
-
         }
-
     });
 
 });

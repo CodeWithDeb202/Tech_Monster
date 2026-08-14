@@ -1,4 +1,5 @@
 import StudentInternship from "../../../models/StudentInternship.js";
+import Course from "../../../models/Course.js";
 
 const getMyCourses = async (userId) => {
 

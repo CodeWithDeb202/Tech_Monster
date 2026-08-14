@@ -4,7 +4,10 @@ const getMyInternships = async (userId) => {
 
     const internships = await StudentInternship.find({
         student: userId,
-        internship: { $ne: null }
+        internship: {
+            $exists: true,
+            $ne: null
+        }
     })
         .populate({
             path: "internship",
@@ -21,7 +24,9 @@ const getMyInternships = async (userId) => {
                 badge
             `
         })
-        .sort({ createdAt: -1 });
+        .sort({
+            createdAt: -1
+        });
 
     return internships
         .filter(item => item.internship)
@@ -29,13 +34,13 @@ const getMyInternships = async (userId) => {
 
             const remainingTasks = Math.max(
                 (item.internship.totalTasks || 0) -
-                item.completedTasks,
+                (item.completedTasks || 0),
                 0
             );
 
             const remainingNotes = Math.max(
                 (item.internship.totalNotes || 0) -
-                item.completedNotes,
+                (item.completedNotes || 0),
                 0
             );
 
@@ -43,7 +48,6 @@ const getMyInternships = async (userId) => {
 
                 _id: item._id,
 
-                // IMPORTANT
                 type: "internship",
 
                 internshipId: item.internship._id,
@@ -64,15 +68,15 @@ const getMyInternships = async (userId) => {
 
                 totalNotes: item.internship.totalNotes,
 
-                completedTasks: item.completedTasks,
+                completedTasks: item.completedTasks || 0,
 
                 remainingTasks,
 
                 remainingNotes,
 
-                progress: item.progress,
+                progress: item.progress || 0,
 
-                status: item.status,
+                status: item.status || "Not Started",
 
                 certificateEligible:
                     item.internship.certificate,
@@ -81,7 +85,7 @@ const getMyInternships = async (userId) => {
                     item.internship.badge,
 
                 certificateIssued:
-                    item.certificateIssued,
+                    item.certificateIssued || false,
 
                 startedAt: item.startedAt,
 
@@ -89,7 +93,9 @@ const getMyInternships = async (userId) => {
 
                 enrolledAt: item.createdAt
             };
+
         });
+
 };
 
 export default getMyInternships;
