@@ -75,18 +75,46 @@ function AuthProvider({ children }) {
             return;
         }
 
+
+        const handleConnect = () => {
+
+            console.log(
+                "🟢 Socket connected:",
+                socket.id
+            );
+
+
+            socket.emit(
+                "join",
+                String(user._id)
+            );
+
+        };
+
+
+        socket.on(
+            "connect",
+            handleConnect
+        );
+
+
         if (!socket.connected) {
+
             socket.connect();
+
+        } else {
+
+            handleConnect();
+
         }
 
-        socket.emit(
-            "join",
-            String(user._id)
-        );
 
         return () => {
 
-            socket.off("connect");
+            socket.off(
+                "connect",
+                handleConnect
+            );
 
         };
 

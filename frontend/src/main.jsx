@@ -4,6 +4,7 @@ import './styles/global.css';
 
 
 import { AuthProvider } from './context/Auth/AuthProvider.jsx';
+import { NotificationProvider } from './context/Notification/NotificationProvider.jsx';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.jsx';
 import App from './App.jsx';
 
@@ -16,19 +17,22 @@ createRoot(document.getElementById('root')).render(
     <ErrorBoundary >
       <AuthProvider>
 
-        <App />
+        <NotificationProvider>
 
+          <App />
 
-        <ToastContainer
-          position="bottom-left"
-          autoClose={2500}
-          hideProgressBar={false}
-          newestOnTop={true}
-          closeOnClick
-          pauseOnHover
-          draggable
-          theme="dark"
-        />
+          <ToastContainer
+            position="bottom-left"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick
+            pauseOnHover
+            draggable
+            theme="dark"
+          />
+
+        </NotificationProvider>
 
       </AuthProvider>
     </ErrorBoundary>

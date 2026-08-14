@@ -29,16 +29,15 @@ export const sendNotification = asyncHandler(async (req, res) => {
 
     const onlineUsers = getOnlineUsers();
 
-    const socketId = onlineUsers.get(user);
+    const socketId = onlineUsers.get(
+        String(user)
+    );
 
     if (socketId) {
 
         io.to(socketId).emit(
-
             "newNotification",
-
             notification
-
         );
 
     }
@@ -79,11 +78,10 @@ export const getMyNotifications = asyncHandler(async (req, res) => {
 
 export const markAsRead = asyncHandler(async (req, res) => {
 
-    const notification = await Notification.findById(
-
-        req.params.id
-
-    );
+    const notification = await Notification.findOne({
+        _id: req.params.id,
+        user: req.user._id
+    });
 
     if (!notification) {
 
@@ -113,11 +111,10 @@ export const markAsRead = asyncHandler(async (req, res) => {
 
 export const deleteNotification = asyncHandler(async (req, res) => {
 
-    await Notification.findByIdAndDelete(
-
-        req.params.id
-
-    );
+    await Notification.findOneAndDelete({
+        _id: req.params.id,
+        user: req.user._id
+    });
 
     res.status(200).json({
 
