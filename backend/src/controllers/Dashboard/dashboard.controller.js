@@ -30,53 +30,29 @@ export const studentDashboard = asyncHandler(async (req, res) => {
     const userId = req.user._id;
 
     const [
-
         user,
-
         stats,
-
         attendance,
-
         analytics,
-
         internships,
-
         courses,
-
         allInternships,
-
         allCourses,
-
         recommendedInternships,
-
         suggestedUsers,
-
         badges
-
     ] = await Promise.all([
-
         getUserInfo(userId),
-
         getStudentStats(userId),
-
         getStudentAttendance(userId),
-
         getWeeklyAnalytics(userId),
-
         getMyInternships(userId),
-
         getMyCourses(userId),
-
         getAllInternships(userId),
-
         getAllCourses(userId),
-
         getRecommendedInternships(userId),
-
         getSuggestedUsers(userId),
-
         getBadges(userId)
-
     ]);
 
     return res.status(200).json({

@@ -3,15 +3,11 @@ import StudentInternship from "../../../models/StudentInternship.js";
 const getMyInternships = async (userId) => {
 
     const internships = await StudentInternship.find({
-
-        student: userId
-
+        student: userId,
+        internship: { $ne: null }
     })
-
         .populate({
-
             path: "internship",
-
             select: `
                 title
                 slug
@@ -25,37 +21,30 @@ const getMyInternships = async (userId) => {
                 badge
             `
         })
-
-        .sort({
-
-            createdAt: -1
-
-        });
+        .sort({ createdAt: -1 });
 
     return internships
-
         .filter(item => item.internship)
-
         .map(item => {
 
             const remainingTasks = Math.max(
-
                 (item.internship.totalTasks || 0) -
-
                 item.completedTasks,
-
                 0
-
             );
 
             const remainingNotes = Math.max(
-                (item.internship.totalNotes || 0) - item.completedNotes,
+                (item.internship.totalNotes || 0) -
+                item.completedNotes,
                 0
             );
 
             return {
 
                 _id: item._id,
+
+                // IMPORTANT
+                type: "internship",
 
                 internshipId: item.internship._id,
 
@@ -78,6 +67,7 @@ const getMyInternships = async (userId) => {
                 completedTasks: item.completedTasks,
 
                 remainingTasks,
+
                 remainingNotes,
 
                 progress: item.progress,
@@ -85,15 +75,12 @@ const getMyInternships = async (userId) => {
                 status: item.status,
 
                 certificateEligible:
-
                     item.internship.certificate,
 
                 badgeEligible:
-
                     item.internship.badge,
 
                 certificateIssued:
-
                     item.certificateIssued,
 
                 startedAt: item.startedAt,
@@ -101,11 +88,8 @@ const getMyInternships = async (userId) => {
                 completedAt: item.completedAt,
 
                 enrolledAt: item.createdAt
-
             };
-
         });
-
 };
 
 export default getMyInternships;

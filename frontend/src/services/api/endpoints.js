@@ -94,11 +94,12 @@ export const API = {
   INTERNSHIPS: {
     BASE: "/internships",
     BY_ID: (id) => `/internships/${id}`,
+    BY_SLUG: (slug) => `/internships/slug/${slug}`,
     JOIN: (id) => `/internships/${id}/join`,
     PROGRESS: (id) => `/internships/${id}/progress`,
     COMPLETE: (id) => `/internships/${id}/complete`,
     COMPLETE_LESSON: (slug) => `/internships/slug/${slug}/complete-lesson`,
-    COMPLETED_LESSONS: (slug) => `/internships/slug/${slug}/completed-lessons`,
+    COMPLETED_LESSONS: (slug) => `/internships/slug/${slug}/completed-lessons`
   },
 
   COURSES: {
@@ -109,8 +110,13 @@ export const API = {
     PROGRESS: (id) => `/courses/${id}/progress`,
     COMPLETE: (id) => `/courses/${id}/complete`,
     COMPLETE_LESSON: (slug) => `/courses/slug/${slug}/complete-lesson`,
-    COMPLETED_LESSONS: (slug) => `/courses/slug/${slug}/completed-lessons`,
+    COMPLETED_LESSONS: (slug) => `/courses/slug/${slug}/completed-lessons`
   },
+
+  // NEW
+    LEARNING: {
+      CONTENT: (type, slug) => `/learning/${type}/${slug}`
+    },
 
   SUBMISSIONS: {
     BASE: "/submissions",

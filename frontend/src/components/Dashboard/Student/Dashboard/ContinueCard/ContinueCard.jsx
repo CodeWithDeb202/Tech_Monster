@@ -1,56 +1,117 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-import { useNavigate } from 'react-router-dom';
 import "./ContinueCard.css";
 
-const ContinueCard = ({ internship }) => {
+const ContinueCard = ({ learning }) => {
+
   const navigate = useNavigate();
+
+  const {
+    type,
+    title,
+    thumbnail,
+    progress = 0,
+    remainingTasks = 0,
+    remainingNotes = 0,
+    slug
+  } = learning || {};
+
+  const isCourse = type === "course";
+
+  const learningLabel = isCourse
+    ? "Course"
+    : "Internship";
+
+  const handleContinue = () => {
+
+    if (!slug || !type) {
+      console.error(
+        "Invalid learning item:",
+        learning
+      );
+      return;
+    }
+
+    navigate(
+      `/student/lessions/${type}/${slug}`
+    );
+  };
 
   return (
     <motion.div
       id="continue-card"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{
+        opacity: 0,
+        y: 20
+      }}
+      animate={{
+        opacity: 1,
+        y: 0
+      }}
       transition={{
         duration: 0.2,
         ease: "easeInOut"
       }}
     >
+
       <div id="card-bg">
-        <img src={internship?.thumbnail} alt={internship?.title} />
+
+        <img
+          src={thumbnail}
+          alt={title}
+        />
+
       </div>
 
-      <h3>{internship?.title}</h3>
+      <div id="continue-card-type">
+        {learningLabel}
+      </div>
 
+      <h3>
+        {title}
+      </h3>
 
-
-      <span>{internship?.progress}% Completed</span>
+      <span>
+        {progress}% Completed
+      </span>
 
       <div id="progress">
+
         <motion.div
           id="progress-fill"
-          initial={{ width: 0 }}
-          animate={{
-            width: `${internship?.progress}%`,
+          initial={{
+            width: 0
           }}
-          transition={{ duration: 0.8 }}
+          animate={{
+            width: `${progress}%`
+          }}
+          transition={{
+            duration: 0.8
+          }}
         />
 
       </div>
 
       <div id="continue-card-content">
-        <small>{internship.remainingTasks} Tasks Left</small>
-        <small>{internship.remainingNotes} Lession left</small>
+
+        <small>
+          {remainingTasks} Tasks Left
+        </small>
+
+        <small>
+          {remainingNotes} Lessons Left
+        </small>
+
       </div>
 
       <button
-        onClick={() => {
-          const slug = internship?.slug || internship?.courseSlug || "frontend-dev";
-          navigate(`/student/lessions/${slug}`);
-        }}
+        type="button"
+        onClick={handleContinue}
       >
         Continue
+
         <ArrowRight size={18} />
       </button>
 

@@ -76,53 +76,127 @@ const unlockFirstEligibleLessonTask = async ({
     lessonId,
     courseData
 }) => {
-    const orderedTasks = getOrderedCourseTasks(courseData, courseSlug);
-    const targetIndex = orderedTasks.findIndex((task) => task.lessonId === lessonId);
 
-    if (targetIndex < 0) return null;
+    const orderedTasks = getOrderedCourseTasks(
+        courseData,
+        courseSlug
+    );
+
+    const targetIndex = orderedTasks.findIndex(
+        (task) => task.lessonId === lessonId
+    );
+
+    if (targetIndex < 0) {
+        return null;
+    }
 
     const targetTask = orderedTasks[targetIndex];
+
+    // --------------------------------------------------
+    // Prevent duplicate submission
+    // --------------------------------------------------
+
     const existing = await Submission.findOne({
         student,
+        course: course._id,
         courseSlug,
         moduleId: targetTask.moduleId,
         lessonId: targetTask.lessonId,
         taskId: targetTask.taskId
     });
 
-    if (existing) return existing;
-
-    const previousTask = orderedTasks[targetIndex - 1];
-    if (previousTask) {
-        const previousSubmission = await Submission.findOne({
-            student,
-            courseSlug,
-            moduleId: previousTask.moduleId,
-            taskId: previousTask.taskId,
-            status: "approved"
-        });
-
-        if (!previousSubmission) return null;
+    if (existing) {
+        return existing;
     }
 
+    // --------------------------------------------------
+    // Find current module
+    // --------------------------------------------------
+
+    const moduleIndex = courseData.modules.findIndex(
+        (module) =>
+            module.moduleId === targetTask.moduleId
+    );
+
+    if (moduleIndex < 0) {
+        return null;
+    }
+
+    // --------------------------------------------------
+    // Module 1 is automatically eligible
+    // --------------------------------------------------
+
+    if (moduleIndex > 0) {
+
+        const previousModule =
+            courseData.modules[moduleIndex - 1];
+
+        const previousModuleId =
+            previousModule.moduleId;
+
+        // Previous module must have an approved submission
+        const previousModuleApproved =
+            await Submission.exists({
+                student,
+                course: course._id,
+                courseSlug,
+                moduleId: previousModuleId,
+                status: "approved"
+            });
+
+        if (!previousModuleApproved) {
+            return null;
+        }
+    }
+
+    // --------------------------------------------------
+    // Unlock task
+    // --------------------------------------------------
+
     const unlockedAt = new Date();
+
     const submission = await Submission.create({
+
         student,
+
+        course: course._id,
+
         courseSlug,
+
         moduleId: targetTask.moduleId,
+
         moduleTitle: targetTask.moduleTitle,
+
         lessonId: targetTask.lessonId,
+
         taskId: targetTask.taskId,
+
         taskTitle: targetTask.taskTitle,
-        problemStatement: targetTask.problemStatement,
+
+        problemStatement:
+            targetTask.problemStatement,
+
         status: "unlocked",
+
         unlockedAt,
-        expiresAt: new Date(unlockedAt.getTime() + TASK_DEADLINE_MS)
+
+        expiresAt: new Date(
+            unlockedAt.getTime() +
+            TASK_DEADLINE_MS
+        )
     });
 
+    // --------------------------------------------------
+    // Notify student
+    // --------------------------------------------------
+
     emitToUser(student, "taskUnlocked", {
+
         submission,
-        taskKey: `${submission.moduleId}_${submission.taskId}`
+
+        taskKey:
+            `${submission.moduleId}_${submission.taskId}`
+
     });
 
     return submission;

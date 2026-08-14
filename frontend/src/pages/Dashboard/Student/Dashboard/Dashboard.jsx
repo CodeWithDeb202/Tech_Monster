@@ -71,27 +71,24 @@ function Dashboard() {
                     <DashboardHeader />
 
                     <ContinueLearning
-                        internships={
-                            dashboard?.internships || []
-                        }
+                        learningItems={[
+                            ...(dashboard?.internships || []),
+                            ...(dashboard?.courses || [])
+                        ]}
                     />
 
                     <AllCourses
                         courses={
                             dashboard?.allCourses || []
                         }
-                        refreshDashboard={
-                            loadDashboard
-                        }
+                        refreshDashboard={loadDashboard}
                     />
 
                     <AllInternship
                         internships={
                             dashboard?.allInternships || []
                         }
-                        refreshDashboard={
-                            loadDashboard
-                        }
+                        refreshDashboard={loadDashboard}
                     />
 
                 </>

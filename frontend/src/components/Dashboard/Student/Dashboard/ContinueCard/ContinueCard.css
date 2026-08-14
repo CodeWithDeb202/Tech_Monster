@@ -35,6 +35,18 @@
     font-weight: 600;
 }
 
+#continue-card-type {
+    display: inline-block;
+    margin: 0.75rem 1rem 0;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--neon);
+    border-radius: 20px;
+    color: var(--neon);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
 
 
 #continue-card #progress {

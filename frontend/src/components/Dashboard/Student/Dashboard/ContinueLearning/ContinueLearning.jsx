@@ -2,8 +2,11 @@ import { motion } from "framer-motion";
 import ContinueCard from "../ContinueCard/ContinueCard";
 import "./ContinueLearning.css";
 
-const ContinueLearning = ({ internships = [] }) => {
-  const joinedCount = Array.isArray(internships) ? internships.length : 0;
+const ContinueLearning = ({ learningItems = [] }) => {
+
+  const joinedCount = Array.isArray(learningItems)
+    ? learningItems.length
+    : 0;
 
   return (
     <section id="continue-learning">
@@ -14,35 +17,65 @@ const ContinueLearning = ({ internships = [] }) => {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
       >
-        <h2>Continue Learning ({joinedCount})</h2>
-        <p>Your joined internships</p>
+        <h2>
+          Continue Learning ({joinedCount})
+        </h2>
+
+        <p>
+          Continue your enrolled courses and internships
+        </p>
       </motion.div>
 
-      {internships.length === 0 ? (
+      {joinedCount === 0 ? (
+
         <div id="empty-internship">
-          <h3>No Internship Joined Yet</h3>
+
+          <h3>
+            No Learning Content Yet
+          </h3>
+
           <p>
-            You haven't joined any internship yet. Explore available
-            internships below and start your learning journey.
+            You haven't joined any course or internship yet.
+            Explore the available learning programs below.
           </p>
+
         </div>
+
       ) : (
+
         <div id="continuelearning-grid">
-          {internships.map((internship, index) => (
+
+          {learningItems.map((item, index) => (
+
             <motion.div
-              key={internship._id}
-              initial={{ opacity: 0, y: 80 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              key={`${item.type}-${item._id}`}
+              initial={{
+                opacity: 0,
+                y: 80
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0
+              }}
+              viewport={{
+                once: true
+              }}
               transition={{
                 duration: 0.5,
-                delay: index * 0.1,
+                delay: index * 0.1
               }}
             >
-              <ContinueCard internship={internship} />
+
+              <ContinueCard
+                learning={item}
+              />
+
             </motion.div>
+
           ))}
+
         </div>
+
       )}
 
     </section>

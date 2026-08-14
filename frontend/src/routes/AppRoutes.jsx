@@ -111,30 +111,61 @@ function AppRoutes() {
                     }
                 >
                     <Route index element={<StudentHome />} />
-                    <Route path="dashboard" element={<StudentDashboard />} />
-                    <Route path="courses/:slug" element={<Lessions />} />
-                    {/* 1. Base Lessions Page */}
-                    <Route path="lessions" element={<Lessions />} />
 
-                    {/* 2. Specific Course/Internship Lessions Page (Dynamic Slug Fix) */}
-                    <Route path="lessions/:slug" element={<Lessions />} />
-                    <Route path="lessions/:courseSlug/:lessonSlug" element={<Lessions />} />
+                    <Route
+                        path="dashboard"
+                        element={<StudentDashboard />}
+                    />
 
-                    {/* 3. Spelling mismatch handler (Jodi 'lessons' use hai thae) */}
-                    <Route path="lessons" element={<Lessions />} />
-                    <Route path="lessons/:slug" element={<Lessions />} />
-                    <Route path="lessons/:courseSlug/:lessonSlug" element={<Lessions />} />
+                    {/* Lesson Page */}
+                    <Route
+                        path="lessions"
+                        element={<Lessions />}
+                    />
 
+                    <Route
+                        path="lessions/:type/:slug"
+                        element={<Lessions />}
+                    />
+
+                    {/* Old spelling compatibility */}
+                    <Route
+                        path="lessons"
+                        element={<Lessions />}
+                    />
+
+                    <Route
+                        path="lessons/:type/:slug"
+                        element={<Lessions />}
+                    />
 
                     <Route path="tasks" element={<StudentTask />} />
                     <Route path="attendance" element={<StudentAttendance />} />
                     <Route path="account" element={<StudentAccount />} />
-                    <Route path="user-profile/:userId" element={<StudentProfile />}/>
-                    <Route path="certificate" element={<StudentCertificate />} />
-                    <Route path="settings" element={<StudentSetting />} />
-                    <Route path="notification" element={<Notification />} />
-                    <Route path="message" element={<Message />} />
-                    <Route path="help&support" element={<HelpSupport />} />
+                    <Route
+                        path="user-profile/:userId"
+                        element={<StudentProfile />}
+                    />
+                    <Route
+                        path="certificate"
+                        element={<StudentCertificate />}
+                    />
+                    <Route
+                        path="settings"
+                        element={<StudentSetting />}
+                    />
+                    <Route
+                        path="notification"
+                        element={<Notification />}
+                    />
+                    <Route
+                        path="message"
+                        element={<Message />}
+                    />
+                    <Route
+                        path="help&support"
+                        element={<HelpSupport />}
+                    />
                 </Route>
 
 
