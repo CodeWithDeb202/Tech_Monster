@@ -24,18 +24,84 @@ import streamifier from "streamifier";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const coursesDir = path.resolve(__dirname, "../../data/courses");
+const internshipsDir = path.resolve(__dirname, "../../data/internship");
 const TASK_DEADLINE_MS = 48 * 60 * 60 * 1000;
 
-const readCourseDataFromFile = async (courseSlug) => {
-    if (!courseSlug) return null;
+const readInternshipDataFromFile = async (internshipSlug) => {
 
-    const filePath = path.join(coursesDir, `${courseSlug}.json`);
+    if (!internshipSlug) {
+        return null;
+    }
+
+    const normalizedSlug = normalizeSlug(
+        internshipSlug
+    );
+
+    const filePath = path.join(
+        internshipsDir,
+        `${normalizedSlug}.json`
+    );
 
     try {
-        const raw = await readFile(filePath, "utf8");
-        return JSON.parse(raw);
-    } catch {
+
+        const raw = await readFile(
+            filePath,
+            "utf8"
+        );
+
+        const data = JSON.parse(raw);
+
+        console.log(
+            "========== INTERNSHIP JSON =========="
+        );
+
+        console.log(
+            "Slug:",
+            normalizedSlug
+        );
+
+        console.log(
+            "File:",
+            filePath
+        );
+
+        console.log(
+            "Modules:",
+            data?.modules?.length || 0
+        );
+
+        console.log(
+            "First Module:",
+            data?.modules?.[0]?.moduleTitle
+        );
+
+        console.log(
+            "First Lesson:",
+            data?.modules?.[0]?.lessons?.[0]?.lessonTitle
+        );
+
+        console.log(
+            "====================================="
+        );
+
+        return data;
+
+    } catch (error) {
+
+        console.error(
+            "❌ INTERNSHIP JSON LOAD FAILED"
+        );
+
+        console.error(
+            "File:",
+            filePath
+        );
+
+        console.error(
+            "Error:",
+            error.message
+        );
+
         return null;
     }
 };
@@ -316,11 +382,7 @@ export const getSingleInternship = asyncHandler(async (req, res) => {
 
     }
 
-
-    // Load the rich course content (modules/lessons) from the JSON data files.
-    // The MongoDB document only stores metadata; the actual lesson body lives
-    // in backend/data/courses/<slug>.json.
-    const courseData = await readCourseDataFromFile(normalizedSlug);
+    const courseData = await readInternshipDataFromFile(normalizedSlug);
 
     const payload = {
         ...internship.toObject(),
