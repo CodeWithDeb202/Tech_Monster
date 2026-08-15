@@ -37,6 +37,100 @@
   color: #ffffff;
 }
 
+/* =========================================
+   PROFILE VERIFIED CHECK
+========================================= */
+
+.profile-check {
+  display: inline-flex;
+
+  width: 20px;
+  height: 20px;
+
+  margin-left: 8px;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #ffffff;
+
+  font-size: 0.55rem;
+
+  vertical-align: middle;
+
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+
+  animation: profileCheckGlow 2s ease-in-out infinite;
+}
+
+
+/* =========================================
+   MALE - BLUE
+========================================= */
+
+.profile-check-male {
+  background: var(--glow);
+
+  box-shadow:
+    0 0 0 2px rgba(37, 99, 235, 0.15),
+    0 0 8px rgba(37, 99, 235, 0.55),
+    0 0 18px rgba(37, 99, 235, 0.35);
+}
+
+
+/* =========================================
+   FEMALE - PINK
+========================================= */
+
+.profile-check-female {
+  background: #ec4899;
+
+  box-shadow:
+    0 0 0 2px rgba(236, 72, 153, 0.15),
+    0 0 8px rgba(236, 72, 153, 0.55),
+    0 0 18px rgba(236, 72, 153, 0.35);
+}
+
+
+/* =========================================
+   OTHER - GOLDEN
+========================================= */
+
+.profile-check-other {
+  background: var(--golden);
+
+  box-shadow:
+    0 0 0 2px rgba(245, 158, 11, 0.15),
+    0 0 8px rgba(245, 158, 11, 0.55),
+    0 0 18px rgba(245, 158, 11, 0.35);
+}
+
+
+/* =========================================
+   GLOW ANIMATION
+========================================= */
+
+@keyframes profileCheckGlow {
+
+  0%,
+  100% {
+    transform: scale(1);
+
+    filter: brightness(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+
+    filter: brightness(1.15);
+  }
+}
+
 #edit-profile-btn {
   display: flex;
   align-items: center;

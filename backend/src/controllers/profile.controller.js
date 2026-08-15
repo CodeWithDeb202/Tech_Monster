@@ -21,45 +21,57 @@ import AppError from "../utils/AppError.js";
 
 const getProfileStats = async (userId) => {
 
-    const followersCount =
-        await Follow.countDocuments({
-            following: userId
-        });
-
-
-    const followingCount =
-        await Follow.countDocuments({
-            follower: userId
-        });
-
-
-    const completedInternships =
-        await StudentInternship.countDocuments({
-
-            student: userId,
-
-            status: "Completed"
-
-        });
-
-
-    const totalInternships =
-        await Internship.countDocuments({
-
-            isPublished: true
-
-        });
-
-
-    return {
-
+    const [
         followersCount,
         followingCount,
         completedInternships,
-        totalInternships
+        totalInternships,
+        completedCourses,
+        totalCourses
+    ] = await Promise.all([
 
+        Follow.countDocuments({
+            following: userId
+        }),
+
+        Follow.countDocuments({
+            follower: userId
+        }),
+
+        StudentInternship.countDocuments({
+            student: userId,
+            internship: { $exists: true, $ne: null },
+            status: "Completed"
+        }),
+
+        Internship.countDocuments({
+            isPublished: true
+        }),
+
+        StudentInternship.countDocuments({
+            student: userId,
+            course: { $exists: true, $ne: null },
+            status: "Completed"
+        }),
+
+        Course.countDocuments({
+            isPublished: true
+        })
+
+    ]);
+
+    const stats = {
+        followersCount,
+        followingCount,
+        completedInternships,
+        totalInternships,
+        completedCourses,
+        totalCourses
     };
 
+    console.log("PROFILE STATS:", stats);
+
+    return stats;
 };
 
 
@@ -200,10 +212,9 @@ export const updateProfile = asyncHandler(
         await user.save();
 
 
-        const stats =
-            await getProfileStats(
-                user._id
-            );
+        const stats = await getProfileStats(
+            user._id
+        );
 
 
         res.status(200).json({
@@ -247,10 +258,9 @@ export const getProfile = asyncHandler(
         }
 
 
-        const stats =
-            await getProfileStats(
-                user._id
-            );
+        const stats = await getProfileStats(
+            user._id
+        );
 
 
         res.status(200).json({

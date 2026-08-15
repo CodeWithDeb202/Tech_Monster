@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
 import "./AccountForm.css";
-import { CircleLoader} from "react-spinners";
+import Spinner from "../../../common/LoaderPage/Spinner";
 
 import useAuth from "../../../../../hooks/useAuth";
 import { tokenStorage } from "../../../../../services/auth/tokenStorage";
@@ -37,8 +37,6 @@ export default function AccountForm({
   editData,
   onSubmitForm
 }) {
-
-  console.log("EDIT DATA:", editData);
 
   const { updateUser } = useAuth();
 
@@ -118,8 +116,6 @@ export default function AccountForm({
       value
     } = e.target;
 
-    console.log("Name=",name,"-- Value=", value);
-
     setFormData((prev) => ({
       ...prev,
       [name]: value
@@ -150,7 +146,10 @@ export default function AccountForm({
     try {
       let latestUser = null;
 
-      // Upload profile image
+      // ==============================
+      // UPLOAD PROFILE IMAGE
+      // ==============================
+
       if (imageFile) {
 
         const form = new FormData();
@@ -165,16 +164,34 @@ export default function AccountForm({
         latestUser = response.data.user;
       }
 
-      // Update profile
+
+      // ==============================
+      // UPDATE PROFILE
+      // ==============================
+
       const response = await updateProfile(formData);
 
       latestUser = response.data.user;
 
-      // Update auth context
+      const latestStats = response.data.stats;
+
+
+      // ==============================
+      // UPDATE AUTH CONTEXT
+      // ==============================
+
       updateUser(latestUser);
 
-      // Notify parent
-      onSubmitForm(latestUser);
+
+      // ==============================
+      // UPDATE PROFILE PAGE DATA
+      // ==============================
+
+      onSubmitForm({
+        ...latestUser,
+        profileStats: latestStats
+      });
+
 
       toast.success(
         "Profile updated successfully!"
@@ -193,13 +210,24 @@ export default function AccountForm({
       );
 
     } finally {
+
       setLoading(false);
+
     }
   };
 
 
   return (
     <>
+
+      {
+        loading && (
+          <Spinner
+            size={50}
+            message="loading your profile..."
+          />
+        )
+      }
 
       {/* Username */}
       <div id="username-box">
@@ -261,17 +289,7 @@ export default function AccountForm({
           type="submit"
           id="submit-btn"
         >
-          {loading ? (
-            <>
-              <CircleLoader
-                size={20}
-                color="#ffffff"
-              />
-              Saving...
-            </>
-          ) : (
-            "Save & profile view"
-          )}
+          {loading ? "saving..." : "save & profile view"}
         </button>
       </motion.form>
     </>

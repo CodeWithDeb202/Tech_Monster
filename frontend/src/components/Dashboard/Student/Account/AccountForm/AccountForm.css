@@ -2,7 +2,7 @@
    ACCOUNT FORM
 ========================================== */
 
-#username-box h2{
+#username-box h2 {
   color: var(--neon);
   margin: 0;
   text-shadow: 0 0 10px var(--neon);
@@ -275,7 +275,7 @@
 
 @media (max-width: 767px) {
 
-  #username-box h2{
+  #username-box h2 {
     font-size: 1.2rem;
   }
 

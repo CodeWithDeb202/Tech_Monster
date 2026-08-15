@@ -23,6 +23,7 @@ function PersonalDetails({
             <div id="form-grid">
 
                 <ProfileImageInput
+                    formData={formData?.av}
                     preview={preview}
                     onChange={handleImageChange}
                 />
@@ -72,28 +73,36 @@ function PersonalDetails({
                     />
                 </motion.div>
 
-                <select
-                    name="gender"
-                    value={formData.gender || ""}
-                    onChange={handleChange}
-                    required
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    id="form-group"
                 >
-                    <option value="">
-                        Select Gender
-                    </option>
 
-                    <option value="male">
-                        Male
-                    </option>
+                    <select
+                        name="gender"
+                        value={formData.gender || ""}
+                        onChange={handleChange}
+                        required
+                    >
+                        <option value="">
+                            Select Gender
+                        </option>
 
-                    <option value="female">
-                        Female
-                    </option>
+                        <option value="male">
+                            Male
+                        </option>
 
-                    <option value="other">
-                        Other
-                    </option>
-                </select>
+                        <option value="female">
+                            Female
+                        </option>
+
+                        <option value="other">
+                            Other
+                        </option>
+                    </select>
+                </motion.div>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

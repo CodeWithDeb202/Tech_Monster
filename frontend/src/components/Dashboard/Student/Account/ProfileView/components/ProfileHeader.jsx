@@ -6,6 +6,8 @@ export default function ProfileHeader({
     handleImageUpdate
 }) {
 
+    console.log("Profile stats", data?.profileStats);
+
     return (
         <motion.div
             id="profile-header"
@@ -152,6 +154,15 @@ export default function ProfileHeader({
                             Internships
                         </span>
 
+                    </div>
+
+                    <div className="profile-stat">
+                        <strong>
+                            {data?.profileStats?.completedCourses ?? 0}
+                            {" / "}
+                            {data?.profileStats?.totalCourses ?? 0}
+                        </strong>
+                        <span>Courses</span>
                     </div>
 
                 </div>

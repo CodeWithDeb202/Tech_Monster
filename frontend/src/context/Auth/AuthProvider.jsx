@@ -78,12 +78,6 @@ function AuthProvider({ children }) {
 
         const handleConnect = () => {
 
-            console.log(
-                "🟢 Socket connected:",
-                socket.id
-            );
-
-
             socket.emit(
                 "join",
                 String(user._id)

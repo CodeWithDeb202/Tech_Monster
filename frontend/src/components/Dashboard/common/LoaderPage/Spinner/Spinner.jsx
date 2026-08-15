@@ -1,23 +1,25 @@
-import { CircleLoader } from "react-spinners";
 import "./Spinner.css";
 
 export default function Spinner({
     message = "",
     size = 60,
-    fullScreen = false
 }) {
     return (
         <div
-            className={`app-loader ${fullScreen ? "app-loader-fullscreen" : ""}`}
+            className="custom-loader"
         >
-            <CircleLoader
-                size={size}
-                color="#2563eb"
-                speedMultiplier={1.2}
-            />
+            <div
+                className="loader-circle"
+                style={{
+                    width: `${size}px`,
+                    height: `${size}px`,
+                }}
+            >
+                <div className="loader-circle-inner"></div>
+            </div>
 
             {message && (
-                <p className="app-loader-message">
+                <p className="loader-message">
                     {message}
                 </p>
             )}

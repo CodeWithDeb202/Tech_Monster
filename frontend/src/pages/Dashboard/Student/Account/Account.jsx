@@ -22,14 +22,8 @@ export default function Account() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
 
-  useEffect(() => {
-
-    // eslint-disable-next-line react-hooks/immutability
-    loadProfile();
-
-  }, []);
-
-
+  
+  
   // ==============================
   // LOAD PROFILE
   // ==============================
@@ -41,6 +35,9 @@ export default function Account() {
       const res = await getProfile();
 
       const user = res.data.user;
+      console.log("Account Respinse data:=",res?.data);
+      console.log("Account Respinse user:=",res?.data?.user);
+      console.log("Account Respinse stats:=",res?.data?.stats);
       setUserData({
         ...user,
         profileStats: res.data.stats
@@ -53,18 +50,24 @@ export default function Account() {
     } catch (err) {
 
       console.log(err);
-
+      
       toast.error(
         err.response?.data?.message ||
         "Something went wrong"
       );
-
+      
     } finally {
-
+      
       setLoading(false);
-
+      
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadProfile();
+
+  }, []);
 
 
   // ==============================

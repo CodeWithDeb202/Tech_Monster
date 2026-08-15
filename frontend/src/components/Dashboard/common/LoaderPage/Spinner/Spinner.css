@@ -1,31 +1,106 @@
-.app-loader {
+.custom-loader {
     width: 100%;
-    min-height: 250px;
-
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-
-    gap: 1rem;
+    align-items: center;
+    gap: 18px;
+    padding: 40px 20px;
+    box-sizing: border-box;
 }
 
-.app-loader-fullscreen {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
 
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(8px);
+/* =========================================
+   OUTER CIRCLE
+========================================= */
+
+.loader-circle {
+    position: relative;
+    border-radius: 50%;
+    border: 5px solid transparent;
+    border-bottom-color: var(--neon);
+    border-top-color: var(--neon);
+    animation: loaderRotate 0.9s linear infinite;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
-.app-loader-message {
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.loader-message {
     margin: 0;
-
     font-size: 1rem;
-    font-weight: 600;
-
-    color: #ffffff;
-
+    font-weight: 500;
+    color: var(--muted);
+    text-shadow: 0 0 10px var(--neon);
     text-align: center;
+    letter-spacing: 0.2px;
+    animation: messageFade 1.5s ease-in-out infinite;
+}
+
+
+/* =========================================
+   ROTATION
+========================================= */
+
+@keyframes loaderRotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================
+   INNER PULSE
+========================================= */
+
+@keyframes loaderPulse {
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(0.7);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* =========================================
+   MESSAGE ANIMATION
+========================================= */
+
+@keyframes messageFade {
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .loader-circle,
+    .loader-circle-inner,
+    .loader-message {
+        animation: none;
+    }
 }

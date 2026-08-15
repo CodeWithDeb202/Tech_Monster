@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 
 import "./ProfileView.css";
+import { FaCheck } from "react-icons/fa";
 
 import useProfileEdit from "./hooks/useProfileEdit";
 
@@ -42,6 +43,12 @@ export default function ProfileView({
     onUpdateData
   });
 
+  const male = data.gender === "male";
+  const female = data.gender === "female";
+  const other = data.gender === "other";
+
+
+
 
   return (
 
@@ -71,6 +78,18 @@ export default function ProfileView({
 
         <h2>
           My Profile
+          <span
+            className={`profile-check ${male
+              ? "profile-check-male"
+              : female
+                ? "profile-check-female"
+                : other
+                  ? "profile-check-other"
+                  : ""
+              }`}
+          >
+            <FaCheck />
+          </span>
         </h2>
 
         <button
