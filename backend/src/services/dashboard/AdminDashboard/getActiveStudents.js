@@ -1,6 +1,6 @@
-import User from "../../../models/User.js";
-import StudentInternship from "../../../models/StudentInternship.js";
-import Task from "../../../models/Task.js";
+import User from "../../../models/user/User.js";
+import StudentInternship from "../../../models/shared/StudentInternship.js";
+import Task from "../../../models/task/Task.js";
 
 const getActiveStudents = async () => {
 

@@ -3,9 +3,9 @@ import { readFile } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import Course from "../models/Course.js";
-import StudentInternship from "../models/StudentInternship.js";
-import Submission from "../models/Submission.js";
+import Course from "../models/course/Course.js";
+import StudentInternship from "../models/shared/StudentInternship.js";
+import Submission from "../models/submission/Submission.js";
 import { emitToUser } from "../socket/socket.js";
 
 import asyncHandler from "../utils/asyncHandler.js";

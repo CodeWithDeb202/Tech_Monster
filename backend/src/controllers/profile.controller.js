@@ -1,11 +1,11 @@
-import User from "../models/User.js";
-import Follow from "../models/Follow.js";
-import Internship from "../models/Internship.js";
-import StudentInternship from "../models/StudentInternship.js";
-import UserBadge from "../models/UserBadge.js";
+import User from "../models/user/User.js";
+import Follow from "../models/user/Follow.js";
+import Internship from "../models/internship/Internship.js";
+import StudentInternship from "../models/shared/StudentInternship.js";
+import UserBadge from "../models/user/UserBadge.js";
 import Badge from "../models/Badges.js";
 import Certificate from "../models/Certificate.js";
-import Course from "../models/Course.js";
+import Course from "../models/course/Course.js";
 
 
 import uploadToCloudinary from "../utils/uploadCloudinary.js";

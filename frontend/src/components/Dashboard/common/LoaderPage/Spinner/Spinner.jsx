@@ -15,7 +15,6 @@ export default function Spinner({
                     height: `${size}px`,
                 }}
             >
-                <div className="loader-circle-inner"></div>
             </div>
 
             {message && (

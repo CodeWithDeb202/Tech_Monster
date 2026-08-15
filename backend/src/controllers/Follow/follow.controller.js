@@ -1,6 +1,6 @@
-import Follow from "../../models/Follow.js";
-import User from "../../models/User.js";
-import Notification from "../../models/Notification.js";
+import Follow from "../../models/user/Follow.js";
+import User from "../../models/user/User.js";
+import Notification from "../../models/notification/Notification.js";
 
 import asyncHandler from "../../utils/asyncHandler.js";
 import AppError from "../../utils/AppError.js";

@@ -1,5 +1,5 @@
-import User from "../models/User.js";
-import Internship from "../models/Internship.js";
+import User from "../models/user/User.js";
+import Internship from "../models/internship/Internship.js";
 
 import asyncHandler from "../utils/asyncHandler.js";
 

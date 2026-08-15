@@ -1,11 +1,11 @@
-import User from "../models/User.js";
-import Message from "../models/Message.js";
+import User from "../models/user/User.js";
+import Message from "../models/message/Message.js";
 import Certificate from "../models/Certificate.js";
-import Notification from "../models/Notification.js";
-import Task from "../models/Task.js";
+import Notification from "../models/notification/Notification.js";
+import Task from "../models/task/Task.js";
 import Attendance from "../models/Attendance.js";
-import StudentInternship from "../models/StudentInternship.js";
-import Internship from "../models/Internship.js";
+import StudentInternship from "../models/shared/StudentInternship.js";
+import Internship from "../models/internship/Internship.js";
 
 import logActivity from "../utils/logActivity.js";
 import asyncHandler from "../utils/asyncHandler.js";

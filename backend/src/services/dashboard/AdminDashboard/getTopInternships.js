@@ -1,4 +1,4 @@
-import StudentInternship from "../../../models/StudentInternship.js";
+import StudentInternship from "../../../models/shared/StudentInternship.js";
 
 const getTopInternships = async () => {
 

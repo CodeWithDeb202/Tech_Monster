@@ -5,9 +5,9 @@ import {
     getLearningData
 } from "../services/learning.service.js";
 
-import StudentInternship from "../models/StudentInternship.js";
-import Course from "../models/Course.js";
-import Internship from "../models/Internship.js";
+import StudentInternship from "../models/shared/StudentInternship.js";
+import Course from "../models/course/Course.js";
+import Internship from "../models/internship/Internship.js";
 
 
 export const getLearningContent = asyncHandler(

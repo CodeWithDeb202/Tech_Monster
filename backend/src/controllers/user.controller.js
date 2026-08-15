@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import OTP from "../models/OTP.js";
-import User from "../models/User.js";
+import User from "../models/user/User.js";
 
 import asyncHandler from "../utils/asyncHandler.js";
 import AppError from "../utils/AppError.js";
