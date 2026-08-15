@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-import Task from "../models/Task.js";
-import StudentInternship from "../models/StudentInternship.js";
+import Task from "../models/task/Task.js";
+import StudentInternship from "../models/shared/StudentInternship.js";
 import Certificate from "../models/Certificate.js";
 import Badge from "../models/Badges.js";
-import UserBadge from "../models/UserBadge.js";
-import Notification from "../models/Notification.js";
-import User from "../models/User.js";
-import Internship from "../models/Internship.js";
+import UserBadge from "../models/user/UserBadge.js";
+import Notification from "../models/notification/Notification.js";
+import User from "../models/user/User.js";
+import Internship from "../models/internship/Internship.js";
 
 import { getIO } from "../socket/socket.js";
 

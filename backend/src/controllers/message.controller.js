@@ -1,6 +1,6 @@
-import Message from "../models/Message.js";
-import Notification from "../models/Notification.js";
-import User from "../models/User.js";
+import Message from "../models/message/Message.js";
+import Notification from "../models/notification/Notification.js";
+import User from "../models/user/User.js";
 
 import asyncHandler from "../utils/asyncHandler.js";
 import AppError from "../utils/AppError.js";

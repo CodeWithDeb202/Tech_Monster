@@ -1,6 +1,5 @@
-// backend/controllers/notification.controller.js
+import Notification from "../../models/notification/Notification.js";
 
-import Notification from "../../models/Notification.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import AppError from "../../utils/AppError.js";
 import { getIO, getOnlineUsers } from "../../socket/socket.js";

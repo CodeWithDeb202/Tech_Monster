@@ -1,9 +1,11 @@
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt';
 
-import User from "../models/User.js";
-import generateToken from "../utils/generateToken.js";
+import User from "../models/user/User.js";
 import OTP from "../models/OTP.js";
+import RefreshToken from "../models/RefreshToken.js";
+
+import generateToken from "../utils/generateToken.js";
 import generateOTP from "../utils/generateOTP.js";
 import {
     safeSendActivityEmail,
@@ -12,7 +14,6 @@ import {
     sendWelcomeEmail
 } from "../services/email.service.js";
 import logActivity from "../utils/logActivity.js";
-import RefreshToken from "../models/RefreshToken.js";
 import generateRefreshToken from "../utils/generateRefreshToken.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import AppError from "../utils/AppError.js";

@@ -1,7 +1,7 @@
-import Submission from "../models/Submission.js";
-import Notification from "../models/Notification.js";
-import Internship from "../models/Internship.js";
-import User from "../models/User.js";
+import Submission from "../models/submission/Submission.js";
+import Notification from "../models/notification/Notification.js";
+import Internship from "../models/internship/Internship.js";
+import User from "../models/user/User.js";
 
 import asyncHandler from "../utils/asyncHandler.js";
 import AppError from "../utils/AppError.js";

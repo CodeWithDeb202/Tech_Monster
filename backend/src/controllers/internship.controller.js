@@ -3,9 +3,10 @@ import { readFile } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import Internship from "../models/Internship.js";
-import StudentInternship from "../models/StudentInternship.js";
-import Submission from "../models/Submission.js";
+import Internship from "../models/internship/Internship.js";
+import StudentInternship from "../models/shared/StudentInternship.js";
+import Submission from "../models/submission/Submission.js";
+
 import { emitToUser } from "../socket/socket.js";
 
 import asyncHandler from "../utils/asyncHandler.js";

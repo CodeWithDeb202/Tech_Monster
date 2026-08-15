@@ -1,4 +1,4 @@
-import UserBadge from "../../../models/UserBadge.js";
+import UserBadge from "../../../models/user/UserBadge.js";
 
 const getBadges = async (userId) => {
 

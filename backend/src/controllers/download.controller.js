@@ -1,5 +1,3 @@
-import Offer from "../models/Offer.js";
-
 import asyncHandler from "../utils/asyncHandler.js";
 import AppError from "../utils/AppError.js";
 

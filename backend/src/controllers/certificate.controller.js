@@ -1,6 +1,6 @@
 import Certificate from "../models/Certificate.js";
-import StudentInternship from "../models/StudentInternship.js";
-import Notification from "../models/Notification.js";
+import StudentInternship from "../models/shared/StudentInternship.js";
+import Notification from "../models/notification/Notification.js";
 
 import { generateCertificatePDF }
     from "../utils/generateCertificatePDF.js";

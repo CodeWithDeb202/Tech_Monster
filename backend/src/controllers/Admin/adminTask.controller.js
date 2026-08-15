@@ -1,5 +1,5 @@
-import Task from "../../models/Task.js";
-import Notification from "../../models/Notification.js";
+import Task from "../../models/task/Task.js";
+import Notification from "../../models/notification/Notification.js";
 
 import asyncHandler from "../../utils/asyncHandler.js";
 import AppError from "../../utils/AppError.js";

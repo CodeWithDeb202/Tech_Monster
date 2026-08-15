@@ -1,7 +1,7 @@
-import Task from "../../../models/Task.js";
+import Task from "../../../models/task/Task.js";
 import Attendance from "../../../models/Attendance.js";
-import StudentInternship from "../../../models/StudentInternship.js";
-import UserBadge from "../../../models/UserBadge.js";
+import StudentInternship from "../../../models/shared/StudentInternship.js";
+import UserBadge from "../../../models/user/UserBadge.js";
 
 const getStats = async (userId) => {
 
