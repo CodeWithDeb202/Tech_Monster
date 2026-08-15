@@ -1,4 +1,4 @@
-import ActivityLog from "../../../models/ActivityLog.js";
+import ActivityLog from "../../activity/models/ActivityLog.js";
 
 const getRecentActivities = async () => {
 

@@ -1,17 +1,15 @@
 import Certificate from "./models/Certificate.js";
-import StudentInternship from "../models/shared/StudentInternship.js";
+import StudentInternship from "../internships/models/StudentInternship.js";
 import Notification from "../notifications/models/Notification.js";
 
-import { generateCertificatePDF }
-    from "../../utils/generateCertificatePDF.js";
+import { generateCertificatePDF } from "./services/generateCertificatePDF.js";
 
-import { sendCertificateEmail }
-    from "../../services/email.service.js";
+import { sendCertificateEmail } from "../../infrastructure/email/email.service.js";
 
-import logActivity from "../../utils/logActivity.js";
+import logActivity from "../activity/logActivity.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
 
 
 

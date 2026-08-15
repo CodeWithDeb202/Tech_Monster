@@ -1,41 +1,27 @@
 import express from "express";
 
-
 import {
-
     createInternship,
-
     getAllInternships,
-
     getSingleInternship,
-
     joinInternship,
-
     getMyInternships,
-
     updateInternshipProgress,
-
     completeInternship,
     completeLesson,
     getCompletedLessons,
     updateInternship,
     deleteInternship,
+} from "./internship.controller.js";
 
 
-} from "../controllers/internship.controller.js";
+import { protect } from "../../core/security/auth.middleware.js";
+import upload from "../../infrastructure/storage/upload.middleware.js";
 
 
-import { protect } from "../../middleware/auth.middleware.js";
-import upload from "../../middleware/upload.middleware.js";
-
-
-import authorizeRoles from "../../middleware/role.middleware.js";
-
-
+import authorizeRoles from "../../core/security/role.middleware.js";
 
 const router = express.Router();
-
-
 
 // ADMIN
 

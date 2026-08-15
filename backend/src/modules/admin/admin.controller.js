@@ -7,9 +7,9 @@ import Attendance from "../attendance/models/Attendance.js";
 import StudentInternship from "../internships/models/StudentInternship.js";
 import Internship from "../internships/models/Internship.js";
 
-import logActivity from "../../utils/logActivity.js";
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
+import logActivity from "../activity/logActivity.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
 
 
 export const getDashboardStats = asyncHandler(async (req, res) => {

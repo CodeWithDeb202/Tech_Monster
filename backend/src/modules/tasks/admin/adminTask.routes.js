@@ -1,21 +1,15 @@
 import express from "express";
 
-import { protect } from "../../../middleware/auth.middleware.js";
-import authorizeRoles from "../../../middleware/role.middleware.js";
+import { protect } from "../../../core/security/auth.middleware.js";
+import authorizeRoles from "../../../core/security/role.middleware.js";
 
 import {
-
     getPendingTasks,
-
     getApprovedTasks,
-
     getTaskDetails,
-
     approveTask,
-
     rejectTask
-
-} from "../../controllers/Admin/adminTask.controller.js";
+} from "./adminTask.controller.js";
 
 const router = express.Router();
 

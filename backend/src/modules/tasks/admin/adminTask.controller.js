@@ -1,8 +1,8 @@
-import Task from "../../models/task/Task.js";
-import Notification from "../../models/notification/Notification.js";
+import Task from "../models/Task.js";
+import Notification from "../../notifications/models/Notification.js";
 
-import asyncHandler from "../../../utils/asyncHandler.js";
-import AppError from "../../../utils/AppError.js";
+import asyncHandler from "../../../core/http/asyncHandler.js";
+import AppError from "../../../core/errors/AppError.js";
 
 // ======================================
 // GET ALL PENDING TASKS

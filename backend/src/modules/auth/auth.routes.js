@@ -1,10 +1,10 @@
 import express from "express";
-import { signup, login, verifyOTP, resendOTP, forgotPassword, verifyResetOTP, resetPassword, logoutUser, adminLogin, } from "../controllers/auth.controller.js";
-import { loginLimiter, registerLimiter, forgotPasswordLimiter, otpLimiter } from "../../middleware/rateLimiter.middleware.js";
-import validate from "../../middleware/validate.middleware.js";
-import { protect } from "../../middleware/auth.middleware.js";
+import { signup, login, verifyOTP, resendOTP, forgotPassword, verifyResetOTP, resetPassword, logoutUser, adminLogin, } from "./auth.controller.js";
+import { loginLimiter, registerLimiter, forgotPasswordLimiter, otpLimiter } from "../../core/security/rateLimiter.middleware.js";
+import validate from "../../core/validation/validate.middleware.js";
+import { protect } from "../../core/security/auth.middleware.js";
 
-import {registerSchema, loginSchema } from "../../validations/auth.validation.js";
+import {registerSchema, loginSchema } from "./auth.validation.js";
 
 
 const router = express.Router();

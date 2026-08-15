@@ -1,4 +1,4 @@
-import Attendance from "../../../models/Attendance.js";
+import Attendance from "../../attendance/models/Attendance.js";
 
 const getAttendance = async (userId) => {
 

@@ -1,7 +1,7 @@
 import express from "express";
 
-import { protect } from "../../middleware/auth.middleware.js";
-import authorizeRoles from "../../middleware/role.middleware.js";
+import { protect } from "../../core/security/auth.middleware.js";
+import authorizeRoles from "../../core/security/role.middleware.js";
 
 import {
     sendNotification,
@@ -9,7 +9,7 @@ import {
     markAsRead,
     deleteNotification,
     markAllAsRead
-} from "../../controllers/Notification/notification.controller.js";
+} from "./notification.controller.js";
 
 const router = express.Router();
 

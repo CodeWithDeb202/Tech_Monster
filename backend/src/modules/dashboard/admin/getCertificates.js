@@ -1,4 +1,4 @@
-import Certificate from "../../../models/Certificate.js";
+import Certificate from "../../certificates/models/Certificate.js";
 
 const getCertificates = async () => {
 

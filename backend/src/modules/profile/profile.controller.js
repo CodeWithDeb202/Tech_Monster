@@ -1,19 +1,16 @@
-import User from "../models/user/User.js";
+import User from "../user/models/User.js";
 import Follow from "../follow/models/Follow.js";
 import Internship from "../internships/models/Internship.js";
 import StudentInternship from "../internships/models/StudentInternship.js";
-import UserBadge from "../../models/user/UserBadge.js";
-import Badge from "../../models/Badges.js";
+import UserBadge from "./models/UserBadge.js";
+import Badge from "./models/Badges.js";
 import Certificate from "../certificates/models/Certificate.js";
 import Course from "../courses/models/Course.js";
 
+import uploadToCloudinary from "../../infrastructure/storage/uploadCloudinary.js";
 
-import uploadToCloudinary from "../../utils/uploadCloudinary.js";
-
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
-
-
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
 
 // =====================================
 // PROFILE STATS

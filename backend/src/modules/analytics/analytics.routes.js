@@ -1,15 +1,15 @@
 import express from "express";
 
-import {protect} from "../../middleware/auth.middleware.js";
+import {protect} from "../../core/security/auth.middleware.js";
 
-import authorizeRoles from "../../middleware/role.middleware.js";
+import authorizeRoles from "../../core/security/role.middleware.js";
 
 import {
 
     getDashboardAnalytics,
     getMonthlyAnalytics
 
-} from "../controllers/analytics.controller.js";
+} from "../analytics/analytics.controller.js";
 
 const router = express.Router();
 

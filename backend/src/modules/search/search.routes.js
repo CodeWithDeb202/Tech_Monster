@@ -3,7 +3,7 @@ import express from "express";
 import {
     searchInternships,
     searchUsers,
-} from "../controllers/search.controller.js";
+} from "./search.controller.js";
 
 const router = express.Router();
 

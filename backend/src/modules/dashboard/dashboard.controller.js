@@ -1,4 +1,4 @@
-import asyncHandler from "../../utils/asyncHandler.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
 
 import {
     getUserInfo,
@@ -12,7 +12,7 @@ import {
     getRecommendedInternships,
     getSuggestedUsers,
     getBadges
-} from "../../services/dashboard/StudentDashboard/index.js";
+} from "./student/index.js";
 
 import {
     getStats as getAdminStats,
@@ -23,7 +23,7 @@ import {
     getTopInternships,
     getRecentTasks,
     getCertificates
-} from "../../services/dashboard/AdminDashboard/index.js";
+} from "./admin/index.js";
 
 export const studentDashboard = asyncHandler(async (req, res) => {
     const userId = req.user._id;
