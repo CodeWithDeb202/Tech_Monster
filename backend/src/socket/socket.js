@@ -41,11 +41,6 @@ export const initSocket = (server) => {
 
     io.on("connection", (socket) => {
 
-        console.log(
-            "🟢 Socket connected:",
-            socket.id
-        );
-
 
         // =====================================
         // JOIN USER
@@ -62,10 +57,6 @@ export const initSocket = (server) => {
             onlineUsers.set(
                 id,
                 socket.id
-            );
-
-            console.log(
-                `👤 User ${id} connected with socket ${socket.id}`
             );
 
 
