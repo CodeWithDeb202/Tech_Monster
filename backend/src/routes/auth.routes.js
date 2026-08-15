@@ -4,7 +4,7 @@ import { loginLimiter, registerLimiter, forgotPasswordLimiter, otpLimiter } from
 import validate from "../middleware/validate.middleware.js";
 import { protect } from "../middleware/auth.middleware.js";
 
-import {registerSchema, loginSchema } from "../../validations/auth.validation.js";
+import {registerSchema, loginSchema } from "../validations/auth.validation.js";
 
 
 const router = express.Router();
