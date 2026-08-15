@@ -5,9 +5,9 @@ import {
     unfollowUser,
     getFollowers,
     getFollowing
-} from "../../controllers/Follow/follow.controller.js";
+} from "./follow.controller.js";
 
-import { protect } from "../../middleware/auth.middleware.js";
+import { protect } from "../../core/security/auth.middleware.js";
 
 
 const router = express.Router();

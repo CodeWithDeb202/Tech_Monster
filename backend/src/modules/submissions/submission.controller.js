@@ -1,11 +1,11 @@
 import Submission from "./models/Submission.js";
 import Notification from "../notifications/models/Notification.js";
-import Internship from "../models/internship/Internship.js";
-import User from "../models/user/User.js";
+import Internship from "../internships/models/Internship.js";
+import User from "../user/models/User.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
-import { emitToUser, getIO } from "../../socket/socket.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
+import { emitToUser, getIO } from "../../infrastructure/socket/socket.js";
 
 import { readFile } from "fs/promises";
 import path from "path";

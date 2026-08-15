@@ -1,11 +1,11 @@
 import Follow from "./models/Follow.js";
-import User from "../../models/user/User.js";
+import User from "../user/models/User.js";
 import Notification from "../notifications/models/Notification.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
 
-import { emitToUser } from "../../socket/socket.js";
+import { emitToUser } from "../../infrastructure/socket/socket.js";
 
 
 // =====================================

@@ -1,8 +1,8 @@
 import Notification from "./models/Notification.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
-import { getIO, getOnlineUsers } from "../../socket/socket.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
+import { getIO, getOnlineUsers } from "../../infrastructure/socket/socket.js";
 
 export const sendNotification = asyncHandler(async (req, res) => {
 

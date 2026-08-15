@@ -1,8 +1,8 @@
 import express from "express";
 
-import { protect } from "../../middleware/auth.middleware.js";
-import chatUpload from "../../middleware/chatUpload.middleware.js";
-import { uploadChatFile } from "../../controllers/chatUpload.controller.js";
+import { protect } from "../../core/security/auth.middleware.js";
+import chatUpload from "../../infrastructure/storage/chatUpload.middleware.js";
+import { uploadChatFile } from "./chatUpload.controller.js";
 
 import {
     sendMessage,
@@ -14,7 +14,7 @@ import {
     searchMessages,
     getSharedFiles,
     getMessagesPaginated
-} from "../controllers/message.controller.js";
+} from "./message.controller.js";
 
 const router = express.Router();
 
@@ -33,23 +33,15 @@ router.get(
 );
 
 router.get(
-
     "/search/:userId",
-
     protect,
-
     searchMessages
-
 );
 
 router.get(
-
     "/shared/:userId",
-
     protect,
-
     getSharedFiles
-
 );
 
 router.get(

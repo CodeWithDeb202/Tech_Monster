@@ -1,22 +1,24 @@
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt';
 
-import User from "../../models/user/User.js";
-import OTP from "../../models/OTP.js";
-import RefreshToken from "../../models/RefreshToken.js";
+import User from "../user/models/User.js";
+import OTP from "./models/OTP.js";
+import RefreshToken from "./models/RefreshToken.js";
 
-import generateToken from "../../utils/generateToken.js";
-import generateOTP from "../../utils/generateOTP.js";
+import generateToken from "./services/generateToken.js";
+import generateOTP from "./services/generateOTP.js";
+import generateRefreshToken from "./services/generateRefreshToken.js";
+
 import {
     safeSendActivityEmail,
     sendOTPEmail,
     sendResetPasswordOTP,
     sendWelcomeEmail
-} from "../../services/email.service.js";
-import logActivity from "../../utils/logActivity.js";
-import generateRefreshToken from "../../utils/generateRefreshToken.js";
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
+} from "../../infrastructure/email/email.service.js";
+
+import logActivity from "../activity/logActivity.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
 
 // ==========================================
 // SIGNUP CONTROLLER (FAST RESPONSE)

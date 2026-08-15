@@ -2,26 +2,22 @@ import mongoose from "mongoose";
 import Task from "./models/Task.js";
 import StudentInternship from "../internships/models/StudentInternship.js";
 import Certificate from "../certificates/models/Certificate.js";
-import Badge from "../../models/Badges.js";
-import UserBadge from "../../models/user/UserBadge.js";
+import Badge from "../profile/models/Badges.js";
+import UserBadge from "../profile/models/UserBadge.js";
 import Notification from "../notifications/models/Notification.js";
-import User from "../models/user/User.js";
+import User from "../user/models/User.js";
 import Internship from "../internships/models/Internship.js";
 
-import { getIO } from "../../socket/socket.js";
+import { getIO } from "../../infrastructure/socket/socket.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
 
-import logActivity from "../../utils/logActivity.js";
+import logActivity from "../activity/logActivity.js";
 
-import { generateCertificatePDF }
-    from "../../utils/generateCertificatePDF.js";
+import { generateCertificatePDF } from "../certificates/services/generateCertificatePDF.js";
 
-import { sendCertificateEmail }
-    from "../../services/email.service.js";
-
-
+import { sendCertificateEmail } from "../../infrastructure/email/email.service.js";
 
 // =====================================
 // CREATE TASK

@@ -1,5 +1,5 @@
-import Internship from "../../../models/internship/Internship.js";
-import StudentInternship from "../../../models/shared/StudentInternship.js";
+import Internship from "../../internships/models/Internship.js";
+import StudentInternship from "../../internships/models/StudentInternship.js";
 
 const getAllInternships = async (userId) => {
 

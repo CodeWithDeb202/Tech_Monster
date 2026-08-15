@@ -1,15 +1,15 @@
 import Message from "./models/Message.js";
-import Notification from "../models/notification/Notification.js";
-import User from "../models/user/User.js";
+import Notification from "../notifications/models/Notification.js";
+import User from "../user/models/User.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
-import logActivity from "../../utils/logActivity.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
+import logActivity from "../activity/logActivity.js";
 
 import {
     getIO,
     getOnlineUsers
-} from "../../socket/socket.js";
+} from "../../infrastructure/socket/socket.js";
 
 
 // ==========================================================

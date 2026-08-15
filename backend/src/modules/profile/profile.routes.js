@@ -1,15 +1,10 @@
 import express from "express";
 
-import { uploadProfileImage, updateProfile, getProfile, getUserProfile } from "../controllers/profile.controller.js";
-
-import { protect } from "../../middleware/auth.middleware.js";
-
-import upload  from "../../middleware/upload.middleware.js";
-
+import { uploadProfileImage, updateProfile, getProfile, getUserProfile } from "./profile.controller.js";
+import { protect } from "../../core/security/auth.middleware.js";
+import upload  from "../../infrastructure/storage/upload.middleware.js";
 
 const router = express.Router();
-
-
 
 router.put(
     "/profile-image",

@@ -4,14 +4,14 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import Course from "./models/Course.js";
-import StudentInternship from "../models/shared/StudentInternship.js";
+import StudentInternship from "../internships/models/StudentInternship.js";
 import Submission from "../submissions/models/Submission.js";
-import { emitToUser } from "../../socket/socket.js";
+import { emitToUser } from "../../infrastructure/socket/socket.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
 
-import cloudinary from "../../config/cloudinary.js";
+import cloudinary from "../../infrastructure/storage/cloudinary.js";
 import streamifier from "streamifier";
 
 const __filename = fileURLToPath(import.meta.url);

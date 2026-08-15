@@ -1,8 +1,8 @@
 import Attendance from "./models/Attendance.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
-import logActivity from "../../utils/logActivity.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
+import logActivity from "../activity/logActivity.js";
 
 export const checkIn = asyncHandler(async (req, res) => {
 

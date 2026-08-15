@@ -1,4 +1,4 @@
-import Task from "../../../models/task/Task.js";
+import Task from "../../tasks/models/Task.js";
 
 const getRecentTasks = async () => {
 

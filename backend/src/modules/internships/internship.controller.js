@@ -7,19 +7,19 @@ import Internship from "./models/Internship.js";
 import StudentInternship from "./models/StudentInternship.js";
 import Submission from "../submissions/models/Submission.js";
 
-import { emitToUser } from "../../socket/socket.js";
+import { emitToUser } from "../../infrastructure/socket/socket.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
 import {
     safeSendActivityEmail,
     sendAllLessonsCompletedEmail,
     sendInternshipJoinedEmail,
     sendLessonCompletedEmail,
     sendProgramCompletedEmail
-} from "../../services/email.service.js";
+} from "../../infrastructure/email/email.service.js";
 
-import cloudinary from "../../config/cloudinary.js";
+import cloudinary from "../../infrastructure/storage/cloudinary.js";
 import streamifier from "streamifier";
 
 

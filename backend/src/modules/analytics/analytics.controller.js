@@ -1,6 +1,6 @@
-import User from "../models/user/User.js";
+import User from "../user/models/User.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
 
 
 export const getDashboardAnalytics = asyncHandler(async (req, res) => {

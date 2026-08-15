@@ -1,4 +1,4 @@
-import User from "../../../models/user/User.js";
+import User from "../../user/models/User.js";
 
 const getSuggestedUsers = async (userId) => {
 

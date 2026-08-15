@@ -2,8 +2,8 @@ import bcrypt from "bcrypt";
 import OTP from "../models/OTP.js";
 import User from "./models/User.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
 
 export const getCurrentUser = asyncHandler( async (req, res) => {
 

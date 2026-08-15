@@ -1,8 +1,8 @@
-import User from "../../../models/user/User.js";
-import Internship from "../../../models/internship/Internship.js";
-import StudentInternship from "../../../models/shared/StudentInternship.js";
-import Task from "../../../models/task/Task.js";
-import Certificate from "../../../models/Certificate.js";
+import User from "../../user/models/User.js";
+import Internship from "../../internships/models/Internship.js";
+import StudentInternship from "../../internships/models/StudentInternship.js";
+import Task from "../../tasks/models/Task.js";
+import Certificate from "../../certificates/models/Certificate.js";
 
 const getStats = async () => {
 

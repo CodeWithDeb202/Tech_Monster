@@ -1,10 +1,8 @@
 import express from "express";
-import {protect} from "../../middleware/auth.middleware.js";
-import { getCurrentUser, updateProfile, changePassword, deleteAccount } from "../controllers/user.controller.js";
+import {protect} from "../../core/security/auth.middleware.js";
+import { getCurrentUser, updateProfile, changePassword, deleteAccount } from "./user.controller.js";
 
 const router = express.Router();
-
-
 
 router.get("/me", protect, getCurrentUser);
 router.put("/profile", protect, updateProfile);

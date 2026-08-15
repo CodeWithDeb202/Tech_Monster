@@ -1,13 +1,11 @@
-import asyncHandler from "../../utils/asyncHandler.js";
-import AppError from "../../utils/AppError.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
 
-import {
-    getLearningData
-} from "./learning.service.js";
+import {getLearningData} from "./learning.service.js";
 
-import StudentInternship from "../models/shared/StudentInternship.js";
-import Course from "../models/course/Course.js";
-import Internship from "../models/internship/Internship.js";
+import StudentInternship from "../internships/models/StudentInternship.js";
+import Course from "../courses/models/Course.js";
+import Internship from "../internships/models/Internship.js";
 
 
 export const getLearningContent = asyncHandler(

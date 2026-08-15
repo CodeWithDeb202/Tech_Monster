@@ -1,27 +1,18 @@
 import express from "express";
 
-import {protect} from "../../middleware/auth.middleware.js";
-import authorizeRoles from "../../middleware/role.middleware.js";
+import { protect } from "../../core/security/auth.middleware.js";
+import authorizeRoles from "../../core/security/role.middleware.js";
 
 import {
-
     createTask,
-
     getMyTasks,
-
     updateTask,
-
     deleteTask,
-
-updateTaskStatus,
+    updateTaskStatus,
     submitTask,
-
     getPendingTasks,
-
     getTaskDetails,
-
     approveTask,
-
     rejectTask,
     getSingleTask,
 

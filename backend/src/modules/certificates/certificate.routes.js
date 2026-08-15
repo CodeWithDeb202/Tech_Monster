@@ -5,10 +5,10 @@ import {
     getMyCertificates,
     downloadCertificate
 
-} from "../controllers/certificate.controller.js";
+} from "./certificate.controller.js";
 
 
-import { protect } from "../../middleware/auth.middleware.js";
+import { protect } from "../../core/security/auth.middleware.js";
 
 
 const router = express.Router();

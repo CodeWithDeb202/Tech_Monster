@@ -1,6 +1,6 @@
-import Attendance from "../../../models/Attendance.js";
-import Task from "../../../models/task/Task.js";
-import StudentInternship from "../../../models/shared/StudentInternship.js";
+import Attendance from "../../attendance/models/Attendance.js";
+import Task from "../../tasks/models/Task.js";
+import StudentInternship from "../../internships/models/StudentInternship.js";
 
 const days = [
 

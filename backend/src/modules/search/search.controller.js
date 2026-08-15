@@ -1,7 +1,7 @@
-import User from "../models/user/User.js";
-import Internship from "../models/internship/Internship.js";
+import User from "../user/models/User.js";
+import Internship from "../internships/models/Internship.js";
 
-import asyncHandler from "../../utils/asyncHandler.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
 
 // =====================================
 // SEARCH INTERNSHIPS / COURSES
