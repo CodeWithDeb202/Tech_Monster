@@ -1,4 +1,4 @@
-// src/pages/Dashboard/Admin/Students/index.jsx
+// Admin students page
 
 import "./Students.css";
 
