@@ -1,67 +1,67 @@
 import { Routes, Route } from 'react-router-dom';
 // Errors page
 
-import AuthenticationRequired from "../pages/StatusPages/AuthenticationRequired";
-import Unauthorized from "../pages/StatusPages/Unauthorized";
-import NotFound from "../pages/StatusPages/NotFound";
-import TooManyRequests from "../pages/StatusPages/TooManyRequests";
-import ServerError from "../pages/StatusPages/ServerError";
-import Maintenance from "../pages/StatusPages/Maintenance";
-import SessionExpired from "../pages/StatusPages/SessionExpired";
-import AccountBlocked from "../pages/StatusPages/AccountBlocked";
-import SomethingWentWrong from "../pages/StatusPages/SomethingWentWrong";
-import Offline from "../pages/StatusPages/Offline";
+import AuthenticationRequired from "../pages/status/AuthenticationRequired";
+import Unauthorized from "../pages/status/Unauthorized";
+import NotFound from "../pages/status/NotFound";
+import TooManyRequests from "../pages/status/TooManyRequests";
+import ServerError from "../pages/status/ServerError";
+import Maintenance from "../pages/status/Maintenance";
+import SessionExpired from "../pages/status/SessionExpired";
+import AccountBlocked from "../pages/status/AccountBlocked";
+import SomethingWentWrong from "../pages/status/SomethingWentWrong";
+import Offline from "../pages/status/Offline";
 
-import Landing from "../pages/LandingPages/Landing";
+import Landing from "../pages/landing/Landing";
 
-import Contact from "../pages/LandingPages/Contact";
+import Contact from "../pages/landing/Contact";
 
-import TermsAndConditions from "../components/Common/TermsAndConditions";
+import TermsAndConditions from "../components/common/TermsAndConditions";
 
-import Login from '../pages/Auth/Login';
-import Signup from '../pages/Auth/Signup';
-import AdminLogin from '../pages/Auth/AdminLogin';
-import ForgotPassword from '../pages/Auth/ForgotPassword';
-import ResetPassword from '../pages/Auth/ResetPassword';
+import Login from '../features/auth/pages/Login';
+import Signup from '../features/auth/pages/Signup';
+import AdminLogin from '../features/auth/pages/AdminLogin';
+import ForgotPassword from '../features/auth/pages/ForgotPassword';
+import ResetPassword from '../features/auth/pages/ResetPassword';
 
 
 import DashboardLayout from '../layouts/Dashboard';
 import ProtectedRoute from './ProtectedRoute';
 
 
-import VerifySignupOTP from '../pages/Auth/VerifySignupOTP';
-import VerifyResetOTP from '../pages/Auth/VerifyResetOTP';
+import VerifySignupOTP from '../features/auth/pages/VerifySignupOTP';
+import VerifyResetOTP from '../features/auth/pages/VerifyResetOTP';
 
 // Student Dashboard
-import StudentHome from '../pages/Dashboard/Student/Home';
-import StudentDashboard from '../pages/Dashboard/Student/Dashboard';
-import Lessions from '../pages/Dashboard/Student/Lessions';
-import StudentTask from '../pages/Dashboard/Student/Tasks';
-import StudentAttendance from '../pages/Dashboard/Student/Attendance';
-import StudentAccount from '../pages/Dashboard/Student/Account';
-import StudentCertificate from '../pages/Dashboard/Student/Certificate';
-import StudentSetting from '../pages/Dashboard/Student/Setting';
+import StudentHome from '../features/student/home';
+import StudentDashboard from '../features/student/dashboard';
+import Lessons from '../features/student/lessons';
+import StudentTask from '../features/student/tasks';
+import StudentAttendance from '../features/student/attendance';
+import StudentAccount from '../features/student/account';
+import StudentCertificate from '../features/student/certificate';
+import StudentSetting from '../features/student/settings';
 
-import StudentProfile from '../pages/Dashboard/Common/StudentProfile';
+import StudentProfile from '../features/profile/StudentProfile';
 
 
 
-import Notification from '../components/Dashboard/common/Notification';
-import Message from '../pages/Dashboard/Common/Message';
-import HelpSupport from '../components/Dashboard/common/Help&Supp/HelpSupport';
+import Notification from '../features/dashboard/common/Notification';
+import Message from '../features/messaging/Message';
+import HelpSupport from '../features/dashboard/common/Help&Supp/HelpSupport';
 
 // Admin Dashboard
-import Overview from '../pages/Dashboard/Admin/Overview';
-import Students from '../pages/Dashboard/Admin/Students';
-import StudentDetails from "../pages/Dashboard/Admin/Students/StudentDetails";
-import Reports from '../pages/Dashboard/Admin/Reports';
-import Internships from '../pages/Dashboard/Admin/Internships';
-import Course from '../pages/Dashboard/Admin/Course';
-import CourseForm from '../components/Dashboard/Admin/Course/CoursesForm';
-import TaskApproval from '../pages/Dashboard/Admin/TasksApproval';
-import TaskApprovalDetails from "../pages/Dashboard/Admin/TasksApproval/TaskApprovalDetails";
-import CertificateApproval from '../pages/Dashboard/Admin/CertificateApproval';
-import InternshipsForm from '../components/Dashboard/Admin/Internships/InternshipsForm';
+import Overview from '../features/admin/overview';
+import Students from '../features/admin/students';
+import StudentDetails from "../features/admin/students/StudentDetails";
+import Reports from '../features/admin/reports';
+import Internships from '../features/admin/internships';
+import Course from '../features/admin/courses';
+import CourseForm from '../features/admin/courses/components/CoursesForm';
+import TaskApproval from '../features/admin/tasks';
+import TaskApprovalDetails from "../features/admin/tasks/TaskApprovalDetails";
+import CertificateApproval from '../features/admin/certificates';
+import InternshipsForm from '../features/admin/internships/components/InternshipsForm';
 
 
 
@@ -120,23 +120,12 @@ function AppRoutes() {
                     {/* Lessons Routes */}
                     <Route
                         path="lessons"
-                        element={<Lessions />}
+                        element={<Lessons />}
                     />
 
                     <Route
                         path="lessons/:type/:slug"
-                        element={<Lessions />}
-                    />
-
-                    {/* Old spelling compatibility */}
-                    <Route
-                        path="lessions"
-                        element={<Lessions />}
-                    />
-
-                    <Route
-                        path="lessions/:type/:slug"
-                        element={<Lessions />}
+                        element={<Lessons />}
                     />
 
                     <Route path="tasks" element={<StudentTask />} />

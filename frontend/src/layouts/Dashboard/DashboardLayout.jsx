@@ -2,10 +2,10 @@ import "./DashboardLayout.css";
 
 import { useState } from "react";
 
-import Navbar from "../../components/Dashboard/common/Navbar";
-import Sidebar from "../../components/Dashboard/common/Sidebar";
-import Footer from "../../components/Dashboard/common/Footer";
-import Main from "../../components/Dashboard/common/Main";
+import Navbar from "../../features/dashboard/common/Navbar";
+import Sidebar from "../../features/dashboard/common/Sidebar";
+import Footer from "../../features/dashboard/common/Footer";
+import Main from "../../features/dashboard/common/Main";
 
 function DashboardLayout({ role = "student" }) {
 

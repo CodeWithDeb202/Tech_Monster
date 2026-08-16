@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Loader from "./components/Common/Loader";
+import Loader from "./components/ui/Loader";
 import AppRoutes from "./routes/AppRoutes";
 import api from "./services/api/axios";
-import usePageTitle from "./hooks/usePageTitle";
+import usePageTitle from "./shared/hooks/usePageTitle";
 
 function App() {
   const navigate = useNavigate();

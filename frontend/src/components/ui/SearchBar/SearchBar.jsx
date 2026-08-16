@@ -116,7 +116,7 @@ function SearchBar() {
 
     const handleCourseClick = (internship) => {
         setShowDropdown(false);
-        navigate(`/student/lessions/${internship.slug || internship._id || "frontend-dev"}`);
+        navigate(`/student/lessons/${internship.slug || internship._id || "frontend-dev"}`);
     };
 
     const handleUserClick = (user) => {

@@ -3,8 +3,8 @@ import { BrowserRouter } from 'react-router-dom';
 import './styles/global.css';
 
 
-import { AuthProvider } from './context/Auth/AuthProvider.jsx';
-import NotificationProvider from './context/Notification/NotificationProvider.jsx';
+import { AuthProvider } from './app/providers/Auth/AuthProvider.jsx';
+import NotificationProvider from './app/providers/Notification/NotificationProvider.jsx';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.jsx';
 import App from './App.jsx';
 

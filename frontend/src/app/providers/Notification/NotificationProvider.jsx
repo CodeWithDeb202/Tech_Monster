@@ -12,11 +12,11 @@ import {
     markNotificationRead,
     markAllNotificationsRead,
     deleteNotification
-} from "../../services/api/notification.service";
+} from "../../../services/api/notification.service";
 
-import { socket } from "../../socket/socket";
+import { socket } from "../../../services/socket/socket";
 
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../../shared/hooks/useAuth";
 
 import { toast } from "react-toastify";
 

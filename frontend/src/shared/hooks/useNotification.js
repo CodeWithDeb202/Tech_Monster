@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
 import NotificationContext
-    from "../context/Notification/NotificationContext";
+    from "../../app/providers/Notification/NotificationContext";
 
 
 export default function useNotification() {

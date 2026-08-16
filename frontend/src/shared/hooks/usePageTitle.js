@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 // Map route path segments to a display title (without the brand prefix).
 const ROUTE_TITLES = [
-    { match: /^\/student\/(?:lessions|lessons)/i, title: "Lessons" },
+    { match: /^\/student\/lessons/i, title: "Lessons" },
     { match: /^\/student\/dashboard/i, title: "Student Dashboard" },
     { match: /^\/student\/tasks/i, title: "Tasks" },
     { match: /^\/student\/attendance/i, title: "Attendance" },
