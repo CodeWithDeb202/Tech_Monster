@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import AuthContext from "./AuthContext";
-import * as authService from "../../services/api/authService";
-import { tokenStorage } from "../../services/auth/tokenStorage";
-import { socket } from '../../socket/socket';
+import * as authService from "../../../services/api/authService";
+import { tokenStorage } from "../../../services/auth/tokenStorage";
+import { socket } from '../../../services/socket/socket';
 
 function AuthProvider({ children }) {
 

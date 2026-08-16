@@ -1,6 +1,6 @@
 import "./AuthLayout.css";
 
-import SystemBar from "../../components/Common/Navbar/SystemBar";
+import SystemBar from "../../components/common/navbar/SystemBar";
 import { useEffect, useRef } from "react";
 
 import { motion } from "framer-motion";

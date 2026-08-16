@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { navLinks } from './Navbardata.js';
 
-import Systembar from "../Common/Navbar/SystemBar";
+import Systembar from "../common/navbar/SystemBar";
 
 import logo from "../../assets/logo/logo.png"
 

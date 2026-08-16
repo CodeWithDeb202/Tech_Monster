@@ -1,5 +1,5 @@
 import React from "react";
-import SomethingWentWrong from "../../pages/StatusPages/SomethingWentWrong";
+import SomethingWentWrong from "../../pages/status/SomethingWentWrong";
 
 class ErrorBoundary extends React.Component {
 
