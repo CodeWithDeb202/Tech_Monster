@@ -1,8 +1,8 @@
 {
-  "name": "backend",
+  "name": "tech-monster-backend",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
+  "description": "Backend API for the Tech Monster platform.",
   "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

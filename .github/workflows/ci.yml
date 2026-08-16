@@ -1,0 +1,624 @@
+# ============================================================================
+# Tech Monster — Continuous Integration
+# ============================================================================
+#
+# Purpose
+# -------
+# This workflow validates the repository whenever application code is pushed
+# or a pull request is opened/updated.
+#
+# The goal is to catch common problems before code is merged:
+#
+#   - Dependency installation failures
+#   - Code quality / linting failures
+#   - Type checking failures where supported
+#   - Frontend build failures
+#   - Backend test failures
+#   - Frontend test failures where configured
+#
+# Repository structure
+# --------------------
+#
+#   Tech-Monster-Dev/
+#   ├── backend/
+#   └── frontend/
+#
+# Frontend and backend are treated as separate Node.js applications.
+#
+# Important
+# ---------
+# This workflow intentionally does not contain deployment logic.
+# Deployment should be handled separately so that CI validation and production
+# deployment remain independent concerns.
+# ============================================================================
+
+
+name: CI
+
+
+# ----------------------------------------------------------------------------
+# Trigger Configuration
+# ----------------------------------------------------------------------------
+#
+# Run CI when:
+#
+# 1. Code is pushed to the main branch.
+# 2. A pull request targeting main is opened or updated.
+#
+# Pull requests are the primary quality gate because they allow problems to
+# be detected before changes are merged.
+# ----------------------------------------------------------------------------
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+
+# ----------------------------------------------------------------------------
+# Permissions
+# ----------------------------------------------------------------------------
+#
+# CI should follow the principle of least privilege.
+#
+# The workflow only needs repository contents to be read.
+#
+# Keeping permissions restricted reduces the potential impact if a dependency,
+# script, or action is compromised.
+# ----------------------------------------------------------------------------
+
+permissions:
+  contents: read
+
+
+# ----------------------------------------------------------------------------
+# Concurrency
+# ----------------------------------------------------------------------------
+#
+# If a developer pushes multiple commits to the same pull request while an
+# older CI run is still executing, the older run becomes unnecessary.
+#
+# cancel-in-progress:
+#   true
+#
+# prevents wasting CI resources on obsolete commits.
+# ----------------------------------------------------------------------------
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+
+# ----------------------------------------------------------------------------
+# Global Environment
+# ----------------------------------------------------------------------------
+#
+# NODE_ENV is not forced globally because frontend build tools and backend
+# tooling may interpret environment variables differently.
+#
+# Individual jobs should define environment variables only when required.
+# ----------------------------------------------------------------------------
+
+
+jobs:
+
+  # ==========================================================================
+  # Frontend Validation
+  # ==========================================================================
+  #
+  # Responsible for validating the client application.
+  #
+  # Typical checks:
+  #
+  #   1. Install dependencies
+  #   2. Run linting when configured
+  #   3. Run tests when configured
+  #   4. Create a production build
+  #
+  # The job is intentionally independent from backend validation so a backend
+  # failure does not hide a frontend failure and vice versa.
+  # ==========================================================================
+
+  frontend:
+    name: Frontend Validation
+
+    runs-on: ubuntu-latest
+
+
+    defaults:
+      run:
+        working-directory: frontend
+
+
+    steps:
+
+      # ----------------------------------------------------------------------
+      # Checkout Repository
+      # ----------------------------------------------------------------------
+      #
+      # actions/checkout downloads the repository contents into the runner.
+      # ----------------------------------------------------------------------
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+
+      # ----------------------------------------------------------------------
+      # Setup Node.js
+      # ----------------------------------------------------------------------
+      #
+      # Node.js version should match the version supported by the frontend
+      # application.
+      #
+      # The version is centralized here so it can be changed easily when the
+      # project's supported Node.js version changes.
+      # ----------------------------------------------------------------------
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+
+      # ----------------------------------------------------------------------
+      # Verify Frontend Package Files
+      # ----------------------------------------------------------------------
+      #
+      # npm ci requires a lockfile.
+      #
+      # Failing early with a clear message is preferable to a less descriptive
+      # npm error later in the workflow.
+      # ----------------------------------------------------------------------
+
+      - name: Verify frontend package files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ ! -f "package.json" ]; then
+            echo "::error::frontend/package.json was not found."
+            exit 1
+          fi
+
+          if [ ! -f "package-lock.json" ]; then
+            echo "::error::frontend/package-lock.json was not found."
+            echo "::error::Commit the frontend lockfile so CI can use deterministic dependency installation."
+            exit 1
+          fi
+
+
+      # ----------------------------------------------------------------------
+      # Install Frontend Dependencies
+      # ----------------------------------------------------------------------
+      #
+      # npm ci:
+      #
+      #   - Installs exactly what the lockfile specifies.
+      #   - Removes existing node_modules before installation.
+      #   - Is designed for automated CI environments.
+      #
+      # Do not replace this with npm install unless there is a deliberate
+      # reason to change the repository's dependency strategy.
+      # ----------------------------------------------------------------------
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+
+      # ----------------------------------------------------------------------
+      # Detect Available Frontend Scripts
+      # ----------------------------------------------------------------------
+      #
+      # Different projects may expose different npm scripts.
+      #
+      # Instead of failing because an optional script such as "lint" or "test"
+      # does not exist, the workflow checks package.json first.
+      #
+      # Required production build remains mandatory below.
+      # ----------------------------------------------------------------------
+
+      - name: Detect frontend scripts
+        id: frontend_scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          has_script() {
+            node -e "
+              const scripts = require('./package.json').scripts || {};
+              process.exit(Object.prototype.hasOwnProperty.call(scripts, '$1') ? 0 : 1);
+            "
+          }
+
+          if has_script lint; then
+            echo "has_lint=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_lint=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if has_script typecheck; then
+            echo "has_typecheck=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_typecheck=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if has_script test; then
+            echo "has_test=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_test=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if has_script build; then
+            echo "has_build=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_build=false" >> "$GITHUB_OUTPUT"
+          fi
+
+
+      # ----------------------------------------------------------------------
+      # Lint Frontend
+      # ----------------------------------------------------------------------
+      #
+      # Linting catches:
+      #
+      #   - Incorrect syntax
+      #   - Code-quality problems
+      #   - Project convention violations
+      #   - Common JavaScript / React mistakes
+      #
+      # The step is executed only when the repository defines a lint script.
+      # ----------------------------------------------------------------------
+
+      - name: Lint frontend
+        if: steps.frontend_scripts.outputs.has_lint == 'true'
+        run: npm run lint
+
+
+      # ----------------------------------------------------------------------
+      # Type Check Frontend
+      # ----------------------------------------------------------------------
+      #
+      # Some JavaScript/React projects do not use TypeScript.
+      #
+      # If a typecheck script exists, run it. Otherwise this step is skipped.
+      # ----------------------------------------------------------------------
+
+      - name: Type-check frontend
+        if: steps.frontend_scripts.outputs.has_typecheck == 'true'
+        run: npm run typecheck
+
+
+      # ----------------------------------------------------------------------
+      # Test Frontend
+      # ----------------------------------------------------------------------
+      #
+      # If frontend tests are configured, execute them in CI.
+      #
+      # The exact test framework is intentionally delegated to package.json.
+      # This keeps CI independent of whether the project uses Vitest, Jest,
+      # React Testing Library, or another supported test runner.
+      # ----------------------------------------------------------------------
+
+      - name: Test frontend
+        if: steps.frontend_scripts.outputs.has_test == 'true'
+        run: npm test -- --runInBand
+
+
+      # ----------------------------------------------------------------------
+      # Production Build
+      # ----------------------------------------------------------------------
+      #
+      # A production build is a required validation step.
+      #
+      # Why:
+      #
+      #   Development servers can hide build-time problems.
+      #   Production builds detect:
+      #
+      #   - Import failures
+      #   - Invalid bundler configuration
+      #   - Missing modules
+      #   - Compilation failures
+      #   - Build-time environment issues
+      #
+      # If the frontend does not expose a "build" script, CI fails because a
+      # deployable frontend application must define a reproducible build
+      # command.
+      # ----------------------------------------------------------------------
+
+      - name: Verify frontend build script
+        if: steps.frontend_scripts.outputs.has_build != 'true'
+        shell: bash
+        run: |
+          echo "::error::frontend/package.json does not define a 'build' script."
+          echo "::error::Add a production build script before merging application changes."
+          exit 1
+
+      - name: Build frontend
+        if: steps.frontend_scripts.outputs.has_build == 'true'
+        run: npm run build
+
+
+  # ==========================================================================
+  # Backend Validation
+  # ==========================================================================
+  #
+  # Responsible for validating the server-side application.
+  #
+  # Typical checks:
+  #
+  #   1. Install dependencies
+  #   2. Run linting when configured
+  #   3. Run type checking when configured
+  #   4. Run automated tests when configured
+  #
+  # Database-dependent tests should use an isolated CI service or a dedicated
+  # test database rather than a production database.
+  # ==========================================================================
+
+  backend:
+    name: Backend Validation
+
+    runs-on: ubuntu-latest
+
+
+    defaults:
+      run:
+        working-directory: backend
+
+
+    steps:
+
+      # ----------------------------------------------------------------------
+      # Checkout Repository
+      # ----------------------------------------------------------------------
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+
+      # ----------------------------------------------------------------------
+      # Setup Node.js
+      # ----------------------------------------------------------------------
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+
+      # ----------------------------------------------------------------------
+      # Verify Backend Package Files
+      # ----------------------------------------------------------------------
+
+      - name: Verify backend package files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ ! -f "package.json" ]; then
+            echo "::error::backend/package.json was not found."
+            exit 1
+          fi
+
+          if [ ! -f "package-lock.json" ]; then
+            echo "::error::backend/package-lock.json was not found."
+            echo "::error::Commit the backend lockfile so CI can use deterministic dependency installation."
+            exit 1
+          fi
+
+
+      # ----------------------------------------------------------------------
+      # Install Backend Dependencies
+      # ----------------------------------------------------------------------
+
+      - name: Install backend dependencies
+        run: npm ci
+
+
+      # ----------------------------------------------------------------------
+      # Detect Backend Scripts
+      # ----------------------------------------------------------------------
+
+      - name: Detect backend scripts
+        id: backend_scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          has_script() {
+            node -e "
+              const scripts = require('./package.json').scripts || {};
+              process.exit(Object.prototype.hasOwnProperty.call(scripts, '$1') ? 0 : 1);
+            "
+          }
+
+          if has_script lint; then
+            echo "has_lint=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_lint=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if has_script typecheck; then
+            echo "has_typecheck=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_typecheck=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if has_script test; then
+            echo "has_test=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_test=false" >> "$GITHUB_OUTPUT"
+          fi
+
+
+      # ----------------------------------------------------------------------
+      # Lint Backend
+      # ----------------------------------------------------------------------
+
+      - name: Lint backend
+        if: steps.backend_scripts.outputs.has_lint == 'true'
+        run: npm run lint
+
+
+      # ----------------------------------------------------------------------
+      # Type Check Backend
+      # ----------------------------------------------------------------------
+
+      - name: Type-check backend
+        if: steps.backend_scripts.outputs.has_typecheck == 'true'
+        run: npm run typecheck
+
+
+      # ----------------------------------------------------------------------
+      # Test Backend
+      # ----------------------------------------------------------------------
+      #
+      # Backend tests may require:
+      #
+      #   - MongoDB
+      #   - Redis
+      #   - External service mocks
+      #   - Environment variables
+      #
+      # The workflow does not invent infrastructure services that the project
+      # may not require. Once backend tests are implemented, their required
+      # test infrastructure should be added here explicitly.
+      # ----------------------------------------------------------------------
+
+      - name: Test backend
+        if: steps.backend_scripts.outputs.has_test == 'true'
+        run: npm test -- --runInBand
+
+
+  # ==========================================================================
+  # Repository Validation
+  # ==========================================================================
+  #
+  # This job performs lightweight repository-level checks that do not belong
+  # specifically to frontend or backend code.
+  #
+  # It validates that important project files exist and that the repository
+  # maintains the expected high-level structure.
+  # ==========================================================================
+
+  repository:
+    name: Repository Validation
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+      # ----------------------------------------------------------------------
+      # Checkout Repository
+      # ----------------------------------------------------------------------
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+
+      # ----------------------------------------------------------------------
+      # Validate Required Repository Structure
+      # ----------------------------------------------------------------------
+
+      - name: Validate repository structure
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          required_paths=(
+            ".gitignore"
+            ".hintrc"
+            ".editorconfig"
+            "README.md"
+            "CONTRIBUTING.md"
+            "LICENSE"
+            "frontend"
+            "backend"
+          )
+
+          for path in "${required_paths[@]}"; do
+            if [ ! -e "$path" ]; then
+              echo "::error::Required repository path is missing: $path"
+              exit 1
+            fi
+          done
+
+          echo "Repository structure validation passed."
+
+
+      # ----------------------------------------------------------------------
+      # Validate No Obvious Secret Files
+      # ----------------------------------------------------------------------
+      #
+      # This is not a replacement for a dedicated secret scanner.
+      #
+      # It only catches common accidentally committed environment files.
+      # Real secrets must never be committed even if this check passes.
+      # ----------------------------------------------------------------------
+
+      - name: Check for accidentally committed environment files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          forbidden_files=(
+            ".env"
+            ".env.local"
+            ".env.production"
+            ".env.development"
+            "backend/.env"
+            "frontend/.env"
+            "frontend/.env.local"
+            "backend/.env.local"
+          )
+
+          found_forbidden_file=false
+
+          for file in "${forbidden_files[@]}"; do
+            if [ -f "$file" ]; then
+              echo "::error::Potential secret-bearing environment file is tracked in the repository: $file"
+              found_forbidden_file=true
+            fi
+          done
+
+          if [ "$found_forbidden_file" = true ]; then
+            echo "::error::Remove secret-bearing environment files from Git and store secrets in the appropriate environment configuration."
+            exit 1
+          fi
+
+          echo "No common secret-bearing environment files were found."
+
+
+# ============================================================================
+# Future CI Extensions
+# ============================================================================
+#
+# As Tech Monster grows, additional independent jobs can be introduced for:
+#
+#   - Security scanning
+#   - Dependency vulnerability scanning
+#   - Secret scanning
+#   - Code coverage
+#   - End-to-end browser testing
+#   - Accessibility testing
+#   - API contract testing
+#   - Docker image validation
+#   - Deployment smoke tests
+#
+# Keep each responsibility in a separate job where practical. This makes
+# failures easier to diagnose and allows GitHub to run independent checks in
+# parallel.
+#
+# CI should validate code.
+# Deployment should be handled by a separate workflow.
+# ============================================================================
