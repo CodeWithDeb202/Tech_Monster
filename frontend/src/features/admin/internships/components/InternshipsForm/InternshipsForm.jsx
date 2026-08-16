@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
-import api from "../../../../../services/api/axios";
-import { API } from "../../../../../services/api/endpoints";
+import { createInternship, updateInternship } from "../../../../../services/api/internship.service";
 import InternshipFormSkeleton from "../InternshipFormSkeleton";
 
 import { toast } from "react-toastify";
@@ -96,18 +95,10 @@ export default function InternshipsForm() {
             if (isEditMode) {
                 const id = editData._id || editData.id;
                 // PUT request for update
-                response = await api.put(API.INTERNSHIPS.BY_ID(id), data, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
+                response = await updateInternship(id, data);
             } else {
                 // POST request for create
-                response = await api.post(API.INTERNSHIPS.BASE, data, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
+                response = await createInternship(data);
             }
 
             if (response.data.success) {

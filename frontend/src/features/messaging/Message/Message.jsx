@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import {
     getChatUsers,
-    getMessages,
+    // getMessages,
     sendMessage,
     uploadChatFile,
     markAsSeen,
@@ -232,12 +232,6 @@ export default function Message() {
     // Load Chat Users
     // ===============================
 
-    useEffect(() => {
-
-        loadUsers();
-
-    }, []);
-
     const loadUsers = async () => {
 
         try {
@@ -255,6 +249,12 @@ export default function Message() {
         }
 
     };
+
+    useEffect(() => {
+
+        loadUsers();
+
+    }, []);
 
     // ===============================
     // Open Chat

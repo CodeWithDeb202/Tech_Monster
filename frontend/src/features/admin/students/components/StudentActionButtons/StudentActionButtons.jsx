@@ -1,4 +1,4 @@
-// src/components/Dashboard/Admin/StudentActionButtons.jsx
+// Admin student action buttons
 
 import "./StudentActionButtons.css";
 

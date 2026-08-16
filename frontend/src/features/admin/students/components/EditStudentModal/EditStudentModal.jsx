@@ -1,4 +1,4 @@
-// src/components/Dashboard/Admin/EditStudentModal.jsx
+// Admin student edit modal
 
 import "./EditStudentModal.css";
 

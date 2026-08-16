@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
-import api from "../../../../../services/api/axios";
-import { API } from "../../../../../services/api/endpoints";
+import {
+    createCourse,
+    updateCourse
+} from "../../../../../services/api/course.service.js";
 
 import { toast } from "react-toastify";
 
@@ -89,18 +91,10 @@ export default function CoursesForm() {
             if (isEditMode) {
                 const id = editData._id || editData.id;
                 // PUT request for update
-                response = await api.put(API.COURSES.BY_ID(id), data, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
+                response = await updateCourse(id, data);
             } else {
                 // POST request for create
-                response = await api.post(API.COURSES.BASE, data, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
+                response = await createCourse(data);
             }
 
             if (response.data.success) {
