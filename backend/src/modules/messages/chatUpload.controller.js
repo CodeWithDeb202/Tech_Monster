@@ -1,7 +1,7 @@
-import uploadToCloudinary from "../infrastructure/storage/uploadCloudinary.js";
+import uploadToCloudinary from "../../infrastructure/storage/uploadCloudinary.js";
 
-import asyncHandler from "../core/http/asyncHandler.js";
-import AppError from "../core/errors/AppError.js";
+import asyncHandler from "../../core/http/asyncHandler.js";
+import AppError from "../../core/errors/AppError.js";
 
 
 export const uploadChatFile = asyncHandler(async (req, res) => {

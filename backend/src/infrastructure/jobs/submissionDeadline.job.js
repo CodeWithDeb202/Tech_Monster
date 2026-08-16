@@ -1,7 +1,7 @@
 import cron from "node-cron";
 
 import Submission from "../../modules/submissions/models/Submission.js";
-import { emitToUser } from "../infrastructure/socket/socket.js";
+import { emitToUser } from "../socket/socket.js";
 
 const submissionDeadlineJob = () => {
     cron.schedule("*/5 * * * *", async () => {

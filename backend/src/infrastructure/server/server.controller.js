@@ -1,6 +1,6 @@
 import asyncHandler from "../../core/http/asyncHandler.js";
 
-import {getServerStatus} from "./getServerStatus.js";
+import getServerStatus from "./getServerStatus.js";
 
 export const serverStatus = asyncHandler(async (req, res) => {
 

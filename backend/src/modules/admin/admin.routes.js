@@ -5,22 +5,14 @@ import { protect } from "../../core/security/auth.middleware.js";
 import authorizeRoles from "../../core/security/role.middleware.js";
 
 import {
-
     getDashboardStats,
-
     getSingleUser,
-
     getAllUsers,
-
     blockUser,
-
     unblockUser,
-
     deleteUser,
-
     updateUser,
-
-} from "../controllers/admin.controller.js";
+} from "./admin.controller.js";
 
 const router = express.Router();
 
