@@ -1,0 +1,219 @@
+# ============================================================================
+# Tech Monster — CODEOWNERS
+# ============================================================================
+#
+# Purpose:
+#   This file defines the default reviewers/owners for different areas of the
+#   Tech Monster repository.
+#
+# How CODEOWNERS works:
+#   - Each rule contains a file/folder pattern followed by one or more owners.
+#   - When a pull request modifies a matching path, GitHub can request review
+#     from the configured owners.
+#   - More specific rules should be placed after broader rules because the
+#     last matching pattern takes precedence.
+#
+# Important:
+#   Replace the placeholder GitHub team/user handles below with the actual
+#   maintainers before enabling mandatory CODEOWNERS approval rules.
+#
+# Documentation:
+#   https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# ============================================================================
+
+
+# ----------------------------------------------------------------------------
+# Default Repository Ownership
+# ----------------------------------------------------------------------------
+#
+# Use this as the fallback owner for files that do not match a more specific
+# rule below.
+#
+# Example:
+#   * @Tech-Monster-Dev/maintainers
+#
+# Uncomment and configure this once the organization has a dedicated
+# maintainers/reviewers team.
+#
+# * @Tech-Monster-Dev/maintainers
+
+
+# ----------------------------------------------------------------------------
+# Backend
+# ----------------------------------------------------------------------------
+#
+# The backend contains the server-side application, APIs, business logic,
+# security middleware, validation, infrastructure integrations, and data
+# processing.
+#
+# Backend changes should be reviewed by developers responsible for the
+# server-side architecture and API contracts.
+#
+# Configure the appropriate GitHub team before enabling these rules.
+#
+# /backend/ @Tech-Monster-Dev/backend-maintainers
+
+
+# ----------------------------------------------------------------------------
+# Frontend
+# ----------------------------------------------------------------------------
+#
+# The frontend contains the client application, UI components, pages,
+# routing, state management, API integration, styling, and user-facing
+# functionality.
+#
+# Frontend changes should be reviewed by developers responsible for the
+# frontend architecture and user experience.
+#
+# Configure the appropriate GitHub team before enabling these rules.
+#
+# /frontend/ @Tech-Monster-Dev/frontend-maintainers
+
+
+# ----------------------------------------------------------------------------
+# Backend API / Application Entry Points
+# ----------------------------------------------------------------------------
+#
+# Changes to core backend application initialization can affect the complete
+# API lifecycle and therefore deserve additional architectural review.
+#
+# /backend/src/app.js @Tech-Monster-Dev/backend-maintainers
+
+
+# ----------------------------------------------------------------------------
+# Backend Core
+# ----------------------------------------------------------------------------
+#
+# Core modules usually contain cross-cutting infrastructure such as:
+#   - Error handling
+#   - Authentication
+#   - Authorization
+#   - Rate limiting
+#   - Validation
+#   - HTTP helpers
+#
+# Changes here can affect many API modules, so they should be reviewed
+# carefully.
+#
+# /backend/src/core/ @Tech-Monster-Dev/backend-maintainers
+
+
+# ----------------------------------------------------------------------------
+# Documentation
+# ----------------------------------------------------------------------------
+#
+# Documentation changes normally do not require application-code ownership,
+# but assigning them to maintainers helps ensure that architecture,
+# development instructions, API documentation, and deployment procedures
+# remain accurate.
+#
+# /docs/ @Tech-Monster-Dev/maintainers
+
+
+# ----------------------------------------------------------------------------
+# Repository Automation
+# ----------------------------------------------------------------------------
+#
+# Changes to GitHub Actions, issue templates, pull-request templates, or
+# repository ownership rules can affect the development workflow itself.
+#
+# These files should be reviewed by repository maintainers.
+#
+# /.github/ @Tech-Monster-Dev/maintainers
+
+
+# ----------------------------------------------------------------------------
+# CI/CD Workflows
+# ----------------------------------------------------------------------------
+#
+# Workflow changes can affect automated testing, linting, validation,
+# deployment, and security checks.
+#
+# /.github/workflows/ @Tech-Monster-Dev/maintainers
+
+
+# ----------------------------------------------------------------------------
+# Development and Maintenance Scripts
+# ----------------------------------------------------------------------------
+#
+# Scripts can modify project state, automate maintenance tasks, or influence
+# development workflows. Review them before merging changes.
+#
+# /scripts/ @Tech-Monster-Dev/maintainers
+
+
+# ----------------------------------------------------------------------------
+# Dependency and Package Configuration
+# ----------------------------------------------------------------------------
+#
+# Dependency changes can introduce security, compatibility, performance, or
+# licensing implications.
+#
+# Backend package configuration:
+#
+# /backend/package.json @Tech-Monster-Dev/backend-maintainers
+# /backend/package-lock.json @Tech-Monster-Dev/backend-maintainers
+#
+# Frontend package configuration:
+#
+# /frontend/package.json @Tech-Monster-Dev/frontend-maintainers
+# /frontend/package-lock.json @Tech-Monster-Dev/frontend-maintainers
+
+
+# ----------------------------------------------------------------------------
+# Security-Sensitive Configuration
+# ----------------------------------------------------------------------------
+#
+# Authentication, authorization, validation, rate limiting, and security
+# configuration changes should receive explicit backend/security review.
+#
+# These rules can be enabled once the corresponding GitHub team exists.
+#
+# /backend/src/core/security/ @Tech-Monster-Dev/security-maintainers
+
+
+# ----------------------------------------------------------------------------
+# Repository-Wide Configuration
+# ----------------------------------------------------------------------------
+#
+# Changes to these files can affect every developer or every part of the
+# application and should therefore be reviewed by repository maintainers.
+#
+# /.editorconfig @Tech-Monster-Dev/maintainers
+# /.gitignore @Tech-Monster-Dev/maintainers
+# /.hintrc @Tech-Monster-Dev/maintainers
+# /CONTRIBUTING.md @Tech-Monster-Dev/maintainers
+# /LICENSE @Tech-Monster-Dev/maintainers
+# /README.md @Tech-Monster-Dev/maintainers
+
+
+# ----------------------------------------------------------------------------
+# Future Ownership Rules
+# ----------------------------------------------------------------------------
+#
+# As the project grows, introduce more specific ownership rules for major
+# domains rather than assigning every file to one person.
+#
+# Recommended ownership model:
+#
+#   1. Repository Maintainers
+#      Own global configuration, documentation, CI/CD, and project policy.
+#
+#   2. Frontend Maintainers
+#      Own React/UI architecture and client-side application code.
+#
+#   3. Backend Maintainers
+#      Own APIs, services, persistence, authentication, and server-side code.
+#
+#   4. Security Maintainers
+#      Review authentication, authorization, secrets handling, validation,
+#      rate limiting, and other security-sensitive changes.
+#
+#   5. Documentation Maintainers
+#      Keep developer documentation, API documentation, and architecture
+#      documentation synchronized with the implementation.
+#
+# Avoid assigning every path to an individual developer unless that person is
+# expected to remain responsible for the area. Prefer GitHub teams for long-
+# lived ownership because teams scale better as contributors change.
+# ============================================================================

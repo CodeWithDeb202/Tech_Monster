@@ -1,0 +1,231 @@
+# ============================================================================
+# Tech Monster - Editor Configuration
+# ============================================================================
+#
+# This file defines repository-wide editor conventions.
+#
+# The purpose is to keep source files consistent across:
+#
+#   - VS Code
+#   - WebStorm / IntelliJ IDEA
+#   - Sublime Text
+#   - Vim / Neovim
+#   - Other EditorConfig-compatible editors
+#   - Windows
+#   - macOS
+#   - Linux
+#
+# EditorConfig is intentionally limited to formatting-related defaults.
+# Language-specific formatting should remain controlled by the project's
+# formatter/linter configuration where applicable.
+# ============================================================================
+
+
+# ----------------------------------------------------------------------------
+# Root Configuration
+# ----------------------------------------------------------------------------
+#
+# Tells EditorConfig-compatible editors that this is the root configuration.
+#
+# Editors will stop searching parent directories for additional
+# .editorconfig files after finding this file.
+# ----------------------------------------------------------------------------
+
+root = true
+
+
+# ----------------------------------------------------------------------------
+# Default Configuration
+# ----------------------------------------------------------------------------
+#
+# These settings apply to all files unless a more specific section overrides
+# them.
+# ----------------------------------------------------------------------------
+
+[*]
+
+# Use UTF-8 for text files.
+charset = utf-8
+
+# Use LF line endings consistently across operating systems.
+end_of_line = lf
+
+# Remove unnecessary whitespace at the end of lines.
+trim_trailing_whitespace = true
+
+# Always end text files with exactly one final newline.
+insert_final_newline = true
+
+
+# ----------------------------------------------------------------------------
+# JavaScript / JSX / TypeScript / JSON / CSS / Markdown
+# ----------------------------------------------------------------------------
+#
+# The project uses web technologies, so these files use two-space indentation.
+#
+# Two spaces are preferred for JavaScript/JSX and related configuration files
+# unless a specific project formatter overrides the behavior.
+# ----------------------------------------------------------------------------
+
+[*.{js,jsx,mjs,cjs,ts,tsx,json,jsonc,css,scss,less,html,htm,vue}]
+
+indent_style = space
+indent_size = 2
+
+
+# ----------------------------------------------------------------------------
+# YAML
+# ----------------------------------------------------------------------------
+#
+# YAML is indentation-sensitive.
+#
+# Two spaces are used to avoid accidental structural differences in:
+#
+#   - GitHub Actions workflows
+#   - Configuration files
+#   - Deployment configuration
+# ----------------------------------------------------------------------------
+
+[*.{yml,yaml}]
+
+indent_style = space
+indent_size = 2
+
+
+# ----------------------------------------------------------------------------
+# Markdown
+# ----------------------------------------------------------------------------
+#
+# Markdown uses spaces for indentation where nested lists/code blocks require
+# it.
+#
+# We intentionally keep the general two-space convention.
+# ----------------------------------------------------------------------------
+
+[*.md]
+
+indent_style = space
+indent_size = 2
+max_line_length = off
+
+
+# ----------------------------------------------------------------------------
+# Shell Scripts
+# ----------------------------------------------------------------------------
+#
+# Shell scripts commonly use two-space indentation in this repository.
+# ----------------------------------------------------------------------------
+
+[*.{sh,bash,zsh}]
+
+indent_style = space
+indent_size = 2
+
+
+# ----------------------------------------------------------------------------
+# Python
+# ----------------------------------------------------------------------------
+#
+# If Python tooling/scripts are added to the repository, follow the standard
+# four-space Python indentation convention.
+# ----------------------------------------------------------------------------
+
+[*.py]
+
+indent_style = space
+indent_size = 4
+
+
+# ----------------------------------------------------------------------------
+# XML
+# ----------------------------------------------------------------------------
+
+[*.xml]
+
+indent_style = space
+indent_size = 2
+
+
+# ----------------------------------------------------------------------------
+# Dockerfiles
+# ----------------------------------------------------------------------------
+#
+# Dockerfile syntax does not rely on indentation in the same way as YAML, but
+# keeping editor indentation consistent is still useful for multi-line
+# instructions.
+# ----------------------------------------------------------------------------
+
+[Dockerfile*]
+
+indent_style = space
+indent_size = 2
+
+
+# ----------------------------------------------------------------------------
+# Git Configuration
+# ----------------------------------------------------------------------------
+
+[.gitconfig]
+
+indent_style = space
+indent_size = 2
+
+
+# ----------------------------------------------------------------------------
+# Environment Example Files
+# ----------------------------------------------------------------------------
+#
+# Real .env files should not be committed when they contain secrets.
+#
+# Example environment files can use the repository's standard two-space
+# indentation when structured content is present.
+# ----------------------------------------------------------------------------
+
+[*.env.example]
+
+indent_style = space
+indent_size = 2
+
+
+# ----------------------------------------------------------------------------
+# Makefile
+# ----------------------------------------------------------------------------
+#
+# IMPORTANT:
+# Makefiles require literal TAB characters for recipe indentation.
+#
+# EditorConfig therefore does not force spaces for Makefiles.
+# ----------------------------------------------------------------------------
+
+[Makefile]
+
+indent_style = tab
+
+
+# ----------------------------------------------------------------------------
+# GitHub Actions
+# ----------------------------------------------------------------------------
+#
+# GitHub Actions are YAML files, so the YAML configuration above already
+# applies. This explicit section documents the expected convention.
+# ----------------------------------------------------------------------------
+
+[.github/workflows/*.{yml,yaml}]
+
+indent_style = space
+indent_size = 2
+
+
+# ----------------------------------------------------------------------------
+# Ignore Generated / Minified Files
+# ----------------------------------------------------------------------------
+#
+# Generated and minified files are generally not manually formatted.
+#
+# These settings do not change Git tracking behavior; they only prevent editor
+# formatting rules from being unnecessarily applied.
+# ----------------------------------------------------------------------------
+
+[*.min.{js,css}]
+
+trim_trailing_whitespace = false
