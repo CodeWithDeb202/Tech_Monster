@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import OTP from "../models/OTP.js";
+import OTP from "../auth/models/OTP.js";
 import User from "./models/User.js";
 
 import asyncHandler from "../../core/http/asyncHandler.js";

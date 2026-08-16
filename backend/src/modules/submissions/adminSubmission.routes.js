@@ -1,7 +1,7 @@
 import express from "express";
 
-import { protect } from "../core/security/auth.middleware.js";
-import authorizeRoles from "../core/security/role.middleware.js";
+import { protect } from "../../core/security/auth.middleware.js";
+import authorizeRoles from "../../core/security/role.middleware.js";
 
 import {
     getAllSubmissions,
