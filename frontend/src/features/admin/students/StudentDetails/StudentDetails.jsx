@@ -25,12 +25,6 @@ export default function StudentDetails() {
 
     const [notifications, setNotifications] = useState([]);
 
-    useEffect(() => {
-
-        fetchStudent();
-
-    }, [id]);
-
     async function fetchStudent() {
 
         try {
@@ -73,6 +67,12 @@ export default function StudentDetails() {
         }
 
     }
+
+    useEffect(() => {
+
+        fetchStudent();
+
+    }, [id]);
 
     if (loading) {
 

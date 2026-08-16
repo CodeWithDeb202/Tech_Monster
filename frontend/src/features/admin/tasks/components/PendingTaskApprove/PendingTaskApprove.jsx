@@ -14,28 +14,6 @@ export default function PendingTaskApprove({ refresh }) {
 
     const [tasks, setTasks] = useState([]);
 
-    useEffect(() => {
-
-        loadTasks();
-
-    }, [refresh]);
-
-    useEffect(() => {
-
-        socket.on("taskSubmitted", () => {
-
-            loadTasks();
-
-        });
-
-        return () => {
-
-            socket.off("taskSubmitted");
-
-        };
-
-    }, []);
-
     const loadTasks = async () => {
 
         try {
@@ -68,6 +46,28 @@ export default function PendingTaskApprove({ refresh }) {
         }
 
     };
+
+    useEffect(() => {
+
+        loadTasks();
+
+    }, [refresh]);
+
+    useEffect(() => {
+
+        socket.on("taskSubmitted", () => {
+
+            loadTasks();
+
+        });
+
+        return () => {
+
+            socket.off("taskSubmitted");
+
+        };
+
+    }, []);
 
     if (loading) {
 
@@ -117,7 +117,7 @@ export default function PendingTaskApprove({ refresh }) {
 
                 }
 
-{
+                {
                     tasks.map((task, index) => (
 
                         <div

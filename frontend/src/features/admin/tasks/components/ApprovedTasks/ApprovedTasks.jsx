@@ -13,12 +13,6 @@ export default function ApprovedTasks({ refresh }) {
 
     const [tasks, setTasks] = useState([]);
 
-    useEffect(() => {
-
-        loadTasks();
-
-    }, [refresh]);
-
     const loadTasks = async () => {
 
         try {
@@ -49,6 +43,12 @@ export default function ApprovedTasks({ refresh }) {
         }
 
     };
+
+    useEffect(() => {
+
+        loadTasks();
+
+    }, [refresh]);
 
     if (loading) {
 
@@ -126,7 +126,7 @@ export default function ApprovedTasks({ refresh }) {
 
                             </div>
 
-<div className="approvedTasksNotifyContent">
+                            <div className="approvedTasksNotifyContent">
 
                                 <h3>
 

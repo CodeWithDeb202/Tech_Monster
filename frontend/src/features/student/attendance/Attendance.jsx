@@ -18,14 +18,6 @@ export default function AttendancePage() {
   const [dashboard, setDashboard] = useState(null);
   const [todayAttendance, setTodayAttendance] = useState(null);
 
-  useEffect(() => {
-
-    loadDashboard();
-
-    loadAttendance();
-
-  }, []);
-
   const loadAttendance = async () => {
 
     try {
@@ -109,6 +101,14 @@ export default function AttendancePage() {
     }
 
   };
+
+  useEffect(() => {
+
+    loadDashboard();
+
+    loadAttendance();
+
+  }, []);
 
   const handleCheckIn = async () => {
 

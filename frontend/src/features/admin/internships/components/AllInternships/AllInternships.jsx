@@ -20,16 +20,6 @@ export default function AllInternships() {
     const [loading, setLoading] = useState(true);
     const [deleteId, setDeleteId] = useState(null);
 
-
-
-    useEffect(() => {
-
-        fetchInternships();
-
-    }, []);
-
-
-
     const fetchInternships = async () => {
 
         try {
@@ -44,7 +34,7 @@ export default function AllInternships() {
 
         }
         catch (error) {
-
+            console.log(error);
             toast.error(
                 "Failed to load internships"
             );
@@ -57,6 +47,12 @@ export default function AllInternships() {
         }
 
     };
+
+    useEffect(() => {
+
+        fetchInternships();
+
+    }, []);
 
 
 

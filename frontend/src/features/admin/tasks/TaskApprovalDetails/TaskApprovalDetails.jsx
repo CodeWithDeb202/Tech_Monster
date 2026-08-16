@@ -24,12 +24,6 @@ export default function TaskApprovalDetails() {
     const [comment, setComment] = useState("");
     const [extending, setExtending] = useState(false);
 
-    useEffect(() => {
-
-        loadTask();
-
-    }, []);
-
     const loadTask = async () => {
 
         try {
@@ -49,6 +43,12 @@ export default function TaskApprovalDetails() {
         }
 
     };
+
+    useEffect(() => {
+
+        loadTask();
+
+    }, []);
 
     const handleApprove = async () => {
 
@@ -172,7 +172,7 @@ export default function TaskApprovalDetails() {
 
                 </h1>
 
-<div className="detailRow">
+                <div className="detailRow">
                     <span>Student</span>
                     <p>
                         {task.student?.firstName || task.assignedTo?.firstName}{" "}
