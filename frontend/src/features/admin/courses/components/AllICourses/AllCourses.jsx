@@ -7,8 +7,10 @@ import DeleteModal from "../../../../../components/ui/DeleteModal";
 import CourseCard from "../CourseCard";
 import InternshipSkeleton from "../../../internships/components/InternshipSkeleton";
 
-import api from "../../../../../services/api/axios";
-import { API } from "../../../../../services/api/endpoints";
+import {
+    getAllCourses,
+    deleteCourse
+} from "../../../../../services/api/course.service.js";
 
 import "./AllCourses.css";
 
@@ -20,29 +22,11 @@ export default function AllCourses() {
     const [loading, setLoading] = useState(true);
     const [deleteId, setDeleteId] = useState(null);
 
-
-
-    useEffect(() => {
-
-        // eslint-disable-next-line react-hooks/immutability
-        fetchCourses();
-
-    }, []);
-
-
-
     const fetchCourses = async () => {
 
         try {
-
-            const res = await api.get(
-                API.COURSES.BASE
-            );
-
-
+            const res = await getAllCourses();
             setCourses(res.data.courses);
-
-
         }
         catch {
 
@@ -59,6 +43,13 @@ export default function AllCourses() {
 
     };
 
+    useEffect(() => {
+
+        // eslint-disable-next-line react-hooks/immutability
+        fetchCourses();
+
+    }, []);
+
 
 
 
@@ -66,27 +57,15 @@ export default function AllCourses() {
 
 
         try {
-
-
-            await api.delete(
-                API.COURSES.BY_ID(id)
-            );
-
-
-
+            await deleteCourse(id);
             setCourses(
                 prev => prev.filter(
                     item => item._id !== id
                 )
             );
-
-
-
             toast.success(
                 "Course deleted successfully"
             );
-
-
         }
         catch (error) {
             console.error("Delete failed:", error);

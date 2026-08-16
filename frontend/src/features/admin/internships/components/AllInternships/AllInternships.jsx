@@ -7,8 +7,10 @@ import DeleteModal from "../../../../../components/ui/DeleteModal";
 import InternshipCard from "../InternshipsCard";
 import InternshipSkeleton from "../InternshipSkeleton";
 
-import api from "../../../../../services/api/axios";
-import { API } from "../../../../../services/api/endpoints";
+import {
+    getAllInternships,
+    deleteInternship
+} from "../../../../../services/api/internship.service";
 
 import "./AllInternships.css";
 
@@ -24,13 +26,10 @@ export default function AllInternships() {
 
         try {
 
-            const res = await api.get(
-                API.INTERNSHIPS.BASE
-            );
+            const res = await getAllInternships();
 
 
             setInternships(res.data.internships);
-
 
         }
         catch (error) {
@@ -55,19 +54,13 @@ export default function AllInternships() {
     }, []);
 
 
-
-
     const handleDelete = async (id) => {
 
 
         try {
 
 
-            await api.delete(
-                API.INTERNSHIPS.BY_ID(id)
-            );
-
-
+            await deleteInternship(id);
 
             setInternships(
                 prev => prev.filter(
