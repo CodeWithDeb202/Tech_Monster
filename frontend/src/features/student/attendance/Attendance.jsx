@@ -104,9 +104,10 @@ export default function AttendancePage() {
 
   useEffect(() => {
 
-    loadDashboard();
-
-    loadAttendance();
+    queueMicrotask(() => {
+      loadDashboard();
+      loadAttendance();
+    });
 
   }, []);
 

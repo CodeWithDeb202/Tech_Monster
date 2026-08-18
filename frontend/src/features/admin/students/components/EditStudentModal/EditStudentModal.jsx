@@ -25,7 +25,9 @@ export default function EditStudentModal({
 
         if (student) {
 
-            setForm(student);
+            queueMicrotask(() => {
+                setForm(student);
+            });
 
         }
 

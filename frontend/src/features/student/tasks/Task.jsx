@@ -4,7 +4,10 @@ import {
     useState,
 } from "react";
 
-import { useParams } from "react-router-dom";
+import {
+    useLocation,
+    useParams,
+} from "react-router-dom";
 
 import { motion } from "framer-motion";
 
@@ -17,6 +20,7 @@ import CodeSubmission from "./components/CodeSubmission";
 import TaskStatusNotice from "./components/TaskStatusNotice";
 import CertificateBanner from "./components/CertificateBanner";
 import TaskDeadlineCard from "./components/TaskDeadlineCard";
+import Spinner from '../../dashboard/common/LoaderPage/Spinner';
 
 import useTaskData from "./hooks/useTaskData";
 import useTaskRealtime from "./hooks/useTaskRealtime";
@@ -25,33 +29,37 @@ import useTaskSubmission from "./hooks/useTaskSubmission";
 import {
     saveTaskState,
 } from "../../../utils/taskStorage";
+import {
+    getTaskExpiresAt,
+} from "./utils/taskUtils";
 
 import "./Task.css";
 
 const Task = () => {
     const {
+        type: routeType,
         slug,
         courseSlug: routeCourseSlug,
     } = useParams();
+    const location = useLocation();
+    const contentType = routeType === "internship" ? "internship" : "course";
+    const taskScope = location.state || {};
 
     const { user } = useAuth();
 
-    const [activeTaskId, setActiveTaskId] =
-        useState(null);
+    const [activeTaskId, setActiveTaskId] = useState(null);
 
-    const [now, setNow] =
-        useState(Date.now());
+    const [now, setNow] = useState(() => Date.now());
 
     // -----------------------------------------
     // TASK DATA
     // -----------------------------------------
-
     const {
         courseSlug,
         courseTitle,
         studentName,
-
         modules,
+        initialTaskId,
 
         loading,
         error,
@@ -62,14 +70,12 @@ const Task = () => {
         deadlineMap,
         setDeadlineMap,
 
-        submissionIdMap,
-        setSubmissionIdMap,
-
         submittedAtMap,
         setSubmittedAtMap,
 
         applySubmissionState,
     } = useTaskData({
+        contentType,
         routeCourseSlug,
         slug,
     });
@@ -110,6 +116,113 @@ const Task = () => {
         );
     }, [modules]);
 
+    const scopedModules = useMemo(() => {
+        const scopeModuleId = String(taskScope.moduleId || "");
+        const scopeLessonId = String(taskScope.lessonId || "");
+
+        if (!scopeModuleId && !scopeLessonId) {
+            return modules;
+        }
+
+        return modules
+            .filter((module) => (
+                !scopeModuleId ||
+                String(module.id) === scopeModuleId ||
+                (module.tasks || []).some(
+                    (task) => task.id === activeTaskId
+                )
+            ))
+            .map((module) => {
+                if (!scopeLessonId) {
+                    return module;
+                }
+
+                const hasActiveTask = (module.tasks || []).some(
+                    (task) => task.id === activeTaskId
+                );
+
+                const lessons = (module.lessons || []).filter(
+                    (lesson) => {
+                        const isScopedLesson =
+                            String(lesson.lessonId) === scopeLessonId;
+
+                        const isActiveLesson =
+                            hasActiveTask &&
+                            (lesson.tasks || []).some(
+                                (task) => task.id === activeTaskId
+                            );
+
+                        return isScopedLesson || isActiveLesson;
+                    }
+                );
+
+                return {
+                    ...module,
+                    lessons,
+                    tasks: lessons.flatMap(
+                        (lesson) => lesson.tasks || []
+                    ),
+                };
+            })
+            .filter((module) => module.tasks.length);
+    }, [
+        modules,
+        activeTaskId,
+        taskScope.moduleId,
+        taskScope.lessonId,
+    ]);
+
+    const visibleTasks = useMemo(() => {
+        return scopedModules.flatMap(
+            (module) => module.tasks
+        );
+    }, [scopedModules]);
+
+    const selectedTaskId = useMemo(() => {
+        if (!visibleTasks.length) {
+            return null;
+        }
+
+        const activeIsVisible = visibleTasks.some(
+            (task) => task.id === activeTaskId
+        );
+
+        if (activeIsVisible) {
+            return activeTaskId;
+        }
+
+        const requestedTaskId = String(taskScope.taskId || "");
+
+        return (
+            visibleTasks.find(
+                (task) =>
+                    requestedTaskId &&
+                    (
+                        task.id === requestedTaskId ||
+                        task.taskId === requestedTaskId
+                    )
+            ) ||
+            visibleTasks.find(
+                (task) => task.id === initialTaskId
+            ) ||
+            visibleTasks.find((task) => {
+                const status = taskStatusMap[task.id];
+
+                return (
+                    status !== "approved" &&
+                    status !== "expired"
+                );
+            }) ||
+            visibleTasks[0]
+        )?.id;
+    }, [
+        activeTaskId,
+        initialTaskId,
+        taskScope.taskId,
+        taskStatusMap,
+        visibleTasks,
+    ]);
+
     // -----------------------------------------
     // LOCKED TASKS
     // -----------------------------------------
@@ -127,7 +240,7 @@ const Task = () => {
 
             if (
                 taskStatusMap[
-                    previousTask.id
+                previousTask.id
                 ] !== "approved"
             ) {
                 locked.add(
@@ -142,6 +255,66 @@ const Task = () => {
         taskStatusMap,
     ]);
 
+    useEffect(() => {
+        if (!visibleTasks.length) {
+            return;
+        }
+
+        queueMicrotask(() => {
+            setDeadlineMap((prev) => {
+                let changed = false;
+                const next = {
+                    ...prev,
+                };
+
+                visibleTasks.forEach((task) => {
+                    const status =
+                        taskStatusMap[task.id];
+
+                    const shouldHaveTimer =
+                        !lockedIds.has(task.id) &&
+                        status !== "approved" &&
+                        status !== "expired";
+
+                    const hasTimer =
+                        getTaskExpiresAt(next[task.id]);
+
+                    if (
+                        shouldHaveTimer &&
+                        !hasTimer
+                    ) {
+                        const startedAt =
+                            Date.now();
+
+                        const unlockedAt =
+                            new Date(startedAt).toISOString();
+
+                        next[task.id] = {
+                            unlockedAt,
+                            expiresAt:
+                                new Date(
+                                    startedAt +
+                                    48 * 60 * 60 * 1000
+                                ).toISOString(),
+                            expiredAt: null,
+                        };
+
+                        changed = true;
+                    }
+                });
+
+                return changed
+                    ? next
+                    : prev;
+            });
+        });
+    }, [
+        lockedIds,
+        setDeadlineMap,
+        taskStatusMap,
+        visibleTasks,
+    ]);
+
     // -----------------------------------------
     // CURRENT TASK
     // -----------------------------------------
@@ -151,12 +324,12 @@ const Task = () => {
             allTasks.find(
                 (task) =>
                     task.id ===
-                    activeTaskId
+                    selectedTaskId
             ) || null
         );
     }, [
         allTasks,
-        activeTaskId,
+        selectedTaskId,
     ]);
 
     // -----------------------------------------
@@ -183,31 +356,27 @@ const Task = () => {
     // -----------------------------------------
     // CURRENT TASK STATE
     // -----------------------------------------
-
     const currentDeadline =
         currentTask
             ? deadlineMap[
-                  currentTask.id
-              ]
+            currentTask.id
+            ]
             : null;
 
     const currentStatus =
         currentTask
             ? taskStatusMap[
-                  currentTask.id
-              ]
+            currentTask.id
+            ]
             : null;
 
     const currentExpired =
         currentStatus === "expired" ||
         (
-            currentDeadline?.expiresAt &&
-            ![
-                "pending",
-                "approved",
-            ].includes(currentStatus) &&
+            getTaskExpiresAt(currentDeadline) &&
+            currentStatus !== "approved" &&
             new Date(
-                currentDeadline.expiresAt
+                getTaskExpiresAt(currentDeadline)
             ).getTime() <= now
         );
 
@@ -220,7 +389,7 @@ const Task = () => {
             !currentTask ||
             !currentExpired ||
             currentStatus ===
-                "expired"
+            "expired"
         ) {
             return;
         }
@@ -253,21 +422,21 @@ const Task = () => {
 
     const approvedCount =
         useMemo(() => {
-            return allTasks.filter(
+            return visibleTasks.filter(
                 (task) =>
                     taskStatusMap[
-                        task.id
+                    task.id
                     ] === "approved"
             ).length;
         }, [
-            allTasks,
+            visibleTasks,
             taskStatusMap,
         ]);
 
     const allCompleted =
-        allTasks.length > 0 &&
+        visibleTasks.length > 0 &&
         approvedCount ===
-            allTasks.length;
+        visibleTasks.length;
 
     // -----------------------------------------
     // GLOBAL COMPLETION SIGNAL
@@ -315,6 +484,7 @@ const Task = () => {
         currentModule,
         taskStatusMap,
         setTaskStatusMap,
+        setDeadlineMap,
         setSubmittedAtMap,
     });
 
@@ -333,7 +503,7 @@ const Task = () => {
                     opacity: 1,
                 }}
             >
-                Loading tasks...
+                <Spinner message="Loading tasks..." size={60} />
             </motion.div>
         );
     }
@@ -345,7 +515,7 @@ const Task = () => {
     if (
         error ||
         !modules.length ||
-        !allTasks.length
+        !visibleTasks.length
     ) {
         return (
             <motion.div
@@ -357,8 +527,7 @@ const Task = () => {
                     opacity: 1,
                 }}
             >
-                {error ||
-                    "No tasks found for this internship."}
+                {error || "No tasks found for this internship."}
             </motion.div>
         );
     }
@@ -382,36 +551,24 @@ const Task = () => {
         >
             <TaskHeader
                 studentName={studentName}
-                internshipTitle={
-                    courseTitle
-                }
-                moduleTitle={
-                    currentModule?.title ||
-                    ""
-                }
-                completedCount={
-                    approvedCount
-                }
-                totalCount={
-                    allTasks.length
-                }
+                internshipTitle={courseTitle}
+                moduleTitle={currentModule?.title || ""}
+                completedCount={approvedCount}
+                totalCount={visibleTasks.length}
             />
 
             <div className="tasks-layout">
                 <TaskModuleSidebar
-                    modules={modules}
-                    activeTaskId={
-                        activeTaskId
-                    }
-                    taskStatusMap={
-                        taskStatusMap
-                    }
+                    contentType={contentType}
+                    modules={scopedModules}
+                    activeTaskId={selectedTaskId}
+                    taskStatusMap={taskStatusMap}
+                    deadlineMap={deadlineMap}
+                    now={now}
                     lockedIds={[
                         ...lockedIds,
                     ]}
-                    onSelectTask={
-                        handleSelectTask
-                    }
+                    onSelectTask={handleSelectTask}
                 />
 
                 <div className="tasks-main">
@@ -426,12 +583,12 @@ const Task = () => {
                             <TaskStatusNotice
                                 submittedAt={
                                     submittedAtMap[
-                                        currentTask.id
+                                    currentTask.id
                                     ] || null
                                 }
                                 status={
                                     taskStatusMap[
-                                        currentTask.id
+                                    currentTask.id
                                     ]
                                 }
                             />
@@ -444,15 +601,18 @@ const Task = () => {
                                 expired={
                                     currentExpired
                                 }
+                                status={
+                                    currentStatus
+                                }
                             />
 
                             {taskStatusMap[
                                 currentTask.id
                             ] !== "pending" &&
                                 taskStatusMap[
-                                    currentTask.id
+                                currentTask.id
                                 ] !==
-                                    "approved" && (
+                                "approved" && (
                                     <CodeSubmission
                                         task={
                                             currentTask
@@ -489,7 +649,7 @@ const Task = () => {
                     approvedCount
                 }
                 totalCount={
-                    allTasks.length
+                    visibleTasks.length
                 }
                 allCompleted={
                     allCompleted

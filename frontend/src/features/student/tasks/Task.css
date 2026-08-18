@@ -1,7 +1,6 @@
 .tasks-page {
-    padding: 35px;
     min-height: 100vh;
-    background: #06111d;
+    background: transparent;
     color: var(--text);
 }
 
@@ -87,7 +86,14 @@
 
 .task-deadline-card strong {
     color: var(--neon);
-    font-size: 1.2rem;
+    font-size: 1.35rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+
+.task-deadline-card-time {
+    min-width: 150px;
 }
 
 .task-deadline-card p {

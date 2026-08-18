@@ -49,7 +49,9 @@ export default function PendingTaskApprove({ refresh }) {
 
     useEffect(() => {
 
-        loadTasks();
+        queueMicrotask(() => {
+            loadTasks();
+        });
 
     }, [refresh]);
 
@@ -57,7 +59,9 @@ export default function PendingTaskApprove({ refresh }) {
 
         socket.on("taskSubmitted", () => {
 
-            loadTasks();
+            queueMicrotask(() => {
+                loadTasks();
+            });
 
         });
 

@@ -1,34 +1,67 @@
-import { formatCountdown } from "../../utils/taskUtils";
+import {
+    formatCountdown,
+    getTaskExpiresAt,
+} from "../../utils/taskUtils";
 
 const TaskDeadlineCard = ({
     deadline,
     now,
     expired,
+    status,
 }) => {
+
+    const expiresAt =
+        getTaskExpiresAt(deadline);
+
+    const countdown =
+        formatCountdown(
+            expiresAt,
+            now
+        );
+
+    const isApproved =
+        status === "approved";
+
+    const displayTime =
+        isApproved
+            ? "Approved"
+            : expired
+            ? "00:00:00"
+            : countdown || "--:--:--";
+
     return (
         <div
             className={`task-deadline-card ${
-                expired ? "expired" : ""
+                expired
+                    ? "expired"
+                    : ""
             }`}
         >
-            <div>
-                <span>Deadline</span>
+
+            <div className="task-deadline-card-time">
+
+                <span>
+                    Timer
+                </span>
 
                 <strong>
-                    {formatCountdown(
-                        deadline?.expiresAt,
-                        now
-                    )}
+                    {displayTime}
                 </strong>
+
             </div>
 
             <p>
-                {expired
+
+                {isApproved
+                    ? "This task has been approved."
+                    : expired
                     ? "Submission is disabled. Contact support for an extension."
-                    : deadline?.expiresAt
-                    ? "Submit within 48 hours of unlock."
+                    : expiresAt
+                    ? "48-hour task timer is running."
                     : "This task starts when it unlocks."}
+
             </p>
+
         </div>
     );
 };

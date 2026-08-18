@@ -5,53 +5,53 @@ const submissionSchema = new mongoose.Schema(
         student: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            required: true
+            required: true,
         },
 
         internship: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Internship",
-            default: null
+            default: null,
         },
 
         courseSlug: {
             type: String,
             required: true,
             trim: true,
-            lowercase: true
+            lowercase: true,
         },
 
         moduleId: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
         },
 
         moduleTitle: {
             type: String,
-            default: ""
+            default: "",
         },
 
         lessonId: {
             type: String,
             default: "",
-            trim: true
+            trim: true,
         },
 
         taskId: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
         },
 
         taskTitle: {
             type: String,
-            default: ""
+            default: "",
         },
 
         problemStatement: {
             type: String,
-            default: ""
+            default: "",
         },
 
         // ==========================
@@ -60,101 +60,128 @@ const submissionSchema = new mongoose.Schema(
 
         code: {
             type: String,
-            default: ""
+            default: "",
         },
 
         answer: {
             type: String,
-            default: ""
+            default: "",
         },
 
         githubLink: {
             type: String,
-            default: ""
+            default: "",
         },
 
         liveLink: {
             type: String,
-            default: ""
+            default: "",
         },
 
         submittedAt: {
             type: Date,
-            default: null
+            default: null,
+        },
+
+        // ==========================
+        // TASK STATUS
+        // ==========================
+
+        status: {
+            type: String,
+            enum: [
+                "locked",
+                "unlocked",
+                "pending",
+                "approved",
+                "rejected",
+                "expired",
+            ],
+            default: "locked",
+        },
+
+        // ==========================
+        // DEADLINE
+        // ==========================
+
+        unlockedAt: {
+            type: Date,
+            default: null,
+        },
+
+        expiresAt: {
+            type: Date,
+            default: null,
+        },
+
+        expiredAt: {
+            type: Date,
+            default: null,
+        },
+
+        extendedAt: {
+            type: Date,
+            default: null,
+        },
+
+        extendedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            default: null,
         },
 
         // ==========================
         // ADMIN REVIEW
         // ==========================
 
-        status: {
-            type: String,
-            enum: ["locked", "unlocked", "pending", "approved", "rejected", "expired"],
-            default: "locked"
-        },
-
-        unlockedAt: {
-            type: Date,
-            default: null
-        },
-
-        expiresAt: {
-            type: Date,
-            default: null
-        },
-
-        expiredAt: {
-            type: Date,
-            default: null
-        },
-
-        extendedAt: {
-            type: Date,
-            default: null
-        },
-
-        extendedBy: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            default: null
-        },
-
         reviewComment: {
             type: String,
-            default: ""
+            default: "",
         },
 
         reviewedBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            default: null
+            default: null,
         },
 
         reviewedAt: {
             type: Date,
-            default: null
+            default: null,
         },
 
         emailFlags: {
             submittedEmailSent: {
                 type: Boolean,
-                default: false
+                default: false,
             },
+
             approvedEmailSent: {
                 type: Boolean,
-                default: false
-            }
-        }
+                default: false,
+            },
+        },
     },
     {
-        timestamps: true
+        timestamps: true,
     }
 );
 
-// A student can only have one active submission record per task.
+// One submission per student + course + module + lesson + task
 submissionSchema.index(
-    { student: 1, courseSlug: 1, moduleId: 1, lessonId: 1, taskId: 1 },
-    { unique: true }
+    {
+        student: 1,
+        courseSlug: 1,
+        moduleId: 1,
+        lessonId: 1,
+        taskId: 1,
+    },
+    {
+        unique: true,
+    }
 );
 
-export default mongoose.model("Submission", submissionSchema);
+export default mongoose.model(
+    "Submission",
+    submissionSchema
+);

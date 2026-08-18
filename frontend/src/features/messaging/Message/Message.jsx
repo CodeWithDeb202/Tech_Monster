@@ -62,7 +62,9 @@ export default function Message() {
 
         if (user) {
 
-            setCurrentUser(user);
+            queueMicrotask(() => {
+                setCurrentUser(user);
+            });
 
         }
 
@@ -252,7 +254,9 @@ export default function Message() {
 
     useEffect(() => {
 
-        loadUsers();
+        queueMicrotask(() => {
+            loadUsers();
+        });
 
     }, []);
 

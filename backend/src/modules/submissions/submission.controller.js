@@ -15,7 +15,11 @@ const DEADLINE_MS = 48 * 60 * 60 * 1000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const coursesDir = path.resolve(__dirname, "../../data/courses");
+const contentDataDirs = [
+    path.resolve(__dirname, "../../../data/course"),
+    path.resolve(__dirname, "../../../data/internship"),
+    path.resolve(__dirname, "../../data/courses"),
+];
 
 const normalizeSlug = (slug) =>
     String(slug || "")
@@ -23,51 +27,285 @@ const normalizeSlug = (slug) =>
         .toLowerCase()
         .replace(/_/g, "-");
 
-const readCourseData = async (courseSlug) => {
-    try {
-        const raw = await readFile(
-            path.join(coursesDir, `${normalizeSlug(courseSlug)}.json`),
-            "utf8"
-        );
-        return JSON.parse(raw);
-    } catch {
-        return null;
+
+// =====================================
+// SUBMISSION TASK KEY
+// =====================================
+
+const getSubmissionTaskKey = (submission) => {
+    if (
+        !submission?.moduleId ||
+        !submission?.taskId
+    ) {
+        return "";
     }
+
+    return [
+        String(submission.moduleId),
+        String(submission.lessonId || ""),
+        String(submission.taskId),
+    ].join("_");
 };
 
-const getOrderedCourseTasks = (courseData) => {
-    if (!Array.isArray(courseData?.modules)) return [];
+const readCourseData = async (courseSlug) => {
+    const fileName =
+        `${normalizeSlug(courseSlug)}.json`;
 
-    return courseData.modules.flatMap((module) => {
-        const moduleId = module.moduleId || "";
-        const seen = new Set();
-        const tasks = [];
+    for (const contentDir of contentDataDirs) {
+        try {
+            const raw = await readFile(
+                path.join(contentDir, fileName),
+                "utf8"
+            );
 
-        (module.lessons || []).forEach((lesson) => {
-            (lesson.tasks || []).forEach((task) => {
-                const taskId = task.taskId || "";
-                if (!taskId || seen.has(taskId)) return;
-                seen.add(taskId);
+            return JSON.parse(raw);
+        } catch {
+            // Try the next content source.
+        }
+    }
 
-                tasks.push({
-                    courseSlug: normalizeSlug(courseData.slug || courseData.courseSlug || ""),
-                    moduleId,
-                    moduleTitle: module.moduleTitle || "",
-                    lessonId: lesson.lessonId || "",
-                    taskId,
-                    taskTitle: task.title || "Task",
-                    problemStatement: task.problemStatement || ""
-                });
-            });
-        });
+    return null;
+};
 
-        return tasks;
-    });
+const getOrderedCourseTasks = (
+    courseData
+) => {
+
+    if (
+        !Array.isArray(
+            courseData?.modules
+        )
+    ) {
+        return [];
+    }
+
+    const orderedTasks = [];
+
+    // =====================================
+    // GLOBAL DUPLICATE PROTECTION
+    // =====================================
+
+    const seen = new Set();
+
+
+    courseData.modules.forEach(
+        (
+            module,
+            moduleIndex
+        ) => {
+
+            const moduleId =
+                String(
+                    module.moduleId ||
+                    module.id ||
+                    `module-${moduleIndex + 1}`
+                ).trim();
+
+            const moduleTitle =
+                module.moduleTitle ||
+                module.title ||
+                `Module ${moduleIndex + 1}`;
+
+
+            // =====================================
+            // MODULE LEVEL TASKS
+            // =====================================
+
+            if (
+                Array.isArray(
+                    module.tasks
+                )
+            ) {
+
+                module.tasks.forEach(
+                    (
+                        task,
+                        taskIndex
+                    ) => {
+
+                        const taskId =
+                            String(
+                                task.taskId ||
+                                task.id ||
+                                `task-${taskIndex + 1}`
+                            ).trim();
+
+                        const lessonId =
+                            String(
+                                task.lessonId ||
+                                ""
+                            ).trim();
+
+
+                        // =================================
+                        // IMPORTANT UNIQUE KEY
+                        // =================================
+
+                        const taskKey = [
+                            moduleId,
+                            lessonId,
+                            taskId,
+                        ].join("_");
+
+
+                        if (
+                            seen.has(
+                                taskKey
+                            )
+                        ) {
+                            return;
+                        }
+
+                        seen.add(
+                            taskKey
+                        );
+
+
+                        orderedTasks.push({
+
+                            courseSlug:
+                                normalizeSlug(
+                                    courseData.slug ||
+                                    courseData.courseSlug ||
+                                    ""
+                                ),
+
+                            moduleId,
+
+                            moduleTitle,
+
+                            lessonId,
+
+                            taskId,
+
+                            taskTitle:
+                                task.title ||
+                                task.taskTitle ||
+                                "Task",
+
+                            problemStatement:
+                                task.problemStatement ||
+                                "",
+                        });
+                    }
+                );
+            }
+
+
+            // =====================================
+            // LESSONS
+            // =====================================
+
+            if (
+                Array.isArray(
+                    module.lessons
+                )
+            ) {
+
+                module.lessons.forEach(
+                    (
+                        lesson,
+                        lessonIndex
+                    ) => {
+
+                        const lessonId =
+                            String(
+                                lesson.lessonId ||
+                                lesson.id ||
+                                `lesson-${lessonIndex + 1}`
+                            ).trim();
+
+
+                        if (
+                            !Array.isArray(
+                                lesson.tasks
+                            )
+                        ) {
+                            return;
+                        }
+
+
+                        lesson.tasks.forEach(
+                            (
+                                task,
+                                taskIndex
+                            ) => {
+
+                                const taskId =
+                                    String(
+                                        task.taskId ||
+                                        task.id ||
+                                        `task-${taskIndex + 1}`
+                                    ).trim();
+
+
+                                // =================================
+                                // MODULE + LESSON + TASK
+                                // =================================
+
+                                const taskKey = [
+                                    moduleId,
+                                    lessonId,
+                                    taskId,
+                                ].join("_");
+
+
+                                if (
+                                    seen.has(
+                                        taskKey
+                                    )
+                                ) {
+                                    return;
+                                }
+
+                                seen.add(
+                                    taskKey
+                                );
+
+
+                                orderedTasks.push({
+
+                                    courseSlug:
+                                        normalizeSlug(
+                                            courseData.slug ||
+                                            courseData.courseSlug ||
+                                            ""
+                                        ),
+
+                                    moduleId,
+
+                                    moduleTitle,
+
+                                    lessonId,
+
+                                    taskId,
+
+                                    taskTitle:
+                                        task.title ||
+                                        task.taskTitle ||
+                                        "Task",
+
+                                    problemStatement:
+                                        task.problemStatement ||
+                                        "",
+                                });
+
+                            }
+                        );
+                    }
+                );
+            }
+
+        }
+    );
+
+
+    return orderedTasks;
 };
 
 const isExpired = (submission, now = new Date()) =>
     submission?.expiresAt &&
-    !["pending", "approved"].includes(submission.status) &&
+    submission.status !== "approved" &&
     new Date(submission.expiresAt).getTime() <= now.getTime();
 
 const markExpiredIfNeeded = async (submission, now = new Date()) => {
@@ -79,46 +317,169 @@ const markExpiredIfNeeded = async (submission, now = new Date()) => {
 
     emitToUser(submission.student, "taskExpired", {
         submission,
-        taskKey: `${submission.moduleId}_${submission.taskId}`
+        taskKey: getSubmissionTaskKey(
+            submission
+        )
     });
 
     return submission;
 };
 
-const unlockTaskForStudent = async (studentId, courseSlug, taskInfo) => {
-    if (!studentId || !courseSlug || !taskInfo) return null;
+const unlockTaskForStudent = async (
+    studentId,
+    courseSlug,
+    taskInfo
+) => {
 
-    let submission = await Submission.findOne({
-        student: studentId,
-        courseSlug,
-        moduleId: taskInfo.moduleId,
-        lessonId: taskInfo.lessonId || "",
-        taskId: taskInfo.taskId
-    });
+    if (
+        !studentId ||
+        !courseSlug ||
+        !taskInfo
+    ) {
+        return null;
+    }
+
+    const normalizedCourseSlug =
+        normalizeSlug(courseSlug);
+
+    const normalizedModuleId =
+        String(
+            taskInfo.moduleId || ""
+        ).trim();
+
+    const normalizedLessonId =
+        String(
+            taskInfo.lessonId || ""
+        ).trim();
+
+    const normalizedTaskId =
+        String(
+            taskInfo.taskId || ""
+        ).trim();
+
+    if (
+        !normalizedModuleId ||
+        !normalizedTaskId
+    ) {
+        return null;
+    }
+
+    // =========================================
+    // FIND EXISTING SUBMISSION
+    // =========================================
+
+    let submission =
+        await Submission.findOne({
+            student: studentId,
+
+            courseSlug:
+                normalizedCourseSlug,
+
+            moduleId:
+                normalizedModuleId,
+
+            lessonId:
+                normalizedLessonId,
+
+            taskId:
+                normalizedTaskId,
+        });
+
+    // =========================================
+    // CREATE NEW UNLOCKED TASK
+    // =========================================
 
     if (!submission) {
-        const internship = await Internship.findOne({ slug: courseSlug });
+
+        const internship =
+            await Internship.findOne({
+                slug:
+                    normalizedCourseSlug,
+            });
+
+        const unlockedAt =
+            new Date();
+
+        const expiresAt =
+            new Date(
+                unlockedAt.getTime() +
+                DEADLINE_MS
+            );
+
+        submission =
+            await Submission.create({
+
+                student:
+                    studentId,
+
+                internship:
+                    internship?._id ||
+                    null,
+
+                courseSlug:
+                    normalizedCourseSlug,
+
+                moduleId:
+                    normalizedModuleId,
+
+                moduleTitle:
+                    taskInfo.moduleTitle ||
+                    "",
+
+                lessonId:
+                    normalizedLessonId,
+
+                taskId:
+                    normalizedTaskId,
+
+                taskTitle:
+                    taskInfo.taskTitle ||
+                    "Task",
+
+                problemStatement:
+                    taskInfo.problemStatement ||
+                    "",
+
+                status:
+                    "unlocked",
+
+                unlockedAt,
+
+                expiresAt,
+
+                expiredAt:
+                    null,
+            });
+
+        return submission;
+    }
+
+    // =========================================
+    // LOCKED → UNLOCKED
+    // =========================================
+
+    if (
+        submission.status ===
+        "locked"
+    ) {
+
         const unlockedAt = new Date();
 
-        submission = await Submission.create({
-            student: studentId,
-            internship: internship?._id || null,
-            courseSlug,
-            moduleId: taskInfo.moduleId,
-            moduleTitle: taskInfo.moduleTitle || "",
-            lessonId: taskInfo.lessonId || "",
-            taskId: taskInfo.taskId,
-            taskTitle: taskInfo.taskTitle || "",
-            problemStatement: taskInfo.problemStatement || "",
-            status: "unlocked",
-            unlockedAt,
-            expiresAt: new Date(unlockedAt.getTime() + DEADLINE_MS)
-        });
-    } else if (submission.status === "locked") {
-        const unlockedAt = new Date();
-        submission.status = "unlocked";
-        submission.unlockedAt = unlockedAt;
-        submission.expiresAt = new Date(unlockedAt.getTime() + DEADLINE_MS);
+        submission.status =
+            "unlocked";
+
+        submission.unlockedAt =
+            unlockedAt;
+
+        submission.expiresAt =
+            new Date(
+                unlockedAt.getTime() +
+                DEADLINE_MS
+            );
+
+        submission.expiredAt =
+            null;
+
         await submission.save();
     }
 
@@ -130,8 +491,16 @@ const unlockNextTask = async (submission) => {
     const orderedTasks = getOrderedCourseTasks(courseData);
     const currentIndex = orderedTasks.findIndex(
         (task) =>
-            task.moduleId === submission.moduleId &&
-            task.taskId === submission.taskId
+            task.moduleId ===
+            submission.moduleId &&
+            String(
+                task.lessonId || ""
+            ) ===
+            String(
+                submission.lessonId || ""
+            ) &&
+            task.taskId ===
+            submission.taskId
     );
 
     if (currentIndex < 0) return null;
@@ -181,7 +550,7 @@ export const submitCode = asyncHandler(async (req, res) => {
         throw new AppError("code is required", 400);
     }
 
-// Resolve the internship (by slug) so we can link it.
+    // Resolve the internship (by slug) so we can link it.
     let internship = null;
     try {
         internship = await Internship.findOne({ slug: normalizedCourseSlug });
@@ -190,7 +559,7 @@ export const submitCode = asyncHandler(async (req, res) => {
     }
 
     // Normalize lessonId to "" when not applicable (module-level course tasks).
-    const normalizedLessonId = lessonId || "";
+    const normalizedLessonId = String(lessonId || "").trim();
 
     // Upsert the submission so a task has only one active record.
     let submission = await Submission.findOne({
@@ -206,10 +575,18 @@ export const submitCode = asyncHandler(async (req, res) => {
         const orderedTasks = getOrderedCourseTasks(courseData);
         const firstTask = orderedTasks[0];
         const requestedTask = orderedTasks.find(
-            (task) => task.moduleId === moduleId && task.taskId === taskId
+            (task) =>
+                task.moduleId === moduleId &&
+                String(task.lessonId || "") === normalizedLessonId &&
+                task.taskId === taskId
         );
 
-        if (!firstTask || firstTask.taskId !== requestedTask?.taskId || firstTask.moduleId !== requestedTask?.moduleId) {
+        if (
+            !firstTask ||
+            firstTask.taskId !== requestedTask?.taskId ||
+            firstTask.moduleId !== requestedTask?.moduleId ||
+            String(firstTask.lessonId || "") !== String(requestedTask?.lessonId || "")
+        ) {
             throw new AppError("This task is locked until the previous task is approved.", 403);
         }
 
@@ -267,14 +644,20 @@ export const submitCode = asyncHandler(async (req, res) => {
 
     const admins = await User.find({ role: "admin" });
     await Promise.all(
-        admins.map((admin) =>
-            Notification.create({
+        admins.map(async (admin) => {
+            const notification = await Notification.create({
                 user: admin._id,
                 title: "Task Approval",
                 message: `${req.user.firstName} ${req.user.lastName} submitted "${submission.taskTitle || submission.taskId}" for approval.`,
                 type: "system"
-            })
-        )
+            });
+
+            emitToUser(
+                admin._id,
+                "newNotification",
+                notification
+            );
+        })
     );
 
     return res.status(200).json({
@@ -307,66 +690,208 @@ export const getMySubmissions = asyncHandler(async (req, res) => {
 // =====================================
 // STUDENT: GET SUBMISSION BY COURSE (GET /api/submissions/course/:courseSlug)
 // =====================================
-export const getMyCourseSubmissions = asyncHandler(async (req, res) => {
+export const getMyCourseSubmissions = asyncHandler(
+    async (req, res) => {
 
-    const courseSlug = normalizeSlug(req.params.courseSlug);
+        const courseSlug = normalizeSlug(
+            req.params.courseSlug
+        );
 
-    const courseData = await readCourseData(courseSlug);
-    const orderedTasks = getOrderedCourseTasks(courseData);
-
-    if (orderedTasks.length) {
-        await unlockTaskForStudent(req.user._id, courseSlug, orderedTasks[0]);
-    }
-
-    let submissions = await Submission.find({
-        student: req.user._id,
-        courseSlug
-    });
-
-    const submissionMap = new Map(
-        submissions.map((submission) => [
-            `${submission.moduleId}_${submission.taskId}`,
-            submission
-        ])
-    );
-
-    for (let index = 0; index < orderedTasks.length; index += 1) {
-        const task = orderedTasks[index];
-        const key = `${task.moduleId}_${task.taskId}`;
-        const existing = submissionMap.get(key);
-
-        if (existing) {
-            if (existing.status !== "approved") break;
-            continue;
+        if (!courseSlug) {
+            throw new AppError(
+                "Course slug is required.",
+                400
+            );
         }
 
-        const previousTask = orderedTasks[index - 1];
-        const previous = previousTask
-            ? submissionMap.get(`${previousTask.moduleId}_${previousTask.taskId}`)
-            : null;
+        const courseData =
+            await readCourseData(courseSlug);
 
-        if (index === 0 || previous?.status === "approved") {
-            const unlocked = await unlockTaskForStudent(req.user._id, courseSlug, task);
-            if (unlocked) {
-                submissionMap.set(key, unlocked);
-                submissions.push(unlocked);
+        if (!courseData) {
+            throw new AppError(
+                "Course data not found.",
+                404
+            );
+        }
+
+        const orderedTasks =
+            getOrderedCourseTasks(courseData);
+
+        if (!orderedTasks.length) {
+            return res.status(200).json({
+                success: true,
+                orderedTasks: [],
+                submissions: [],
+            });
+        }
+
+        // -----------------------------------------
+        // GET EXISTING SUBMISSIONS
+        // -----------------------------------------
+
+        let submissions =
+            await Submission.find({
+                student: req.user._id,
+                courseSlug,
+            }).sort({
+                updatedAt: -1,
+            });
+
+        // -----------------------------------------
+        // CREATE MAP
+        // -----------------------------------------
+
+        const submissionMap = new Map();
+
+        submissions.forEach((submission) => {
+
+            const key = getSubmissionTaskKey(submission);
+
+            submissionMap.set(
+                key,
+                submission
+            );
+        });
+
+        // -----------------------------------------
+        // FIND FIRST TASK THAT SHOULD BE AVAILABLE
+        // -----------------------------------------
+
+        for (
+            let index = 0;
+            index < orderedTasks.length;
+            index++
+        ) {
+
+            const task =
+                orderedTasks[index];
+
+            const key = [
+                String(task.moduleId),
+                String(task.lessonId || ""),
+                String(task.taskId),
+            ].join("_");
+
+            const existing =
+                submissionMap.get(key);
+
+            // -------------------------------------
+            // EXISTING TASK
+            // -------------------------------------
+
+            if (existing) {
+
+                // Check deadline
+                const updated =
+                    await markExpiredIfNeeded(
+                        existing
+                    );
+
+                submissionMap.set(
+                    key,
+                    updated
+                );
+
+                submissions = submissions.map(
+                    (item) =>
+                        String(item._id) ===
+                            String(updated._id)
+                            ? updated
+                            : item
+                );
+
+                // If current task isn't approved,
+                // don't unlock anything after it.
+                if (
+                    updated.status !==
+                    "approved"
+                ) {
+                    break;
+                }
+
+                // Current task approved,
+                // continue to next task.
+                continue;
             }
+
+            // -------------------------------------
+            // TASK DOES NOT EXIST
+            // -------------------------------------
+
+            const previousTask = orderedTasks[index - 1];
+
+            const previousKey =
+                previousTask
+                    ? [
+                        String(previousTask.moduleId),
+                        String(previousTask.lessonId || ""),
+                        String(previousTask.taskId),
+                    ].join("_")
+                    : null;
+
+            const previousSubmission =
+                previousKey
+                    ? submissionMap.get(
+                        previousKey
+                    )
+                    : null;
+
+            // First task OR previous task approved
+            if (
+                index === 0 ||
+                previousSubmission?.status ===
+                "approved"
+            ) {
+
+                const unlocked =
+                    await unlockTaskForStudent(
+                        req.user._id,
+                        courseSlug,
+                        task
+                    );
+
+                if (unlocked) {
+
+                    submissionMap.set(
+                        key,
+                        unlocked
+                    );
+
+                    submissions.push(
+                        unlocked
+                    );
+                }
+            }
+
+            // Only unlock one task at a time.
+            break;
         }
 
-        break;
+        // -----------------------------------------
+        // MARK EXPIRED
+        // -----------------------------------------
+
+        submissions =
+            await Promise.all(
+                submissions.map(
+                    (submission) =>
+                        markExpiredIfNeeded(
+                            submission
+                        )
+                )
+            );
+
+        // -----------------------------------------
+        // RETURN
+        // -----------------------------------------
+
+        return res.status(200).json({
+            success: true,
+            orderedTasks,
+            submissions,
+        });
     }
-
-    submissions = await Promise.all(
-        submissions.map((submission) => markExpiredIfNeeded(submission))
-    );
-
-    res.status(200).json({
-        success: true,
-        orderedTasks,
-        submissions
-    });
-
-});
+);
 
 
 // =====================================
@@ -377,11 +902,11 @@ export const getAllSubmissions = asyncHandler(async (req, res) => {
     const { status } = req.query;
 
     const now = new Date();
-    await Submission.updateMany(
-        {
-            status: { $in: ["unlocked", "rejected"] },
-            expiresAt: { $lte: now }
-        },
+        await Submission.updateMany(
+            {
+                status: { $in: ["unlocked", "pending", "rejected"] },
+                expiresAt: { $lte: now }
+            },
         {
             $set: {
                 status: "expired",
@@ -444,6 +969,15 @@ export const approveSubmission = asyncHandler(async (req, res) => {
         throw new AppError("Submission not found", 404);
     }
 
+    await markExpiredIfNeeded(submission);
+
+    if (submission.status === "expired") {
+        throw new AppError(
+            "This task deadline has expired. Extend it before approval.",
+            400
+        );
+    }
+
     submission.status = "approved";
     submission.reviewedBy = req.user._id;
     submission.reviewedAt = new Date();
@@ -463,9 +997,15 @@ export const approveSubmission = asyncHandler(async (req, res) => {
     emitToUser(submission.student, "taskApproved", {
         submission,
         unlockedSubmission,
-        approvedTaskKey: `${submission.moduleId}_${submission.taskId}`,
+        approvedTaskKey: getSubmissionTaskKey(
+            submission
+        ),
         unlockedTaskKey: unlockedSubmission
-            ? `${unlockedSubmission.moduleId}_${unlockedSubmission.taskId}`
+            ? [
+                String(unlockedSubmission.moduleId),
+                String(unlockedSubmission.lessonId || ""),
+                String(unlockedSubmission.taskId),
+            ].join("_")
             : null
     });
 
@@ -508,7 +1048,9 @@ export const rejectSubmission = asyncHandler(async (req, res) => {
 
     emitToUser(submission.student, "taskRejected", {
         submission,
-        taskKey: `${submission.moduleId}_${submission.taskId}`
+        taskKey: getSubmissionTaskKey(
+            submission
+        )
     });
 
     res.status(200).json({
@@ -560,7 +1102,9 @@ export const extendSubmissionDeadline = asyncHandler(async (req, res) => {
 
     emitToUser(submission.student, "taskDeadlineExtended", {
         submission,
-        taskKey: `${submission.moduleId}_${submission.taskId}`
+        taskKey: getSubmissionTaskKey(
+            submission
+        )
     });
 
     res.status(200).json({

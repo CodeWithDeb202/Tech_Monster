@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import { BookOpen } from "lucide-react";
 
 import "./LessonSidebar.css";
-import LessonAccordion from "./LessonAccordion";
-import LessonSearch from "./LessonSearch";
+import LessonAccordion from "./components/LessonAccordion";
+import LessonSearch from "./components/LessonSearch";
 
 export default function LessonSidebar({
     lessons,
@@ -15,10 +15,10 @@ export default function LessonSidebar({
     progress,
     completedLessons,
     courseSlug,
+    contentType,
     approvedModuleIds = new Set()
 }) {
 
-    console.log("FilterModule", filteredLessons)
     return (
         <motion.aside
             id="lesson-sidebar"
@@ -50,15 +50,15 @@ export default function LessonSidebar({
                 {
 
                     filteredLessons.map((lesson, moduleIndex) => (
-                        console.log("lesson: sidebar", lesson),
 
-<LessonAccordion
+                        <LessonAccordion
                             lesson={lesson}
                             key={lesson.id}
                             module={lesson.sections}
                             activeLesson={activeLesson}
                             setActiveLesson={setActiveLesson}
                             courseSlug={courseSlug}
+                            contentType={contentType}
                             approvedModuleIds={approvedModuleIds}
                             moduleNumber={moduleIndex + 1}
                         />

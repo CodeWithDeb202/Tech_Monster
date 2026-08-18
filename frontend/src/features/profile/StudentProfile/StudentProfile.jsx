@@ -1,4 +1,8 @@
-import { useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState
+} from "react";
 import { useParams } from "react-router-dom";
 
 import ProfileHeader from "../../student/profile/ProfileHeader";
@@ -36,7 +40,7 @@ export default function StudentProfile() {
   // =================================
 
 
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
 
     try {
 
@@ -66,17 +70,18 @@ export default function StudentProfile() {
       setLoading(false);
 
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
 
     if (!userId) return;
 
-    setLoading(true);
+    queueMicrotask(() => {
+      setLoading(true);
+      fetchProfile();
+    });
 
-    fetchProfile();
-
-  }, [userId]);
+  }, [fetchProfile, userId]);
 
   // =================================
   // FOLLOW / UNFOLLOW

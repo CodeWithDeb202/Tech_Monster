@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { useRef, useEffect } from "react";
 
-import LessonNavbar from './Components/lessonNavbar';
-
 import "./LessonContent.css";
-import LessonHeader from "./Components/LessonHeader";
-import LessonPage from "./Components/LessonPage";
+
+import LessonNavbar from './components/lessonNavbar';
+import LessonHeader from "./components/LessonHeader";
+import LessonPage from "./components/LessonPage";
 
 export default function LessonContent({
     lesson,

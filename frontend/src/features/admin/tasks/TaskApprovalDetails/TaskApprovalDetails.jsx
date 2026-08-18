@@ -1,4 +1,8 @@
-import { useEffect, useState } from "react";
+import {
+    useCallback,
+    useEffect,
+    useState
+} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
@@ -24,7 +28,7 @@ export default function TaskApprovalDetails() {
     const [comment, setComment] = useState("");
     const [extending, setExtending] = useState(false);
 
-    const loadTask = async () => {
+    const loadTask = useCallback(async () => {
 
         try {
 
@@ -42,13 +46,15 @@ export default function TaskApprovalDetails() {
 
         }
 
-    };
+    }, [id]);
 
     useEffect(() => {
 
-        loadTask();
+        queueMicrotask(() => {
+            loadTask();
+        });
 
-    }, []);
+    }, [loadTask]);
 
     const handleApprove = async () => {
 

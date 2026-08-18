@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import ApprovedTasks from "./components/ApprovedTasks";
 import PendingTaskApprove from "./components/PendingTaskApprove";
@@ -14,10 +14,6 @@ export default function TaskApproval() {
         setRefresh(prev => prev + 1);
 
     };
-
-    useEffect(() => {
-        reload();
-    }, []);
 
     return (
         <>

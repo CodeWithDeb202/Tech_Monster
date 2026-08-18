@@ -3,7 +3,6 @@ import ContinueCard from "../ContinueCard/ContinueCard";
 import "./ContinueLearning.css";
 
 const ContinueLearning = ({ learningItems = [] }) => {
-  console.log("LearningItem Continuelearning",learningItems)
 
   const joinedCount = Array.isArray(learningItems)
     ? learningItems.length

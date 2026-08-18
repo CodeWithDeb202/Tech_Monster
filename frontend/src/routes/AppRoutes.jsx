@@ -129,6 +129,10 @@ function AppRoutes() {
                     />
 
                     <Route path="tasks" element={<StudentTask />} />
+                    <Route
+                        path="tasks/:type/:slug"
+                        element={<StudentTask />}
+                    />
                     <Route path="attendance" element={<StudentAttendance />} />
                     <Route path="account" element={<StudentAccount />} />
                     <Route

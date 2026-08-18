@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 
 import "./Lessons.css";
 
-import LessonSidebar from "./LessonSidebar";
-import LessonContent from "./LessonContent";
-import Pagination from "./Pagination";
+import LessonSidebar from "./components/LessonSidebar";
+import LessonContent from "./components/LessonContent";
+import Pagination from "./components/Pagination";
 import Spinner from "../../dashboard/common/LoaderPage/Spinner";
 
 import useLessonData from "./hooks/useLessonData";
@@ -183,6 +183,7 @@ export default function Lessons() {
                         progress={progress}
                         completedLessons={completedLessons}
                         courseSlug={courseSlug}
+                        contentType={contentType}
                         approvedModuleIds={approvedModuleIds}
                         setActiveLesson={(lessonId) => {
                             const index = lessons.findIndex(

@@ -1,6 +1,6 @@
 import "./DashboardLayout.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Navbar from "../../features/dashboard/common/Navbar";
 import Sidebar from "../../features/dashboard/common/Sidebar";
@@ -11,71 +11,169 @@ function DashboardLayout({ role = "student" }) {
 
     const [collapsed, setCollapsed] = useState(false);
 
-    // Mobile sidebar state
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
+    const [enrolledCourse, setEnrolledCourse] = useState(null);
+
+    // ==========================================
+    // GET ACTIVE / ENROLLED LEARNING
+    // ==========================================
+
+    useEffect(() => {
+
+        const loadActiveLearning = () => {
+
+            try {
+
+                const storedLearning =
+                    localStorage.getItem("activeLearning");
+
+                if (storedLearning) {
+
+                    const learning =
+                        JSON.parse(storedLearning);
+
+                    setEnrolledCourse(learning);
+
+                } else {
+
+                    setEnrolledCourse(null);
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to parse activeLearning:",
+                    error
+                );
+
+                setEnrolledCourse(null);
+            }
+        };
+
+
+        loadActiveLearning();
+
+    }, []);
+
+
+    // ==========================================
+    // SIDEBAR COLLAPSE
+    // ==========================================
+
     const handleToggleCollapse = () => {
+
         setCollapsed((prev) => !prev);
+
     };
+
+
+    // ==========================================
+    // MOBILE SIDEBAR
+    // ==========================================
 
     const handleOpenMobileSidebar = () => {
+
         setMobileSidebarOpen(true);
+
     };
+
 
     const handleCloseMobileSidebar = () => {
+
         setMobileSidebarOpen(false);
+
     };
 
-    // Course completion
+
+    // ==========================================
+    // COURSE COMPLETION
+    // ==========================================
+
     const readAllTasksCompleted = () => {
+
         try {
-            return localStorage.getItem("all_tasks_completed") === "true";
+
+            return (
+                localStorage.getItem(
+                    "all_tasks_completed"
+                ) === "true"
+            );
+
         } catch {
+
             return false;
+
         }
     };
 
+
     return (
+
         <div
-            className={`dashboardContainer ${
-                collapsed ? "sidebar-collapsed" : ""
-            }`}
+            className={`dashboardContainer ${collapsed
+                    ? "sidebar-collapsed"
+                    : ""
+                }`}
         >
 
             {/* ================= NAVBAR ================= */}
+
             <Navbar
                 role={role}
-                onMobileMenuClick={handleOpenMobileSidebar}
+                onMobileMenuClick={
+                    handleOpenMobileSidebar
+                }
             />
 
 
             <div id="sideMain">
 
                 {/* ================= SIDEBAR ================= */}
+
                 <Sidebar
                     role={role}
+
                     isCourseCompleted={
                         role === "student"
                             ? readAllTasksCompleted()
                             : false
                     }
+
                     collapsed={collapsed}
-                    onToggleCollapse={handleToggleCollapse}
-                    mobileSidebarOpen={mobileSidebarOpen}
-                    onCloseMobileSidebar={handleCloseMobileSidebar}
+
+                    onToggleCollapse={
+                        handleToggleCollapse
+                    }
+
+                    mobileSidebarOpen={
+                        mobileSidebarOpen
+                    }
+
+                    onCloseMobileSidebar={
+                        handleCloseMobileSidebar
+                    }
+
+                    enrolledCourse={
+                        enrolledCourse
+                    }
                 />
 
 
-                {/* ================= MAIN CONTENT ================= */}
+                {/* ================= MAIN ================= */}
+
                 <Main />
 
             </div>
 
 
             {/* ================= FOOTER ================= */}
+
             <Footer />
 
         </div>
+
     );
 }
 
