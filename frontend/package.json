@@ -1,6 +1,7 @@
 {
-  "name": "frontend",
+  "name": "tech-monster-frontend",
   "private": true,
+  "description": "Modern React frontend for the Tech Monster platform.",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
