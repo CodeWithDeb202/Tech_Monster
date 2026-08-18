@@ -10,7 +10,6 @@ import { API } from "../../../../../services/api/endpoints";
 const CourseCard = ({ internship, refreshDashboard, index, type }) => {
   const navigate = useNavigate();
   const isCourse = type === "course";
-  console.log("isCourse", isCourse);
   const label = isCourse ? "Course" : "Internship";
 
   const handleJoin = async () => {

@@ -46,7 +46,9 @@ export default function ApprovedTasks({ refresh }) {
 
     useEffect(() => {
 
-        loadTasks();
+        queueMicrotask(() => {
+            loadTasks();
+        });
 
     }, [refresh]);
 

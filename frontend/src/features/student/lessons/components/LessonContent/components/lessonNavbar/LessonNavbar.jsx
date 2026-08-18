@@ -2,8 +2,8 @@ import './LessonNavbar.css'
 
 import {motion} from 'framer-motion';
 
-import ReadingMode from "../ReadingMode";
-import CircularProgressBar from "../CircularProgress";
+import ReadingMode from "./components/ReadingMode";
+import CircularProgressBar from "./components/CircularProgress";
 
 export default function LessonNavbar({
     readingMode,

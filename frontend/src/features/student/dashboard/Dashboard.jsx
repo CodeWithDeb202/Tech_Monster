@@ -29,7 +29,34 @@ function Dashboard() {
                 API.DASHBOARD.STUDENT
             );
 
-            setDashboard(data.dashboard);
+            const dashboardData = data.dashboard;
+
+            setDashboard(dashboardData);
+
+            const enrolledItems = [
+                ...(dashboardData?.internships || []).map(item => ({
+                    ...item,
+                    type: "internship"
+                })),
+
+                ...(dashboardData?.courses || []).map(item => ({
+                    ...item,
+                    type: "course"
+                }))
+            ];
+
+            if (enrolledItems.length > 0) {
+                const activeLearning = enrolledItems[0];
+
+                localStorage.setItem(
+                    "activeLearning",
+                    JSON.stringify({
+                        type: activeLearning.type,
+                        slug: activeLearning.slug,
+                        title: activeLearning.title
+                    })
+                );
+            }
 
         } catch (err) {
             console.log(err);

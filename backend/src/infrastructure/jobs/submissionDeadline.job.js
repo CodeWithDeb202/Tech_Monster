@@ -3,12 +3,18 @@ import cron from "node-cron";
 import Submission from "../../modules/submissions/models/Submission.js";
 import { emitToUser } from "../socket/socket.js";
 
+const getSubmissionTaskKey = (submission) => [
+    String(submission.moduleId),
+    String(submission.lessonId || ""),
+    String(submission.taskId),
+].join("_");
+
 const submissionDeadlineJob = () => {
     cron.schedule("*/5 * * * *", async () => {
         const now = new Date();
 
         const expired = await Submission.find({
-            status: { $in: ["unlocked", "rejected"] },
+            status: { $in: ["unlocked", "pending", "rejected"] },
             expiresAt: { $lte: now }
         });
 
@@ -31,7 +37,9 @@ const submissionDeadlineJob = () => {
                     status: "expired",
                     expiredAt: now
                 },
-                taskKey: `${submission.moduleId}_${submission.taskId}`
+                taskKey: getSubmissionTaskKey(
+                    submission
+                )
             });
         });
     });

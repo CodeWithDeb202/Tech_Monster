@@ -33,7 +33,9 @@ export default function useProfileEdit({
 
     useEffect(() => {
 
-        setData(userData);
+        queueMicrotask(() => {
+            setData(userData);
+        });
 
     }, [userData]);
 

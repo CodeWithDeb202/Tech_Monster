@@ -4,7 +4,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { useForm } from "react-hook-form";
+import {
+    useForm,
+    useWatch,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import AuthLayout from "../../../../layouts/AuthLayout";
@@ -35,7 +38,7 @@ function ResetPassword() {
 
         handleSubmit,
 
-        watch,
+        control,
 
         formState: {
 
@@ -48,6 +51,12 @@ function ResetPassword() {
         resolver: zodResolver(resetPasswordSchema)
 
     });
+
+    const password =
+        useWatch({
+            control,
+            name: "password"
+        });
 
     const onSubmit = async (data) => {
 
@@ -175,7 +184,7 @@ function ResetPassword() {
 
                     />
 
-                    <PasswordStrength password={watch("password")} />
+                    <PasswordStrength password={password} />
 
                     {
 

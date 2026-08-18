@@ -209,7 +209,9 @@ const unlockFirstEligibleLessonTask = async ({
 
     emitToUser(student, "taskUnlocked", {
         submission,
-        taskKey: `${submission.moduleId}_${submission.taskId}`
+        taskKey: getSubmissionTaskKey(
+    submission
+)
     });
 
     return submission;

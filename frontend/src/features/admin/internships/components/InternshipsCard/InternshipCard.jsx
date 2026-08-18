@@ -16,7 +16,10 @@ function SingleInternshipCard({
     onDelete
 }) {
     const navigate = useNavigate();
-    const animation = useScrollAnimation();
+    const {
+        ref,
+        className
+    } = useScrollAnimation();
 
     // Image URL Handling (Uploaded relative path support)
     const getImageUrl = (image) => {
@@ -33,10 +36,10 @@ function SingleInternshipCard({
 
     return (
         <div
-            ref={animation.ref}
+            ref={ref}
             className={`
                 allInternshipsCard
-                ${animation.className}
+                ${className}
             `}
         >
             <div className="cardImage">

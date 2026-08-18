@@ -10,6 +10,7 @@ export default function TaskHeader({
     completedCount = 0,
     totalCount = 0,
 }) {
+    
     const percent =
         totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 

@@ -14,14 +14,24 @@ import {
     normalizeSlug,
     buildModules,
     getTaskKey,
+    getContentFromResponse,
 } from "../utils/taskUtils";
+import { toast } from "react-toastify";
 
-const TESTING_RESET_ON_REFRESH = true;
+const TESTING_RESET_ON_REFRESH = false;
 
 const useTaskData = ({
+    contentType,
     routeCourseSlug,
     slug,
 }) => {
+
+    const getApiResource = (type) => {
+        return type === "internship"
+            ? "internships"
+            : "courses";
+    };
+
     const [courseSlug, setCourseSlug] = useState(
         normalizeSlug(routeCourseSlug || slug || "")
     );
@@ -38,81 +48,187 @@ const useTaskData = ({
     const [deadlineMap, setDeadlineMap] = useState({});
     const [submissionIdMap, setSubmissionIdMap] = useState({});
     const [submittedAtMap, setSubmittedAtMap] = useState({});
+    const [initialTaskId, setInitialTaskId] = useState(null);
 
-    const applySubmissionState = (submission) => {
-        if (!submission?.moduleId || !submission?.taskId) {
+    const applySubmissionState = (
+        submission
+    ) => {
+
+        if (
+            !submission?.moduleId ||
+            !submission?.taskId
+        ) {
             return;
         }
 
-        const key = getTaskKey(submission);
+        const key =
+            getTaskKey(
+                submission
+            );
 
-        setTaskStatusMap((prev) => {
-            const next = {
-                ...prev,
-                [key]: submission.status,
-            };
-
-            if (courseSlug) {
-                saveTaskState(courseSlug, next);
-            }
-
-            return next;
-        });
-
-        if (submission.submittedAt) {
-            setSubmittedAtMap((prev) => ({
-                ...prev,
-                [key]: submission.submittedAt,
-            }));
+        if (!key) {
+            return;
         }
 
-        setDeadlineMap((prev) => ({
-            ...prev,
-            [key]: {
-                unlockedAt: submission.unlockedAt || null,
-                expiresAt: submission.expiresAt || null,
-                expiredAt: submission.expiredAt || null,
-            },
-        }));
+        // ==============================
+        // STATUS
+        // ==============================
 
-        setSubmissionIdMap((prev) => ({
-            ...prev,
-            [key]: submission._id,
-        }));
+        setTaskStatusMap(
+            (prev) => {
+
+                const next = {
+                    ...prev,
+                    [key]:
+                        submission.status,
+                };
+
+                if (courseSlug) {
+                    saveTaskState(
+                        courseSlug,
+                        next
+                    );
+                }
+
+                return next;
+            }
+        );
+
+        // ==============================
+        // SUBMITTED AT
+        // ==============================
+
+        if (
+            submission.submittedAt
+        ) {
+
+            setSubmittedAtMap(
+                (prev) => ({
+                    ...prev,
+
+                    [key]:
+                        submission.submittedAt,
+                })
+            );
+        }
+
+        // ==============================
+        // DEADLINE
+        // ==============================
+
+        setDeadlineMap(
+            (prev) => ({
+
+                ...prev,
+
+                [key]: {
+
+                    unlockedAt:
+                        submission.unlockedAt ||
+                        null,
+
+                    expiresAt:
+                        submission.expiresAt ||
+                        null,
+
+                    expiredAt:
+                        submission.expiredAt ||
+                        null,
+                },
+            })
+        );
+
+        // ==============================
+        // SUBMISSION ID
+        // ==============================
+
+        setSubmissionIdMap(
+            (prev) => ({
+
+                ...prev,
+
+                [key]:
+                    submission._id,
+            })
+        );
     };
 
-    const resolveCourseSlug = async () => {
-        try {
-            const myRes = await api.get("/internships/student/my");
+    const resolveContentSlug = async () => {
+        const type = String(contentType || "")
+            .trim()
+            .toLowerCase();
 
-            const myList = myRes?.data?.internships || [];
+        if (!type) {
+            return null;
+        }
+
+        const resource = getApiResource(type);
+
+        try {
+            const myRes = await api.get(
+                `/${resource}/student/my`
+            );
+
+            const data = myRes?.data || {};
+
+            const myList =
+                Object.values(data).find(
+                    (value) => Array.isArray(value)
+                ) || [];
+
+            const enrolledItem =
+                myList.find(
+                    (item) =>
+                        item?.slug ||
+                        item?.course?.slug ||
+                        item?.internship?.slug
+                );
 
             const enrolledSlug =
-                myList.find((item) => item.slug)?.slug ||
-                myList[0]?.internship?.slug ||
-                myList[0]?.slug;
+                enrolledItem?.slug ||
+                enrolledItem?.course?.slug ||
+                enrolledItem?.internship?.slug;
 
             if (enrolledSlug) {
                 return normalizeSlug(enrolledSlug);
             }
-        } catch {
-            // Continue with all internships.
+        } catch (error) {
+            console.warn(
+                `Failed to load ${resource} enrollment:`,
+                error
+            );
         }
 
         try {
-            const allRes = await api.get("/internships");
+            const allRes = await api.get(
+                `/${resource}`
+            );
 
-            const allList = allRes?.data?.internships || [];
+            const data = allRes?.data || {};
+
+            const allList =
+                Object.values(data).find(
+                    (value) => Array.isArray(value)
+                ) || [];
+
+            const firstItem =
+                allList.find(
+                    (item) => item?.slug
+                );
 
             const firstSlug =
-                allList.find((item) => item.slug)?.slug ||
-                allList[0]?.slug ||
-                null;
+                firstItem?.slug;
 
             return firstSlug
                 ? normalizeSlug(firstSlug)
                 : null;
-        } catch {
+
+        } catch (error) {
+            console.warn(
+                `Failed to load ${resource}:`,
+                error
+            );
+
             return null;
         }
     };
@@ -128,14 +244,11 @@ const useTaskData = ({
                 // -----------------------------------------
                 // STUDENT PROFILE
                 // -----------------------------------------
-
                 try {
+
                     const profileRes = await getProfile();
 
-                    const profile =
-                        profileRes?.data?.user ||
-                        profileRes?.data ||
-                        {};
+                    const profile = profileRes?.data?.user || profileRes?.data || {};
 
                     const name =
                         [
@@ -151,8 +264,10 @@ const useTaskData = ({
                     if (mounted) {
                         setStudentName(name);
                     }
-                } catch {
-                    // Profile failure is non-fatal.
+
+                } catch (err) {
+                    toast.error("Profile could not be loaded.");
+                    console.log("Profile Error:=", err);
                 }
 
                 // -----------------------------------------
@@ -162,7 +277,7 @@ const useTaskData = ({
                 let targetSlug = courseSlug;
 
                 if (!targetSlug) {
-                    targetSlug = await resolveCourseSlug();
+                    targetSlug = await resolveContentSlug();
 
                     if (mounted && targetSlug) {
                         setCourseSlug(targetSlug);
@@ -185,16 +300,15 @@ const useTaskData = ({
                 // COURSE DATA
                 // -----------------------------------------
 
+                const resource = getApiResource(contentType);
+
                 const response = await api.get(
-                    `/internships/slug/${targetSlug}`
+                    `/${resource}/slug/${targetSlug}`
                 );
 
-                const courseData =
-                    response?.data?.internship ||
-                    response?.data ||
-                    null;
+                const contentData = getContentFromResponse(response);
 
-                if (!courseData) {
+                if (!contentData) {
                     if (mounted) {
                         setError(
                             "Course content could not be loaded."
@@ -209,13 +323,16 @@ const useTaskData = ({
                 if (!mounted) return;
 
                 setCourseTitle(
-                    courseData.title || "Internship"
+                    contentData.title ||
+                    contentType ||
+                    "Content"
                 );
 
-                const builtModules =
-                    buildModules(courseData);
+                const builtModules = buildModules(contentData);
+                console.log("Built Modules:=", builtModules);
 
                 setModules(builtModules);
+                console.log("Modules:=", modules);
 
                 // -----------------------------------------
                 // LOCAL TASK STATE
@@ -299,8 +416,9 @@ const useTaskData = ({
                                 merged
                             );
                         }
-                    } catch {
-                        // Keep local state if backend fails.
+                    } catch (err) {
+                        console.log("Submission Error 1:=", err);
+                        toast.error("Subbmission Error 1")
                     }
                 }
 
@@ -308,14 +426,17 @@ const useTaskData = ({
                 // SELECT FIRST AVAILABLE TASK
                 // -----------------------------------------
 
-                const flatTasks =
-                    builtModules.flatMap(
-                        (module) => module.tasks
-                    );
+                const flatTasks = builtModules.flatMap(
+                    (module) => module.tasks
+                );
+
+                console.log("Flat Tasks:=", flatTasks);
 
                 const latestMap = {
                     ...stored,
                 };
+
+                console.log("Latest Map:=", latestMap);
 
                 if (!TESTING_RESET_ON_REFRESH) {
                     try {
@@ -331,8 +452,9 @@ const useTaskData = ({
                                 getTaskKey(submission)
                             ] = submission.status;
                         });
-                    } catch {
-                        // Ignore backend errors.
+                    } catch(err) {
+                        console.log("Submission Error 2:=", err);
+                        toast.error("Subbmission Error 2")
                     }
                 }
 
@@ -346,11 +468,31 @@ const useTaskData = ({
                             status !== "expired"
                         );
                     }) || flatTasks[0];
-
+                
+                console.log("First Available:=", firstAvailable);
                 return firstAvailable?.id || null;
-            } catch {
+            } catch (error) {
+                console.error("❌ TASK DATA LOAD ERROR:", error);
+
+                console.error(
+                    "❌ API STATUS:",
+                    error?.response?.status
+                );
+
+                console.error(
+                    "❌ API DATA:",
+                    error?.response?.data
+                );
+
+                console.error(
+                    "❌ API URL:",
+                    error?.config?.url
+                );
+
                 if (mounted) {
                     setError(
+                        error?.response?.data?.message ||
+                        error?.message ||
                         "Unable to load task data right now."
                     );
                 }
@@ -363,9 +505,15 @@ const useTaskData = ({
             }
         };
 
-        load().then((firstTaskId) => {
-            if (mounted && firstTaskId) {
-                // Exposed through return value.
+        load().then((firstAvailable) => {
+            if (
+                mounted &&
+                firstAvailable
+            ) {
+                setInitialTaskId(
+                    firstAvailable
+                );
+                console.log("Initial Task ID:=", initialTaskId);
             }
         });
 
@@ -375,32 +523,25 @@ const useTaskData = ({
 
         // courseSlug intentionally controls reload.
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [courseSlug]);
+    }, [courseSlug, contentType]);
 
     return {
         courseSlug,
         setCourseSlug,
-
         courseTitle,
         studentName,
-
         modules,
-
+        initialTaskId,
         loading,
         error,
-
         taskStatusMap,
         setTaskStatusMap,
-
         deadlineMap,
         setDeadlineMap,
-
         submissionIdMap,
         setSubmissionIdMap,
-
         submittedAtMap,
         setSubmittedAtMap,
-
         applySubmissionState,
     };
 };

@@ -1,14 +1,14 @@
 import "./LessonPage.css";
 
-import Heading from "./Components/Heading";
-import SubHeading from "./Components/SubHeading";
-import Paragraph from "./Components/Paragraph";
-import CodeBlock from "./Components/CodeBlock";
-import NotePoint from "./Components/NotePoint";
-import Lists from "./Components/Lists";
-import Table from "./Components/Table";
-import OutputPreview from "./Components/OutputPreview";
-import Button from "./Components/Button";
+import Heading from "./components/Heading";
+import SubHeading from "./components/SubHeading";
+import Paragraph from "./components/Paragraph";
+import CodeBlock from "./components/CodeBlock";
+import NotePoint from "./components/NotePoint";
+import Lists from "./components/Lists";
+import Table from "./components/Table";
+import OutputPreview from "./components/OutputPreview";
+import Button from "./components/Button";
 
 export default function LessonPage({ lesson }) {
   // `lesson` is the normalized section. The raw lesson body (notes, tasks, etc.)

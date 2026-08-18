@@ -45,8 +45,9 @@ export default function AllCourses() {
 
     useEffect(() => {
 
-        // eslint-disable-next-line react-hooks/immutability
-        fetchCourses();
+        queueMicrotask(() => {
+            fetchCourses();
+        });
 
     }, []);
 

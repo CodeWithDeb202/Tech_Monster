@@ -1,7 +1,7 @@
 import './LessonHeader.css';
 
 import {motion} from 'framer-motion';
-import LessonBookmark from "../Bookmark";
+import LessonBookmark from "./components/Bookmark";
 import {
     BookOpen,
 } from "lucide-react";

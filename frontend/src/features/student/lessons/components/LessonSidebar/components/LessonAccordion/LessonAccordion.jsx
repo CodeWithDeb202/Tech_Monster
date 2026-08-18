@@ -19,6 +19,7 @@ export default function LessonAccordion({
     activeLesson,
     setActiveLesson,
     courseSlug,
+    contentType,
     approvedModuleIds = new Set(),
     moduleNumber = 1,
 }) {
@@ -50,12 +51,16 @@ export default function LessonAccordion({
             return;
         }
 
-        navigate("/student/tasks", {
-            state: {
-                courseSlug: courseSlug || null,
-                moduleId: lesson?.id || null,
-            },
-        });
+        navigate(
+            `/student/tasks/${contentType}/${courseSlug}`,
+            {
+                state: {
+                    courseSlug: courseSlug || null,
+                    moduleId: lesson?.id || null,
+                    lessonId: null,
+                },
+            }
+        );
     };
 
     return (
@@ -119,8 +124,8 @@ export default function LessonAccordion({
                                     scale: 0.98,
                                 }}
                                 className={`accordion-lesson ${activeLesson === lessonItem.id
-                                        ? "active"
-                                        : ""
+                                    ? "active"
+                                    : ""
                                     } ${lessonItem.locked ? "locked" : ""}`}
                                 onClick={() =>
                                     handleLessonClick(lessonItem)
@@ -145,19 +150,19 @@ export default function LessonAccordion({
                                     )}
                                 </div>
 
-<div id="lesson-text">
+                                <div id="lesson-text">
                                     <h4>{lessonItem.heading}</h4>
                                 </div>
                             </motion.div>
                         ))}
 
-{/* Module Task Bar (rendered after the last lesson) */}
+                        {/* Module Task Bar (rendered after the last lesson) */}
                         <motion.div
                             whileHover={{ x: 6 }}
                             whileTap={{ scale: 0.98 }}
                             className={`accordion-task ${isModuleCompleted
-                                    ? "task-unlocked"
-                                    : "task-locked"}`}
+                                ? "task-unlocked"
+                                : "task-locked"}`}
                             onClick={handleTaskClick}
                         >
                             <div className="task-icon">

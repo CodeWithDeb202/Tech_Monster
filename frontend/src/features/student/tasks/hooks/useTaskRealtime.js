@@ -47,6 +47,9 @@ const useTaskRealtime = ({
                     unlockedSubmission
                 );
 
+                const unlockedTaskKey =
+                    getTaskKey(unlockedSubmission);
+
                 toast.info(
                     `Unlocked: ${
                         unlockedSubmission.taskTitle ||
@@ -54,11 +57,9 @@ const useTaskRealtime = ({
                     }`
                 );
 
-                setActiveTaskId(
-                    (current) =>
-                        current ||
-                        getTaskKey(unlockedSubmission)
-                );
+                if (unlockedTaskKey) {
+                    setActiveTaskId(unlockedTaskKey);
+                }
             }
         };
 
@@ -93,12 +94,18 @@ const useTaskRealtime = ({
 
             applySubmissionState(submission);
 
+            const taskKey = getTaskKey(submission);
+
             toast.info(
                 `Unlocked: ${
                     submission.taskTitle ||
                     submission.taskId
                 }`
             );
+
+            if (taskKey) {
+                setActiveTaskId(taskKey);
+            }
         };
 
         const handleRejected = ({ submission }) => {

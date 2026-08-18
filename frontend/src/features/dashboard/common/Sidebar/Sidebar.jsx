@@ -1,7 +1,7 @@
 import './Sidebar.css';
 
 import useAuth from '../../../../shared/hooks/useAuth';
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from 'react-toastify';
@@ -33,7 +33,8 @@ function Sidebar({
     collapsed = false,
     onToggleCollapse,
     mobileSidebarOpen = false,
-    onCloseMobileSidebar
+    onCloseMobileSidebar,
+    enrolledCourse
 }) {
     const navigate = useNavigate();
     const location = useLocation();
@@ -44,14 +45,32 @@ function Sidebar({
         if (mobileSidebarOpen) {
             onCloseMobileSidebar?.();
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
+
+    const lessonPath = enrolledCourse?.type && enrolledCourse?.slug ? `/student/lessons/${enrolledCourse.type}/${enrolledCourse.slug}` : "/student/lessons";
+
+    const taskPath =
+        enrolledCourse?.type && enrolledCourse?.slug
+            ? `/student/tasks/${enrolledCourse.type}/${enrolledCourse.slug}`
+            : "/student/tasks";
 
     const studentLinks = [
         { name: "Home", path: "/student", icon: <FiHome /> },
         { name: "Dashboard", path: "/student/dashboard", icon: <FiGrid /> },
-        { name: "Lessons", path: "/student/lessons", icon: <FiBookOpen /> },
-        { name: "Daily Task", path: "/student/tasks", icon: <FiCheckSquare /> },
+
+        {
+            name: "Lessons",
+            path: lessonPath,
+            icon: <FiBookOpen />
+        },
+
+        {
+            name: "Daily Task",
+            path: taskPath,
+            icon: <FiCheckSquare />
+        },
+
         { name: "Attendance", path: "/student/attendance", icon: <FiCalendar /> },
         { name: "Account", path: "/student/account", icon: <FiUser /> },
         { name: "Certificate", path: "/student/certificate", icon: <FiAward />, locked: !isCourseCompleted },
@@ -76,7 +95,7 @@ function Sidebar({
             toast.warning("Complete all internship tasks to unlock your certificate!");
         }
     };
-    
+
     const { logout } = useAuth();
 
     const handleLogout = async () => {
@@ -93,7 +112,7 @@ function Sidebar({
         }
     };
 
-    if(loading){
+    if (loading) {
         return <Loader />
     }
 
@@ -174,7 +193,9 @@ function Sidebar({
                     {navLinks.map((link, index) => {
 
                         const isActive =
-                            location.pathname === link.path;
+                            link.name === "Lessons"
+                                ? location.pathname.startsWith("/student/lessons")
+                                : location.pathname === link.path;
 
                         return (
                             <li
@@ -187,11 +208,18 @@ function Sidebar({
 
                                 <Link
                                     to={link.locked ? "#" : link.path}
+                                    state={
+                                        link.name === "Daily Task" && enrolledCourse
+                                            ? {
+                                                courseSlug: enrolledCourse.slug,
+                                                type: enrolledCourse.type
+                                            }
+                                            : undefined
+                                    }
                                     onClick={(e) => {
 
                                         handleLinkClick(e, link);
 
-                                        // Mobile re link click kale close
                                         if (!link.locked) {
                                             onCloseMobileSidebar?.();
                                         }

@@ -71,7 +71,9 @@ function NotificationProvider({ children }) {
 
     useEffect(() => {
 
-        loadNotifications();
+        queueMicrotask(() => {
+            loadNotifications();
+        });
 
     }, [loadNotifications]);
 

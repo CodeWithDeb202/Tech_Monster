@@ -195,7 +195,9 @@ const unlockFirstEligibleLessonTask = async ({
         submission,
 
         taskKey:
-            `${submission.moduleId}_${submission.taskId}`
+            getSubmissionTaskKey(
+    submission
+)
 
     });
 

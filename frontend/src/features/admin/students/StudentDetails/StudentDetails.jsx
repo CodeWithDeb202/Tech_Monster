@@ -2,7 +2,11 @@
 
 import "./StudentDetails.css";
 
-import { useEffect, useState } from "react";
+import {
+    useCallback,
+    useEffect,
+    useState
+} from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -25,7 +29,7 @@ export default function StudentDetails() {
 
     const [notifications, setNotifications] = useState([]);
 
-    async function fetchStudent() {
+    const fetchStudent = useCallback(async () => {
 
         try {
 
@@ -66,13 +70,15 @@ export default function StudentDetails() {
 
         }
 
-    }
+    }, [id]);
 
     useEffect(() => {
 
-        fetchStudent();
+        queueMicrotask(() => {
+            fetchStudent();
+        });
 
-    }, [id]);
+    }, [fetchStudent]);
 
     if (loading) {
 

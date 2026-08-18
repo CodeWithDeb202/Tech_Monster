@@ -12,6 +12,7 @@ const useTaskSubmission = ({
     currentModule,
     taskStatusMap,
     setTaskStatusMap,
+    setDeadlineMap,
     setSubmittedAtMap,
 }) => {
     const [submitting, setSubmitting] =
@@ -21,7 +22,7 @@ const useTaskSubmission = ({
         taskId,
         code
     ) => {
-        if (!taskId || !code.trim()) {
+        if (!taskId || !code?.trim()) {
             return;
         }
 
@@ -39,64 +40,65 @@ const useTaskSubmission = ({
         setSubmitting(true);
 
         try {
-            const task =
-                allTasks.find(
-                    (item) =>
-                        item.id === taskId
-                ) || null;
+            const task = allTasks.find((item) => String(item.id) === String(taskId) || String(item.taskId) === String(taskId)) || null;
 
-            await api.post(
+            const response = await api.post(
                 "/submissions",
                 {
                     courseSlug,
-
-                    moduleId:
-                        task?.moduleId || "",
-
-                    moduleTitle:
-                        currentModule?.title || "",
-
-                    lessonId:
-                        task?.lessonId || "",
-
-                    taskId:
-                        task?.taskId ||
-                        taskId,
-
-                    taskTitle:
-                        task?.title || "",
-
+                    moduleId: task?.moduleId || "",
+                    moduleTitle: currentModule?.title || "",
+                    lessonId: task?.lessonId || "",
+                    taskId: task?.taskId || taskId,
+                    taskTitle: task?.title || "",
                     problemStatement:
-                        task?.problemStatement ||
-                        "",
-
+                        task?.problemStatement || "",
                     code,
                 }
             );
 
-            const nowIso =
-                new Date().toISOString();
+            const submission =
+                response?.data?.submission || null;
 
-            setTaskStatusMap((prev) => {
-                const next = {
-                    ...prev,
-                    [taskId]: "pending",
-                };
+            const nowIso = new Date().toISOString();
 
-                saveTaskState(
-                    courseSlug,
-                    next
-                );
+            const nextStatus = {
+                ...taskStatusMap,
+                [taskId]: "pending",
+            };
 
-                return next;
-            });
+            setTaskStatusMap(nextStatus);
+
+            saveTaskState(
+                courseSlug,
+                nextStatus
+            );
 
             setSubmittedAtMap(
                 (prev) => ({
                     ...prev,
-                    [taskId]: nowIso,
+                    [taskId]:
+                        submission?.submittedAt ||
+                        nowIso,
                 })
             );
+
+            if (setDeadlineMap && submission) {
+                setDeadlineMap((prev) => ({
+                    ...prev,
+                    [taskId]: {
+                        unlockedAt:
+                            submission.unlockedAt ||
+                            null,
+                        expiresAt:
+                            submission.expiresAt ||
+                            null,
+                        expiredAt:
+                            submission.expiredAt ||
+                            null,
+                    },
+                }));
+            }
 
             toast.success(
                 "Task submitted for approval!"

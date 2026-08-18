@@ -34,6 +34,16 @@ const ContinueCard = ({ learning }) => {
       return;
     }
 
+    // Save currently selected course/internship
+    localStorage.setItem(
+      "activeLearning",
+      JSON.stringify({
+        type,
+        slug,
+        title
+      })
+    );
+
     navigate(
       `/student/lessons/${type}/${slug}`
     );
