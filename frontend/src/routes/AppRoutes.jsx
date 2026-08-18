@@ -16,7 +16,7 @@ import Landing from "../pages/landing/Landing";
 
 import Contact from "../pages/landing/Contact";
 
-import TermsAndConditions from "../pages/landing/TermsAndConditions";
+import TermsAndConditions from "../components/common/TermsAndConditions";
 
 import Login from '../features/auth/pages/Login';
 import Signup from '../features/auth/pages/Signup';
