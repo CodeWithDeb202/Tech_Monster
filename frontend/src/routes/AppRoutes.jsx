@@ -48,7 +48,7 @@ import StudentProfile from '../features/profile/StudentProfile';
 
 import Notification from '../features/dashboard/common/Notification';
 import Message from '../features/messaging/Message';
-import HelpSupport from '../features/dashboard/common/Help&Supp/HelpSupport';
+import HelpSupport from '../features/dashboard/common/HelpSupport';
 
 // Admin Dashboard
 import Overview from '../features/admin/overview';
